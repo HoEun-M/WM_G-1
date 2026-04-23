@@ -811,7 +811,7 @@
         </div>
 
         <!-- 썸네일 클릭 영역 -->
-        <div onclick="openVideoModal('아이스크림_가상_실험.mp4','가상 실험실 샘플','vlab')"
+        <div onclick="openVideoModal('sample_virtual_lab.mp4','가상 실험실 샘플','vlab')"
              style="flex:1;border-radius:12px;overflow:hidden;border:2px solid var(--blue-border);background:#0a0f17;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;transition:border-color 0.2s;min-height:200px;"
              onmouseenter="this.style.borderColor='var(--blue)'"
              onmouseleave="this.style.borderColor='var(--blue-border)'">
@@ -822,7 +822,7 @@
             <div style="font-size:0.85rem;font-weight:600;color:var(--white);">가상 실험실 영상 보기</div>
             <div style="font-family:'Space Mono',monospace;font-size:0.63rem;color:var(--blue);margin-top:4px;letter-spacing:0.1em;">클릭하여 재생</div>
           </div>
-          <div style="position:absolute;bottom:10px;right:12px;font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--gray);opacity:0.5;">아이스크림_가상_실험.mp4</div>
+          <div style="position:absolute;bottom:10px;right:12px;font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--gray);opacity:0.5;">sample_virtual_lab.mp4</div>
         </div>
 
         <!-- 한계점 -->
@@ -856,7 +856,7 @@
         </div>
 
         <!-- 썸네일 클릭 영역 -->
-        <div onclick="openVideoModal('천재_과학_게임.mp4','개념 익히기 게임 샘플','game')"
+        <div onclick="openVideoModal('sample_concept_game.mp4','개념 익히기 게임 샘플','game')"
              style="flex:1;border-radius:12px;overflow:hidden;border:2px solid var(--blue-border);background:#0a0f17;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;transition:border-color 0.2s;min-height:200px;"
              onmouseenter="this.style.borderColor='var(--blue)'"
              onmouseleave="this.style.borderColor='var(--blue-border)'">
@@ -867,7 +867,7 @@
             <div style="font-size:0.85rem;font-weight:600;color:var(--white);">개념 익히기 게임 영상 보기</div>
             <div style="font-family:'Space Mono',monospace;font-size:0.63rem;color:var(--blue);margin-top:4px;letter-spacing:0.1em;">클릭하여 재생</div>
           </div>
-          <div style="position:absolute;bottom:10px;right:12px;font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--gray);opacity:0.5;">천재_과학_게임.mp4</div>
+          <div style="position:absolute;bottom:10px;right:12px;font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--gray);opacity:0.5;">sample_concept_game.mp4</div>
         </div>
 
         <!-- 한계점 -->
@@ -970,13 +970,13 @@
 
         <!-- Thumbnail iframe wrapper — click opens new window -->
         <div
-          onclick="window.open('가상실험실_고체열이동_20260414.html','_blank','width=1200,height=800')"
+          onclick="window.open('lab_heat_conduction.html','_blank','width=1200,height=800')"
           style="flex:1;border-radius:12px;overflow:hidden;border:2px solid var(--blue-border);cursor:pointer;position:relative;transition:border-color 0.2s;background:#000;min-height:0;"
           onmouseenter="this.style.borderColor='var(--blue)'"
           onmouseleave="this.style.borderColor='var(--blue-border)'"
         >
           <iframe
-            src="가상실험실_고체열이동_20260414.html"
+            src="lab_heat_conduction.html"
             style="width:200%;height:200%;transform:scale(0.5);transform-origin:top left;pointer-events:none;border:none;display:block;"
             scrolling="no"
           ></iframe>
@@ -1025,10 +1025,10 @@
         <span style="width:8px;height:8px;border-radius:50%;background:#ff6060;display:inline-block;"></span>
         <span style="width:8px;height:8px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span>
         <span style="width:8px;height:8px;border-radius:50%;background:#27c93f;display:inline-block;"></span>
-        <span style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.15em;margin-left:8px;">가상실험실_지시서_작성기_v6_20260414.html</span>
+        <span style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.15em;margin-left:8px;">lab_instruction_builder.html</span>
       </div>
       <iframe
-        src="가상실험실_지시서_작성기_v6_20260414.html"
+        src="lab_instruction_builder.html"
         style="width:100%;height:100%;border:none;display:block;padding-top:28px;"
         scrolling="auto"
       ></iframe>
@@ -2253,7 +2253,7 @@ function goToSummary() {
       >
         <!-- Video element (hidden until play) -->
         <video id="conceptVideo"
-          src="수정영상합본최최종_대류송_.mp4"
+          src="concept_audio_video.mp4"
           muted loop playsinline
           style="width:100%;height:100%;object-fit:contain;display:none;background:#000;"
         ></video>
@@ -2542,6 +2542,7 @@ function goToSummary() {
   }
 
   document.addEventListener('keydown', e => {
+    if (document.getElementById('videoModal').style.display === 'flex') return;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
   });
