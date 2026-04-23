@@ -893,32 +893,6 @@
     </div>
   </div>
 
-  <!-- VIDEO MODAL (슬라이드 4용) -->
-  <div id="videoModal" onclick="closeVideoModal(event)"
-       style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:0;">
-    <div style="position:relative;width:min(860px,90vw);background:#0d1520;border:1px solid var(--blue-border);border-radius:16px;overflow:hidden;box-shadow:0 0 60px rgba(59,158,255,0.2);" onclick="event.stopPropagation()">
-
-      <!-- 모달 헤더 -->
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--blue-border);background:rgba(13,21,32,0.9);">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span id="modalIcon" style="font-size:1.1rem;">🔬</span>
-          <span id="modalTitle" style="font-family:'Noto Sans KR',sans-serif;font-size:0.9rem;font-weight:600;color:var(--white);"></span>
-        </div>
-        <button onclick="closeVideoModal(null)" style="background:none;border:none;color:var(--gray-light);font-size:1.3rem;cursor:pointer;line-height:1;padding:2px 6px;transition:color 0.2s;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='var(--gray-light)'">✕</button>
-      </div>
-
-      <!-- 영상 -->
-      <div style="background:#000;position:relative;">
-        <video id="modalVideo" muted loop playsinline controls
-               style="width:100%;display:block;max-height:420px;object-fit:contain;background:#000;"></video>
-      </div>
-
-      <!-- 한계점 (모달 하단) -->
-      <div id="modalLimitations" style="padding:14px 20px;border-top:1px solid var(--blue-border);">
-      </div>
-
-    </div>
-  </div>
 
   <!-- SLIDE 5: VIRTUAL LAB DEMO -->
   <div class="slide" style="padding: 28px 56px 40px 56px; justify-content: flex-start;">
@@ -2352,6 +2326,33 @@ function goToSummary() {
   </div>
 
 </div><!-- /deck -->
+
+<!-- VIDEO MODAL (슬라이드 4용) -->
+  <div id="videoModal" onclick="closeVideoModal(event)"
+       style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:0;">
+    <div style="position:relative;width:min(860px,90vw);background:#0d1520;border:1px solid var(--blue-border);border-radius:16px;overflow:hidden;box-shadow:0 0 60px rgba(59,158,255,0.2);" onclick="event.stopPropagation()">
+
+      <!-- 모달 헤더 -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--blue-border);background:rgba(13,21,32,0.9);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="modalIcon" style="font-size:1.1rem;">🔬</span>
+          <span id="modalTitle" style="font-family:'Noto Sans KR',sans-serif;font-size:0.9rem;font-weight:600;color:var(--white);"></span>
+        </div>
+        <button onclick="closeVideoModal(null)" style="background:none;border:none;color:var(--gray-light);font-size:1.3rem;cursor:pointer;line-height:1;padding:2px 6px;transition:color 0.2s;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='var(--gray-light)'">✕</button>
+      </div>
+
+      <!-- 영상 -->
+      <div style="background:#000;position:relative;">
+        <video id="modalVideo" muted loop playsinline controls
+               style="width:100%;display:block;max-height:420px;object-fit:contain;background:#000;"></video>
+      </div>
+
+      <!-- 한계점 (모달 하단) -->
+      <div id="modalLimitations" style="padding:14px 20px;border-top:1px solid var(--blue-border);">
+      </div>
+
+    </div>
+  </div>
 
 <!-- NAVIGATION SIDEBAR -->
 <nav class="nav" id="sidebar">
