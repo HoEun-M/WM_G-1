@@ -95,7 +95,43 @@
     padding: 14px 0;
     backdrop-filter: blur(12px);
     min-width: 160px;
+    transition: transform 0.35s cubic-bezier(0.77,0,0.175,1), opacity 0.3s;
   }
+
+  .nav.hidden {
+    transform: translateY(-50%) translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* 토글 버튼 */
+  .nav-toggle {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 101;
+    background: rgba(8,12,16,0.75);
+    border: 1px solid var(--blue-border);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    color: var(--blue);
+    cursor: pointer;
+    padding: 10px 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px);
+    transition: background 0.2s, opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+    font-size: 0.8rem;
+  }
+  .nav-toggle.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .nav-toggle:hover { background: rgba(59,158,255,0.15); }
 
   /* Prev / Next arrow buttons */
   .nav-arrow {
@@ -2691,7 +2727,12 @@ function goToSummary() {
   <div class="nav-items" id="navItems"></div>
   <div class="nav-divider"></div>
   <button class="nav-arrow" id="nextBtn" onclick="navigate(1)">NEXT ▼</button>
+  <!-- 닫기 버튼 (하단) -->
+  <button onclick="toggleNav()" style="background:none;border:none;color:var(--blue);cursor:pointer;font-size:0.65rem;font-family:'Space Mono',monospace;letter-spacing:0.1em;padding:8px 14px 4px;width:100%;text-align:right;opacity:0.6;transition:opacity 0.2s;margin-top:4px;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.6'">✕ 닫기</button>
 </nav>
+
+<!-- 사이드바 토글 버튼 (숨겨졌을 때 표시) -->
+<button class="nav-toggle" id="navToggle" onclick="toggleNav()" title="목차 열기">☰</button>
 
 <div class="key-hint">← → 키보드로 이동</div>
 
@@ -2771,6 +2812,15 @@ function goToSummary() {
   }
 
   function navigate(dir) { goTo(current + dir); }
+
+  // 사이드바 토글
+  const sidebar = document.getElementById('sidebar');
+  const navToggle = document.getElementById('navToggle');
+
+  function toggleNav() {
+    const hidden = sidebar.classList.toggle('hidden');
+    navToggle.classList.toggle('visible', hidden);
+  }
 
   // ── 슬라이드 4 영상 팝업 ──────────────────────────────────────
   var MODAL_DATA = {
