@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>가상 실험실 — [실험 제목]</title>
+<!--
+========================================================================
+  가상 실험실 공통 뼈대 HTML (v2)
+  ========================================================================
+
+  v2 변경 사항 (vs v1):
+    + ★④ 영역에 stepSegments / summarySegments 변수 신설
+    + playStepSegments(n), playSummarySegments() 함수 추가
+      → 한 단계 안에서 가이드 메시지 + mp3가 순차 변경되는 케이스 지원
+    + setStep(n)이 stepSegments[n]을 자동 인식하여 다중 세그먼트 재생
+    + goToSummary()가 playSummarySegments()를 자동 호출
+
+  v1 호환성: 단일 세그먼트만 사용하는 실험(stepSegments / summarySegments
+    가 비어 있는 경우)은 v1과 똑같이 동작합니다. 기존 v1용 ★⑥ 코드
+    (playAudio('takeN') 직접 호출 등)도 그대로 동작합니다.
+
+  이 파일은 "고체에서 열의 이동"과 "액체에서 열의 이동" 두 완성본에서
+  공통으로 사용되는 부분만 뽑아 정리한 재사용 뼈대입니다.
+
+  ▼ 이미 준비된 영역 (건드릴 필요 없음):
+    - 전체 UI 셸 (헤더, 스텝 인디케이터, 가이드 버블, 팝업, 로딩)
+    - 공통 CSS (색상 테마 변수로 분리)
+    - Three.js 씬 세팅 (배경, 카메라, 조명, 바닥, groundPlane)
+    - 카메라 컨트롤 (마우스/터치 드래그 회전, 휠/핀치 줌, 보간)
+    - 3D 장비 라이브러리 (createChromeTex, 재료 프리셋)
+    - TTS + BGM 오디오 시스템 (mp3 재생 + 웹 TTS 폴백)
+    - 스텝 전환 유틸 (setStep, updateGuide, updateDots)
+    - 다중 세그먼트 재생 (playStepSegments, playSummarySegments)  ← v2 신규
+    - 드래그 헬퍼 (screenToWorld, 고스트 클론 패턴)
+    - 애니메이션 루프 + 리사이즈 핸들러
+  
+  ▼ 실험별로 채워 넣는 영역 — 아래 ★ 마커 8곳:
+    ① 실험 메타 (제목, 색상 테마)
+    ② HTML 요소 (사이드 카드 패널, 단원별 팝업 내용)
+    ③ 오디오 파일 + 나레이션 매핑
+    ④ 가이드 메시지 배열 + (선택) stepSegments / summarySegments
+    ⑤ 실험별 3D 장비 build 함수
+    ⑥ 실험별 드래그 핸들러 + 단계 전환 로직
+    ⑦ ★★ 핵심 시뮬레이션 코어 (열전도/대류/용해/증발 등)
+    ⑧ 리셋 로직 (실험별 상태 초기화)
+  
+  각 영역에는 // ★① 같은 마커와 힌트가 주석으로 들어있습니다.
+  Claude Code 등으로 작업할 때 "★① 영역만 채워줘" 같은 식으로 범위 지정 가능.
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+/* ================================================================
+   ★① 실험별 색상 테마 (여기만 바꾸면 전체 톤 변경됨)
+   ================================================================ */
+:root {
+  --accent: #00b894;        /* 메인 색 (고체: 민트그린 / 액체: 블루 권장) */
+  --accent2: #00cec9;       /* 보조 색 (그라데이션 페어) */
+  --accent-light: #55efc4;  /* 완료 상태 표시용 */
+  --text-dark: #2d3436;
+  --text-mid: #636e72;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;overflow:hidden;width:100vw;height:100vh;touch-action:none}
+#canvas-container{width:100%;height:100%;position:relative}
+canvas{display:block}
+
+/* ===== 헤더 ===== */
+#header{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;padding:0 20px;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+#header .mascot-icon{width:36px;height:36px;background:var(--accent-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;margin-right:10px}
+#header .title-badge{background:rgba(255,255,255,0.25);border-radius:20px;padding:3px 14px;color:#fff;font-weight:700;font-size:14px;margin-right:14px}
+#header .subtitle{color:#fff;font-size:13px;font-weight:500}
+#music-btn{margin-left:auto;width:36px;height:36px;padding:0;background:rgba(0,0,0,0.35);border:2px solid rgba(255,255,255,0.7);border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#music-btn svg{width:20px;height:20px;fill:#fff}
+
+/* ===== 스텝 인디케이터 ===== */
+#step-indicator{position:absolute;top:64px;left:20px;display:flex;gap:6px;z-index:100}
+.step-dot{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);transition:all .4s}
+.step-dot.active{background:var(--accent);color:#fff;box-shadow:0 3px 10px rgba(0,184,148,0.4)}
+.step-dot.completed{background:var(--accent-light);color:#fff}
+
+/* ===== 가이드 버블 + 캐릭터 ===== */
+#guide-area{position:absolute;bottom:140px;left:14px;display:flex;flex-direction:column;align-items:flex-start;z-index:100;pointer-events:none}
+#guide-bubble{background:#fff;border-radius:18px;padding:12px 20px;font-size:13.5px;font-weight:500;color:var(--text-dark);box-shadow:0 5px 20px rgba(0,0,0,0.18);max-width:380px;line-height:1.6;transition:opacity .35s;opacity:1;position:relative;white-space:pre-line}
+#guide-bubble::after{content:'';position:absolute;bottom:-10px;left:36px;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid #fff}
+#character-wrap{margin-left:12px;margin-top:2px}
+#character-svg{width:60px;height:60px}
+
+/* ===== 사이드 카드 패널 (실험별 선택지) ===== */
+#side-panel{position:absolute;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:100}
+.side-card{width:118px;background:rgba(255,255,255,0.96);border-radius:14px;padding:10px;text-align:center;cursor:grab;transition:all .25s;box-shadow:0 3px 14px rgba(0,0,0,0.14);user-select:none}
+.side-card:hover{transform:scale(1.05);box-shadow:0 6px 24px rgba(0,0,0,0.22)}
+.side-card .preview{width:94px;height:60px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center}
+.side-card .label{font-size:11px;font-weight:700;color:var(--text-dark)}
+
+/* ===== 드롭 존 인디케이터 ===== */
+#drop-zone-indicator{position:absolute;pointer-events:none;z-index:50;border:3px dashed rgba(150,150,150,0.55);border-radius:16px;transition:border-color .3s;display:none}
+#drop-zone-indicator.highlight{border-color:var(--accent);box-shadow:0 0 18px rgba(0,184,148,0.35)}
+
+/* ===== 속도 조절 바 ===== */
+#speed-bar{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:6px;background:rgba(255,255,255,0.96);border-radius:14px;padding:8px 14px;z-index:100;box-shadow:0 3px 14px rgba(0,0,0,0.14);white-space:nowrap}
+.speed-label{font-size:12px;font-weight:700;color:var(--text-mid);margin-right:2px}
+.speed-btn{padding:5px 11px;border:2px solid #ddd;border-radius:8px;background:#fff;font-size:13px;font-weight:700;cursor:pointer;color:var(--text-mid);font-family:inherit;transition:all .2s}
+.speed-btn:hover{border-color:var(--accent);color:var(--accent)}
+.speed-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ===== 하단 버튼들 ===== */
+#next-btn{position:absolute;bottom:20px;right:20px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;z-index:100;box-shadow:0 4px 18px rgba(0,184,148,0.4);display:none;transition:transform .2s}
+#next-btn:hover{transform:translateY(-2px)}
+#reset-btn{position:absolute;bottom:20px;left:18px;width:44px;height:44px;background:#222;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:100;color:#fff;font-size:20px;box-shadow:0 3px 12px rgba(0,0,0,0.4);transition:all .3s}
+#reset-btn:hover{background:#000;transform:rotate(-180deg)}
+
+/* ===== 탐구 목표 팝업 ===== */
+#objective-popup{position:absolute;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:250;cursor:pointer}
+#objective-card{background:#fff;border-radius:20px;padding:36px 40px;max-width:440px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.25);animation:popIn .5s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+#objective-card h3{font-size:17px;color:#1a5276;margin-bottom:12px;font-weight:700}
+#objective-card p{font-size:15.5px;color:var(--text-dark);line-height:1.75;font-weight:500}
+#objective-card .hint{margin-top:16px;font-size:12px;color:#aaa;font-weight:400}
+
+/* ===== 결과 요약 오버레이 ===== */
+#summary-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:200}
+#summary-card{background:#fff;border-radius:22px;padding:42px;max-width:520px;text-align:center;box-shadow:0 16px 50px rgba(0,0,0,0.3);animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+#summary-card h2{font-size:22px;color:#1a5276;margin-bottom:6px}
+#summary-card p{font-size:16px;color:var(--text-dark);line-height:1.8;margin-bottom:20px}
+#summary-card .highlight{background:#f0f0f0;color:var(--text-dark);padding:14px 20px;border-radius:14px;font-size:15px;font-weight:700;line-height:1.6;border:1px solid #ddd}
+#summary-card button{margin-top:20px;padding:11px 28px;background:#1a5276;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+
+/* ===== 로딩 ===== */
+#loading{position:absolute;inset:0;background:#c8d6dc;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:300;transition:opacity .5s}
+.spinner{width:44px;height:44px;border:4px solid rgba(0,184,148,0.2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{100%{transform:rotate(360deg)}}
+#loading p{color:#555;margin-top:14px;font-weight:500}
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="spinner"></div><p>가상 실험실을 준비하고 있어요...</p></div>
+
+<!-- ★② 탐구 목표 팝업: 실험 주제에 맞춰 문구 수정 -->
+<div id="objective-popup">
+  <div id="objective-card">
+    <h3>탐구 목표</h3>
+    <p><!-- 여기에 탐구 목표 문장을 넣으세요 -->[탐구 목표 문장]</p>
+    <div class="hint">화면을 탭하면 계속됩니다</div>
+  </div>
+</div>
+
+<div id="canvas-container">
+
+  <!-- 헤더 -->
+  <div id="header">
+    <div class="mascot-icon">🔬</div>
+    <div class="title-badge">가상 실험실</div>
+    <!-- ★② 서브타이틀: 실험 제목으로 교체 -->
+    <div class="subtitle">[실험 제목]</div>
+    <button id="music-btn" onclick="toggleBgMusic()">
+      <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v1.16l3.48 3.48c.26-.65.42-1.35.42-2.09h-.01l.01-.04z" opacity="0.3"/><line x1="18" y1="6" x2="6" y2="18" stroke="#fff" stroke-width="2"/></svg>
+    </button>
+  </div>
+
+  <!-- 스텝 인디케이터: ★② 실험 단계 수에 맞춰 dot 개수 조정 -->
+  <div id="step-indicator">
+    <div class="step-dot active" id="dot-1">1</div>
+    <div class="step-dot" id="dot-2">2</div>
+    <div class="step-dot" id="dot-3">3</div>
+  </div>
+
+  <!-- 가이드 버블 + 캐릭터 -->
+  <div id="guide-area">
+    <div id="guide-bubble"><!-- 초기 메시지는 JS에서 설정됨 --></div>
+    <div id="character-wrap">
+      <svg id="character-svg" viewBox="0 0 100 110">
+        <ellipse cx="50" cy="62" rx="30" ry="26" fill="#6BCB77"/>
+        <ellipse cx="37" cy="52" rx="9" ry="10" fill="#fff"/>
+        <ellipse cx="63" cy="52" rx="9" ry="10" fill="#fff"/>
+        <circle cx="39" cy="53" r="5" fill="#2d3436"/>
+        <circle cx="65" cy="53" r="5" fill="#2d3436"/>
+        <circle cx="41" cy="51" r="2" fill="#fff"/>
+        <circle cx="67" cy="51" r="2" fill="#fff"/>
+        <path d="M43,68 Q50,76 57,68" stroke="#2d3436" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="22" cy="65" rx="7" ry="4.5" fill="#6BCB77"/>
+        <ellipse cx="78" cy="60" rx="7" ry="4.5" fill="#6BCB77" transform="rotate(-15 78 60)"/>
+        <rect x="37" y="86" width="9" height="7" rx="3" fill="#FF8C00"/>
+        <rect x="54" y="86" width="9" height="7" rx="3" fill="#FF8C00"/>
+        <circle cx="50" cy="34" r="4.5" fill="#FFD93D"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ★② 사이드 카드 패널: 실험별 선택지를 여기에 넣으세요 -->
+  <!--
+    예) 고체: 구리판 3종 / 액체: 비커+잉크 도구 등
+    각 카드에 data-* 속성을 달아서 setupCardDrag()에서 식별 가능.
+    카드의 .preview 안에는 작은 SVG 미리보기를 넣으면 자연스러움.
+  -->
+  <div id="side-panel">
+    <!-- 예시: 카드 1개
+    <div class="side-card" data-type="option1">
+      <div class="preview"><svg>...</svg></div>
+      <div class="label">선택지 1</div>
+    </div>
+    -->
+  </div>
+
+  <!-- 드롭 존 (2D 오버레이용) -->
+  <div id="drop-zone-indicator"></div>
+
+  <!-- 속도 조절 바 (시뮬레이션 중 표시) -->
+  <div id="speed-bar">
+    <span class="speed-label">속도</span>
+    <button class="speed-btn" onclick="setSpeed(0.5)">x0.5</button>
+    <button class="speed-btn active" onclick="setSpeed(1)">x1</button>
+    <button class="speed-btn" onclick="setSpeed(1.5)">x1.5</button>
+    <button class="speed-btn" onclick="setSpeed(2)">x2</button>
+  </div>
+
+  <!-- 다음 버튼 + 리셋 버튼 -->
+  <button id="next-btn" onclick="goToSummary()">실험 정리하기 →</button>
+  <button id="reset-btn" onclick="resetExperiment()">↺</button>
+</div>
+
+<!-- ★② 결과 요약: 실험별 결과 문구 수정 -->
+<div id="summary-overlay">
+  <div id="summary-card">
+    <h2>실험 결과 정리</h2>
+    <p><!-- 본문 -->[본문 한 줄 설명]</p>
+    <div class="highlight">
+      <!-- 핵심 개념 박스: 학생이 기억해야 할 핵심 문장 -->
+      [핵심 개념 문장]
+    </div>
+    <button onclick="resetExperiment()">처음부터 다시하기</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ========================================================================
+   공통 유틸 — 이 아래부터는 "이미 검증된 영역"
+   실험별로 바꿀 일이 거의 없음 (버그 발견 시에만 수정)
+   ======================================================================== */
+
+// Mesh 생성 단축 헬퍼
+function M(geo, mat, x, y, z) {
+  var m = new THREE.Mesh(geo, mat);
+  m.position.set(x || 0, y || 0, z || 0);
+  m.castShadow = true;
+  return m;
+}
+
+// 크롬 텍스처 생성 (스탠드, 삼각대 등 금속 재질에 공통 사용)
+function createChromeTex() {
+  var c = document.createElement('canvas'); c.width = 64; c.height = 256;
+  var ctx = c.getContext('2d');
+  var g = ctx.createLinearGradient(0, 0, 64, 0);
+  g.addColorStop(0, '#444'); g.addColorStop(0.08, '#888'); g.addColorStop(0.2, '#bbb');
+  g.addColorStop(0.35, '#dedede'); g.addColorStop(0.5, '#ffffff');
+  g.addColorStop(0.65, '#dedede'); g.addColorStop(0.8, '#bbb');
+  g.addColorStop(0.92, '#888'); g.addColorStop(1, '#444');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 64, 256);
+  var g2 = ctx.createLinearGradient(0, 0, 0, 256);
+  g2.addColorStop(0, 'rgba(255,255,255,0)');
+  g2.addColorStop(0.25, 'rgba(255,255,255,0.12)');
+  g2.addColorStop(0.5, 'rgba(255,255,255,0.25)');
+  g2.addColorStop(0.75, 'rgba(255,255,255,0.12)');
+  g2.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g2; ctx.fillRect(0, 0, 64, 256);
+  var t = new THREE.CanvasTexture(c);
+  t.wrapS = THREE.RepeatWrapping; t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+
+/* ========================================================================
+   ★③ 오디오 시스템 (파일명은 실험별로 바꿈, 재생 로직은 공통)
+   ======================================================================== */
+// 실험에 필요한 mp3 파일명과 폴백 나레이션을 매핑하세요.
+// 모든 mp3는 HTML과 같은 폴더에 둡니다.
+var audioFiles = {
+  // take1: 'tts_take1.mp3',  // 예: 탐구 목표 나레이션
+  // take2: 'tts_take2.mp3',  // Step 0 가이드
+  // ...
+};
+var audioTexts = {
+  // take1: '[탐구 목표 TTS 폴백 텍스트]',
+  // take2: '[Step 0 가이드 TTS 폴백 텍스트]',
+  // ...
+};
+
+var ttsVoice = null;
+var currentAudio = null;
+var audioCache = {};
+var audioUnlocked = false;
+
+function initTTS() {
+  if (!window.speechSynthesis) return;
+  function loadVoice() {
+    var voices = window.speechSynthesis.getVoices();
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].lang.indexOf('ko') >= 0) { ttsVoice = voices[i]; break; }
+    }
+  }
+  loadVoice();
+  window.speechSynthesis.onvoiceschanged = loadVoice;
+}
+
+function speak(text) {
+  try {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(String(text).replace(/[🔥🔊🎯]/g, ''));
+    u.lang = 'ko-KR'; u.rate = 0.88; u.pitch = 1.08; u.volume = 1.0;
+    if (ttsVoice) u.voice = ttsVoice;
+    window.speechSynthesis.speak(u);
+    return u;
+  } catch (e) {}
+}
+
+function resolveMediaUrl(filename) {
+  try { return new URL(filename, window.location.href).href; } catch (e) { return filename; }
+}
+function makeAudio(filename) {
+  var a = new Audio(resolveMediaUrl(filename));
+  a.preload = 'auto';
+  a.setAttribute('playsinline', '');
+  return a;
+}
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  Object.keys(audioFiles).forEach(function (key) {
+    if (!audioCache[key]) audioCache[key] = makeAudio(audioFiles[key]);
+    try { audioCache[key].load(); } catch (e) {}
+  });
+  if (!bgAudio) {
+    bgAudio = makeAudio('bgm.mp3');
+    bgAudio.loop = true; bgAudio.volume = 0.06;
+    bgAudio.onerror = function () { console.warn('배경음악 파일을 불러올 수 없습니다: bgm.mp3'); };
+    try { bgAudio.load(); } catch (e) {}
+  }
+}
+function stopAudio() {
+  if (currentAudio) {
+    currentAudio.pause();
+    try { currentAudio.currentTime = 0; } catch (e) {}
+    currentAudio = null;
+  }
+  window.speechSynthesis && window.speechSynthesis.cancel();
+}
+function fallbackSpeak(key, onEnd) {
+  var text = audioTexts[key];
+  if (text) {
+    try {
+      var u = speak(text);
+      if (u && onEnd) { u.onend = function () { onEnd(); }; return; }
+    } catch (e) {}
+  }
+  if (onEnd) onEnd();
+}
+function playAudio(key, onEnd) {
+  unlockAudio();
+  stopAudio();
+  var src = audioFiles[key];
+  if (!src) { fallbackSpeak(key, onEnd); return null; }
+  var a = audioCache[key] || makeAudio(src);
+  audioCache[key] = a;
+  currentAudio = a;
+  a.onended = function () { currentAudio = null; if (onEnd) onEnd(); };
+  a.onerror = function () { currentAudio = null; fallbackSpeak(key, onEnd); };
+  try { a.pause(); } catch (e) {}
+  try { a.currentTime = 0; } catch (e) {}
+  var p = a.play();
+  if (p && typeof p.catch === 'function') {
+    p.catch(function () { currentAudio = null; fallbackSpeak(key, onEnd); });
+  }
+  return a;
+}
+
+var bgAudio = null, bgOn = false;
+var MUSIC_ON_SVG = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/><path d="M19 12c0 3.53-2.04 6.58-5 8.05v2.08c4.12-1.57 7-5.5 7-10.13s-2.88-8.56-7-10.13v2.08c2.96 1.47 5 4.52 5 8.05z"/></svg>';
+var MUSIC_OFF_SVG = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v1.16l3.48 3.48c.26-.65.42-1.35.42-2.09h-.01l.01-.04z" opacity="0.3"/><line x1="18" y1="6" x2="6" y2="18" stroke="#fff" stroke-width="2"/></svg>';
+
+function startBgMusic() {
+  unlockAudio();
+  if (!bgAudio) {
+    bgAudio = makeAudio('bgm.mp3');
+    bgAudio.loop = true; bgAudio.volume = 0.06;
+    bgAudio.onerror = function () { console.warn('배경음악 파일을 불러올 수 없습니다: bgm.mp3'); };
+  }
+  bgAudio.play().then(function () {
+    bgOn = true;
+    document.getElementById('music-btn').innerHTML = MUSIC_ON_SVG;
+  }).catch(function (e) { console.warn('배경음악 재생 실패:', e); });
+}
+function toggleBgMusic() {
+  unlockAudio();
+  var btn = document.getElementById('music-btn');
+  if (!bgAudio) { startBgMusic(); return; }
+  if (bgOn) {
+    bgAudio.pause(); bgOn = false; btn.innerHTML = MUSIC_OFF_SVG;
+  } else {
+    bgAudio.play().then(function () { bgOn = true; btn.innerHTML = MUSIC_ON_SVG; })
+      .catch(function () {});
+  }
+}
+
+/* ========================================================================
+   스텝 / 가이드 관리 (공통)
+   ======================================================================== */
+var currentStep = 0;
+
+// ★④ 실험별 가이드 메시지 배열 — 스텝 번호 순서대로 채우세요
+// updateGuideByStep(n)을 호출하면 해당 인덱스의 문구가 표시됩니다.
+var guideMessages = [
+  // '[Step 0 가이드 문구]',
+  // '[Step 1 가이드 문구]',
+  // ...
+];
+
+// ★④ (v2) 다중 세그먼트 — 한 단계 안에서 가이드 메시지가 바뀌고
+// mp3가 끊어 재생되어야 하는 경우에만 채우세요.
+// 키: Step 인덱스(0부터). 값: { guide, audioKey, delayMs } 객체의 배열.
+// 예시:
+//   var stepSegments = {
+//     2: [
+//       { guide: '열 변색 붙임딱지의 색깔 변화를 관찰해 보세요.', audioKey: 'take4_1', delayMs: 0 },
+//       { guide: '초에서 가까운 곳부터 색이 변해요.',           audioKey: 'take4_2', delayMs: 3000 },
+//     ],
+//   };
+// 단계가 단일 세그먼트면 stepSegments에 항목을 두지 마세요. 기존 방식
+// (guideMessages[n] + playAudio('take' + (n+2)))으로 자동 폴백됩니다.
+var stepSegments = {};
+
+// ★④ (v2) 결과 요약 다중 세그먼트 — 결과 요약 mp3가 1개면 비워두세요.
+// 비어 있으면 playAudio('summary')만 호출해도 됩니다.
+// 예시:
+//   var summarySegments = [
+//     { audioKey: 'summary_1', delayMs: 0 },
+//     { audioKey: 'summary_2', delayMs: 3000 },
+//   ];
+var summarySegments = [];
+
+function updateGuide(text) {
+  var b = document.getElementById('guide-bubble');
+  b.style.opacity = '0';
+  setTimeout(function () { b.textContent = text; b.style.opacity = '1'; }, 200);
+}
+function updateGuideByStep(n) {
+  if (guideMessages[n] != null) updateGuide(guideMessages[n]);
+}
+
+/* ── 다중 세그먼트 순차 재생 (v2) ──
+   playStepSegments(n): Step n에 진입할 때 호출. stepSegments[n]이 있으면
+   세그먼트를 하나씩 재생(가이드 갱신 → 오디오 재생 → 종료 대기 → delayMs 대기 → 다음).
+   없으면 단일 가이드/오디오 폴백.
+   isSegmentChainActive: 진행 중 다른 세그먼트 체인이 끼어드는 것을 막기 위한 토큰. */
+var segmentChainToken = 0;
+function playStepSegments(n) {
+  segmentChainToken++;          // 새 체인 시작 → 이전 체인 무효화
+  var myToken = segmentChainToken;
+  var segs = stepSegments[n];
+  if (!segs || !segs.length) {
+    // 단일 세그먼트 폴백
+    updateGuideByStep(n);
+    playAudio('take' + (n + 2));
+    return;
+  }
+  // 다중 세그먼트 체인
+  function playSeg(idx) {
+    if (myToken !== segmentChainToken) return;   // 다른 체인이 시작되면 중단
+    if (idx >= segs.length) return;
+    var seg = segs[idx];
+    if (seg.guide) updateGuide(seg.guide);
+    playAudio(seg.audioKey, function onEnd() {
+      if (myToken !== segmentChainToken) return;
+      var nextIdx = idx + 1;
+      if (nextIdx >= segs.length) return;
+      var delay = segs[nextIdx].delayMs || 0;
+      setTimeout(function () { playSeg(nextIdx); }, delay);
+    });
+  }
+  playSeg(0);
+}
+
+function playSummarySegments() {
+  segmentChainToken++;
+  var myToken = segmentChainToken;
+  var segs = summarySegments;
+  if (!segs || !segs.length) {
+    // 단일 mp3 폴백
+    playAudio('summary');
+    return;
+  }
+  function playSeg(idx) {
+    if (myToken !== segmentChainToken) return;
+    if (idx >= segs.length) return;
+    var seg = segs[idx];
+    playAudio(seg.audioKey, function onEnd() {
+      if (myToken !== segmentChainToken) return;
+      var nextIdx = idx + 1;
+      if (nextIdx >= segs.length) return;
+      var delay = segs[nextIdx].delayMs || 0;
+      setTimeout(function () { playSeg(nextIdx); }, delay);
+    });
+  }
+  playSeg(0);
+}
+
+function updateDots() {
+  var dots = document.querySelectorAll('.step-dot');
+  for (var i = 0; i < dots.length; i++) {
+    var d = dots[i];
+    d.className = 'step-dot';
+    if (i < currentStep) d.classList.add('completed');
+    if (i === currentStep) d.classList.add('active');
+  }
+}
+/* setStep(n, autoPlay)
+   n: Step 인덱스 (0부터)
+   autoPlay (선택, 기본 false): 단일 세그먼트일 때 takeN+2 mp3까지 자동 재생할지 여부
+
+   ▸ stepSegments[n]에 항목이 있으면: 항상 다중 세그먼트 체인 자동 재생 (autoPlay 무시)
+   ▸ stepSegments[n]이 없을 때:
+       - autoPlay = false (기본): 가이드만 갱신. mp3는 ★⑥의 단계 전환 코드에서
+         별도로 playAudio('take' + (n+2))를 호출해야 함 (v1 호환 동작)
+       - autoPlay = true: 가이드 갱신 + playAudio('take' + (n+2)) 자동 호출
+   ▸ v15 작성기로 만든 결과물은 다중 세그먼트가 stepSegments에 자동 정의되므로
+     호출 측에서 setStep(n)만 호출해도 다중 mp3까지 알아서 재생됩니다.
+*/
+function setStep(n, autoPlay) {
+  currentStep = n;
+  updateDots();
+  if (stepSegments[n] && stepSegments[n].length > 0) {
+    playStepSegments(n);
+  } else {
+    updateGuideByStep(n);
+    if (autoPlay) playAudio('take' + (n + 2));
+  }
+}
+
+/* ========================================================================
+   Three.js 씬 (공통 세팅) — 배경, 카메라, 조명, 바닥, groundPlane
+   ======================================================================== */
+var scene, camera, renderer, raycaster, groundPlane;
+var isDragging = false, prevMouse = { x: 0, y: 0 };
+var targetRot = { x: 0.3, y: -0.4 }, curRot = { x: 0.3, y: -0.4 };
+var targetZoom = 5.5, curZoom = 5.5;
+var isDraggingCard = false;  // 카드 드래그 중에는 카메라 회전 차단
+
+function initScene() {
+  raycaster = new THREE.Raycaster();
+  scene = new THREE.Scene();
+
+  // 배경 그라데이션
+  var bgC = document.createElement('canvas'); bgC.width = 512; bgC.height = 512;
+  var bgx = bgC.getContext('2d');
+  var gr = bgx.createLinearGradient(0, 0, 0, 512);
+  gr.addColorStop(0, '#e8f0f2'); gr.addColorStop(0.45, '#d5e2e8'); gr.addColorStop(1, '#c0d0d8');
+  bgx.fillStyle = gr; bgx.fillRect(0, 0, 512, 512);
+  scene.background = new THREE.CanvasTexture(bgC);
+
+  // 카메라
+  camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+
+  // 렌더러
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
+  document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+  // 조명 (5개 + 1)
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  var dl = new THREE.DirectionalLight(0xffffff, 0.85);
+  dl.position.set(4, 8, 5); dl.castShadow = true;
+  dl.shadow.mapSize.set(2048, 2048);
+  dl.shadow.camera.near = 0.5; dl.shadow.camera.far = 25;
+  dl.shadow.camera.left = -6; dl.shadow.camera.right = 6;
+  dl.shadow.camera.top = 6; dl.shadow.camera.bottom = -6;
+  scene.add(dl);
+  var fl2 = new THREE.DirectionalLight(0x99bbdd, 0.3); fl2.position.set(-3, 3, -2); scene.add(fl2);
+  var fl3 = new THREE.DirectionalLight(0xffffff, 0.45); fl3.position.set(0, 5, -4); scene.add(fl3);
+  var fl4 = new THREE.DirectionalLight(0xeef4ff, 0.35); fl4.position.set(2, 2, 6); scene.add(fl4);
+  var pl = new THREE.PointLight(0xffffff, 0.6, 10); pl.position.set(0, 4, 2); scene.add(pl);
+
+  // 바닥 + 투명 groundPlane (raycaster용)
+  var floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(20, 20),
+    new THREE.MeshStandardMaterial({ color: 0xb8ccd6, roughness: 0.7, metalness: 0.05 })
+  );
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.01; floor.receiveShadow = true;
+  scene.add(floor);
+
+  groundPlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(40, 40),
+    new THREE.MeshBasicMaterial({ visible: false, side: THREE.DoubleSide })
+  );
+  groundPlane.rotation.x = -Math.PI / 2; groundPlane.position.y = 0.02;
+  scene.add(groundPlane);
+}
+
+/* ========================================================================
+   카메라 컨트롤 (마우스/터치 드래그 회전 + 줌) - 공통
+   ======================================================================== */
+function setupCameraControls() {
+  var cv = renderer.domElement;
+
+  cv.addEventListener('mousedown', function (e) {
+    if (isDraggingCard) return;
+    isDragging = true; prevMouse.x = e.clientX; prevMouse.y = e.clientY;
+  });
+  cv.addEventListener('mousemove', function (e) {
+    if (isDragging && !isDraggingCard) {
+      targetRot.y -= (e.clientX - prevMouse.x) * 0.005;
+      targetRot.x = Math.max(-0.2, Math.min(0.9, targetRot.x + (e.clientY - prevMouse.y) * 0.005));
+      prevMouse.x = e.clientX; prevMouse.y = e.clientY;
+    }
+  });
+  cv.addEventListener('mouseup', function () { isDragging = false; });
+  cv.addEventListener('mouseleave', function () { isDragging = false; });
+  cv.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    targetZoom = Math.max(2.5, Math.min(10, targetZoom + e.deltaY * 0.004));
+  }, { passive: false });
+
+  var ts = null, td = null;
+  cv.addEventListener('touchstart', function (e) {
+    if (e.touches.length === 1) ts = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    else if (e.touches.length === 2)
+      td = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  });
+  cv.addEventListener('touchmove', function (e) {
+    e.preventDefault();
+    if (e.touches.length === 1 && ts) {
+      targetRot.y -= (e.touches[0].clientX - ts.x) * 0.005;
+      targetRot.x = Math.max(-0.2, Math.min(0.9, targetRot.x + (e.touches[0].clientY - ts.y) * 0.005));
+      ts = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2 && td) {
+      var nd = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      targetZoom = Math.max(2.5, Math.min(10, targetZoom - (nd - td) * 0.015));
+      td = nd;
+    }
+  }, { passive: false });
+  cv.addEventListener('touchend', function () { ts = null; td = null; });
+
+  window.addEventListener('resize', function () {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
+
+/* ========================================================================
+   드래그 헬퍼 (공통) — 2D UI → 3D 좌표 변환, 고스트 클론
+   ======================================================================== */
+function screenToWorld(sx, sy) {
+  var r = renderer.domElement.getBoundingClientRect();
+  var nx = ((sx - r.left) / r.width) * 2 - 1;
+  var ny = -((sy - r.top) / r.height) * 2 + 1;
+  raycaster.setFromCamera(new THREE.Vector2(nx, ny), camera);
+  var hits = raycaster.intersectObject(groundPlane);
+  if (hits.length > 0) return { x: hits[0].point.x, z: hits[0].point.z };
+  return null;
+}
+function worldToScreen(wx, wy, wz) {
+  var p = new THREE.Vector3(wx, wy || 0, wz || 0).project(camera);
+  return { x: (p.x * 0.5 + 0.5) * window.innerWidth, y: (-p.y * 0.5 + 0.5) * window.innerHeight };
+}
+// 사이드 카드를 드래그할 때 화면에 따라다니는 고스트 요소 생성
+function makeGhost(el, startX, startY) {
+  var r = el.getBoundingClientRect();
+  var g = el.cloneNode(true);
+  g.style.cssText = 'position:fixed;pointer-events:none;z-index:9999;opacity:0.85;width:' + r.width + 'px;';
+  document.body.appendChild(g);
+  g._ox = startX - r.left; g._oy = startY - r.top;
+  moveGhost(g, startX, startY);
+  return g;
+}
+function moveGhost(g, x, y) {
+  g.style.left = (x - g._ox) + 'px';
+  g.style.top = (y - g._oy) + 'px';
+}
+
+/* ========================================================================
+   공통 속도 조절
+   ======================================================================== */
+var simSpeed = 1;
+function setSpeed(s) {
+  simSpeed = s;
+  document.querySelectorAll('.speed-btn').forEach(function (b) {
+    b.classList.toggle('active', parseFloat(b.textContent.replace('x', '')) === s);
+  });
+  // 실험별로 시뮬레이션이 속도 변화를 어떻게 처리할지는
+  // ★⑦ 시뮬레이션 코어에서 simSpeed를 참조하여 구현
+}
+
+/* ========================================================================
+   애니메이션 루프 (공통)
+   - 카메라 보간은 항상 돌아감
+   - 시뮬레이션 업데이트는 updateSimulation() 훅에서 처리
+   ======================================================================== */
+function animate() {
+  requestAnimationFrame(animate);
+
+  // 카메라 보간
+  curRot.x += (targetRot.x - curRot.x) * 0.05;
+  curRot.y += (targetRot.y - curRot.y) * 0.05;
+  curZoom += (targetZoom - curZoom) * 0.05;
+  camera.position.x = Math.sin(curRot.y) * Math.cos(curRot.x) * curZoom;
+  camera.position.y = Math.sin(curRot.x) * curZoom + 1.0;
+  camera.position.z = Math.cos(curRot.y) * Math.cos(curRot.x) * curZoom;
+  camera.lookAt(0, 1.0, 0);
+
+  // ★⑦ 실험별 프레임 업데이트 (정의되어 있으면 호출)
+  if (typeof updateSimulation === 'function') updateSimulation();
+  if (typeof updateFlame === 'function') updateFlame();  // 촛불 애니메이션 등
+
+  renderer.render(scene, camera);
+}
+
+/* ========================================================================
+   ★⑤ 실험별 3D 장비 build 함수들을 여기에 추가
+   ========================================================================
+   자주 쓰는 장비(스탠드, 삼각대, 쇠그물, 초/촛대 어셈블리, 비커 등)는
+   고체/액체 완성본에서 복사해오면 바로 쓸 수 있습니다.
+   
+   예시:
+     function buildStand() { ... }        // 스탠드 + 클램프
+     function buildTripod() { ... }       // 삼각대
+     function buildWireGauze() { ... }    // 쇠그물 (세라믹 패드 포함)
+     function buildCandleAssembly() { ... } // 삼각대+쇠그물+초 통합
+     function buildBeaker() { ... }       // 비커
+   
+   좌표 기준:
+     - STAND 위치: (-1.5, 0, 0)
+     - 중앙 기준점: (0, 1.0, 0) 부근 (카메라 lookAt)
+     - 바닥 높이: y = 0
+*/
+
+// [여기에 실험별 build 함수들을 추가하세요]
+
+
+/* ========================================================================
+   ★⑥ 실험별 인터랙션 (드래그 → 단계 전환)
+   ========================================================================
+   사이드 카드를 드래그해서 특정 위치에 드롭하면 단계가 진행되는 패턴.
+   아래 setupCardDrag는 "카드 드래그 → 드롭 지점 검증 → 콜백" 골격을
+   공통으로 제공합니다. 실험별로는 드롭 조건과 콜백만 정의하면 됩니다.
+   
+   사용법:
+     setupCardDrag({
+       selector: '.side-card',                  // 드래그할 카드 셀렉터
+       onDrop: function(cardEl, screenX, screenY) {
+         // 드롭 위치가 유효하면 다음 단계로 진행
+         // 예: 스크린 좌표를 월드 좌표로 변환 후 판정
+         var world = screenToWorld(screenX, screenY);
+         if (world && isValidDropZone(world)) {
+           proceedToNextStep(cardEl.dataset.type, world);
+         }
+       }
+     });
+*/
+function setupCardDrag(opts) {
+  var cards = document.querySelectorAll(opts.selector);
+  for (var i = 0; i < cards.length; i++) (function (el) {
+    function start(e, getXY) {
+      if (opts.enabledIf && !opts.enabledIf()) return;
+      e.preventDefault();
+      isDraggingCard = true;
+      var xy = getXY(e);
+      var ghost = makeGhost(el, xy.x, xy.y);
+      var moved = false, sx = xy.x, sy = xy.y;
+
+      function onMove(ev) {
+        var p = getXY(ev);
+        if (ev.preventDefault) { try { ev.preventDefault(); } catch (e2) {} }
+        moveGhost(ghost, p.x, p.y);
+        if (Math.hypot(p.x - sx, p.y - sy) > 5) moved = true;
+        if (opts.onMove) opts.onMove(el, p.x, p.y);
+      }
+      function onEnd(ev) {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onEnd);
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('touchend', onEnd);
+        isDraggingCard = false; ghost.remove();
+        var p = ev.changedTouches ? { x: ev.changedTouches[0].clientX, y: ev.changedTouches[0].clientY }
+                                  : { x: ev.clientX, y: ev.clientY };
+        if (moved && opts.onDrop) opts.onDrop(el, p.x, p.y);
+        if (opts.onEnd) opts.onEnd(el);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onEnd);
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('touchend', onEnd);
+    }
+
+    el.addEventListener('mousedown', function (e) {
+      start(e, function (ev) { return { x: ev.clientX, y: ev.clientY }; });
+    });
+    el.addEventListener('touchstart', function (e) {
+      start(e, function (ev) {
+        var t = ev.touches ? ev.touches[0] : ev.changedTouches[0];
+        return { x: t.clientX, y: t.clientY };
+      });
+    }, { passive: false });
+  })(cards[i]);
+}
+
+/* ========================================================================
+   ★⑦ 시뮬레이션 코어 — 실험의 "본체"가 여기에 들어갑니다
+   ========================================================================
+   이 영역은 실험 종류에 따라 완전히 새로 작성되는 부분입니다.
+   지시서의 "시뮬레이션 설계" 탭 내용을 바탕으로 구현하세요.
+   
+   요구 인터페이스:
+   
+   1) startSimulation(opts)   — 시뮬레이션 시작 (조건이 갖춰졌을 때 호출)
+   2) updateSimulation()      — animate 루프에서 매 프레임 호출됨
+   3) resetSimulation()       — 상태 초기화 (resetExperiment에서 호출)
+   
+   패턴 카탈로그:
+     • 색상 확산형: vertexColors + 거리/시간 기반 heat 계산 (열전도)
+     • 파티클 순환형: InstancedMesh + 속도장/경로 업데이트 (대류)
+     • 객체 변형형: scale/morph 애니메이션 (융해, 응결)
+     • 스폰/소멸형: 파티클 생성·감쇠 (증발, 용해)
+     • 벡터장형: 힘 적용 + 물리 적분 (자석, 중력)
+   
+   패턴마다 구현이 크게 달라지므로 여기선 뼈대만 제공합니다.
+*/
+
+var isSimulating = false;
+var simStartTime = null;
+
+function startSimulation() {
+  isSimulating = true;
+  simStartTime = Date.now();
+  // 여기에 시뮬레이션 시작 시 한 번 실행할 초기화 코드 작성
+}
+
+function updateSimulation() {
+  if (!isSimulating || !simStartTime) return;
+  // 매 프레임 호출됨. simSpeed를 반영해서 진행도 계산하세요.
+  // var elapsed = (Date.now() - simStartTime) * simSpeed;
+  // ... 실제 시각적 업데이트 ...
+}
+
+function resetSimulation() {
+  isSimulating = false;
+  simStartTime = null;
+  // 시뮬레이션 관련 상태/메시 정리
+}
+
+/* ========================================================================
+   결과 요약 (공통)
+   ======================================================================== */
+function goToSummary() {
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('summary-overlay').style.display = 'flex';
+  isSimulating = false;
+  // (v2) 결과 요약 나레이션 자동 재생
+  //   - summarySegments가 정의되어 있으면 다중 세그먼트 순차 재생
+  //   - 없고 audioFiles['summary']만 정의되어 있으면 단일 mp3 재생
+  //   - 둘 다 없으면 audioTexts['summary']로 TTS 폴백
+  //   ★⑧ 추가 동작이 필요하면 아래에 작성 (예: 추가 mp3 체이닝)
+  playSummarySegments();
+}
+
+/* ========================================================================
+   ★⑧ 리셋 (실험별 상태 정리 코드를 추가하세요)
+   ======================================================================== */
+function resetExperiment() {
+  stopAudio();
+  segmentChainToken++;  // (v2) 진행 중 세그먼트 체인 무효화 — 늦게 도착할 onEnd 콜백 차단
+  resetSimulation();
+
+  // UI 초기화 (공통)
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('summary-overlay').style.display = 'none';
+  document.getElementById('speed-bar').style.display = 'none';
+  document.getElementById('side-panel').style.display = 'flex';
+  document.getElementById('drop-zone-indicator').style.display = 'none';
+
+  // 카메라 각도/줌 초기값
+  targetRot = { x: 0.3, y: -0.4 };
+  targetZoom = 5.5;
+
+  // 속도 초기화
+  setSpeed(1);
+
+  // ★⑧ 여기에 실험별 상태/3D 오브젝트 정리 코드 추가
+  //   - 생성된 판/비커/잉크 등을 scene에서 제거
+  //   - 관련 전역 변수 null 처리
+
+  // 단계 0으로 돌아가기
+  setStep(0);
+}
+
+/* ========================================================================
+   초기화 흐름 (공통)
+   ======================================================================== */
+function init() {
+  initScene();
+  setupCameraControls();
+  initTTS();
+
+  // ★⑤ 실험별 3D 장비 배치
+  // 예:
+  //   buildStand();
+  //   buildTripod();
+  //   buildBeaker();
+
+  // ★⑥ 실험별 드래그 이벤트 바인딩
+  // 예:
+  //   setupCardDrag({
+  //     selector: '.side-card',
+  //     enabledIf: function() { return currentStep === 0; },
+  //     onDrop: handleStep0Drop
+  //   });
+
+  // 로딩 화면 숨김 + 목표 팝업 표시
+  setTimeout(function () {
+    document.getElementById('loading').style.opacity = '0';
+    setTimeout(function () {
+      document.getElementById('loading').style.display = 'none';
+      showObjectivePopup();
+    }, 500);
+  }, 500);
+
+  animate();
+}
+
+function showObjectivePopup() {
+  var popup = document.getElementById('objective-popup');
+  popup.style.display = 'flex';
+
+  // 첫 탭: BGM 시작 + 목표 나레이션 재생
+  // 두 번째 탭: 팝업 닫기 + Step 0 시작
+  var clickCount = 0;
+  function handleClick() {
+    clickCount++;
+    if (clickCount === 1) {
+      startBgMusic();
+      playAudio('take1');  // ★③ 탐구 목표 나레이션 키
+    } else {
+      popup.style.display = 'none';
+      popup.removeEventListener('click', handleClick);
+      stopAudio();
+      setTimeout(function () {
+        setStep(0);
+        // ★③ Step 0 나레이션이 있다면 재생
+        // playAudio('take2');
+      }, 300);
+    }
+  }
+  popup.addEventListener('click', handleClick);
+}
+
+// 페이지 준비 완료 시 init 호출
+init();
+</script>
+</body>
+</html>
