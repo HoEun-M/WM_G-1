@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
+<html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>가상실험실 제작 지시서 빌더</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet">
 <style>
 :root {
   --accent: #00b894;
@@ -96,7 +95,7 @@ select.fi { cursor: pointer; }
 </head>
 <body>
 
-<div id="app"></div>
+<div id="app"><div style="padding:20px 24px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 16px rgba(0,184,148,0.3)">🧬</div><div style="flex:1;min-width:200px"><div style="font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.5px">가상실험실 제작 지시서 빌더 <span style="font-size:11px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;margin-left:4px">v15</span></div><div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px">뼈대 채우기 지시서 자동 생성 · 다중 TTS 세그먼트 · 학생 선택지 변형 그룹 지원</div></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span id="save-status" style="font-size: 11px; color: rgb(85, 239, 196); opacity: 0.4; transition: opacity 0.3s; margin-right: 4px;">✓ 자동 저장됨</span><button onclick="exportStateJSON()" style="padding:7px 12px;font-size:12px;font-weight:600;background:rgba(0,184,148,0.15);border:1px solid rgba(0,184,148,0.4);color:#55efc4;border-radius:8px;cursor:pointer;font-family:inherit" title="현재 입력값을 JSON 파일로 저장">💾 내보내기</button><button onclick="exportEmbeddedHTML()" style="padding:7px 12px;font-size:12px;font-weight:600;background:rgba(253,203,110,0.15);border:1px solid rgba(253,203,110,0.45);color:#fdcb6e;border-radius:8px;cursor:pointer;font-family:inherit" title="현재 입력 내용을 HTML 파일에 내장하여 저장. GitHub Pages에 올리면 누가 열어도 텍스트가 그대로 보입니다.">📦 내장 HTML로 저장</button><button onclick="importStateJSON()" style="padding:7px 12px;font-size:12px;font-weight:600;background:rgba(116,185,255,0.12);border:1px solid rgba(116,185,255,0.35);color:#74b9ff;border-radius:8px;cursor:pointer;font-family:inherit" title="JSON 파일에서 입력값 복원">📂 불러오기</button><button onclick="clearAllState()" style="padding:7px 12px;font-size:12px;font-weight:600;background:rgba(255,118,117,0.12);border:1px solid rgba(255,118,117,0.35);color:#ff7675;border-radius:8px;cursor:pointer;font-family:inherit" title="모든 입력 초기화">🗑 초기화</button></div></div><div style="display:flex;gap:4px;padding:16px 24px 0;overflow-x:auto;flex-wrap:nowrap"><button class="tab-btn active" onclick="switchTab(0)"><span>📋</span><span class="tl">기본 정보</span></button><button class="tab-btn" onclick="switchTab(1)"><span>🧪</span><span class="tl">실험 장비</span></button><button class="tab-btn" onclick="switchTab(2)"><span>🎯</span><span class="tl">실험 단계</span></button><button class="tab-btn" onclick="switchTab(3)"><span>⚡</span><span class="tl">시뮬레이션</span></button><button class="tab-btn" onclick="switchTab(4)"><span>📊</span><span class="tl">결과 요약</span></button><button class="tab-btn" onclick="switchTab(5)"><span>📄</span><span class="tl">미리보기</span></button></div><div style="padding:16px 24px 80px;max-width:860px;margin:0 auto" class="tab-content" key="0"><div class="card"><div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:20px">📋 실험 기본 정보</div><div style="display:flex;flex-direction:column;gap:16px"><div><div class="lb">교과서 단원</div><input class="fi" value="5학년 2학기, 2단원 열과 우리 생활" onchange="updateState('unit',this.value)" placeholder="예: 5학년 1학기 4단원 - 열과 우리 생활"><div class="hint">비워두면 교과서 PDF에서 자동 추출합니다.</div></div><div><div class="lb">탐구 제목</div><input class="fi" value="고체에서 열의 이동 관찰하기" onchange="updateState('title',this.value)" placeholder="예: 고체에서 열은 어떻게 이동할까요?"></div><div><div class="lb">탐구 목표</div><textarea class="fi" onchange="updateState('objective',this.value)" placeholder="예: 고체 물질의 한쪽 끝을 가열했을 때 열이 이동하는 방향을 설명할 수 있다." rows="3">고체에서 열의 이동을 관찰하고 열이 어떻게 이동하는지 설명할 수 있다.</textarea></div><div><div class="lb">핵심 개념</div><textarea class="fi" onchange="updateState('concept',this.value)" placeholder="예: 전도 — 고체에서 열이 온도가 높은 곳에서 낮은 곳으로 이동하는 현상" rows="3">전도 - 온도가 높은 곳에서 낮은 곳으로 물체를 따라 열이 이동</textarea></div><div><div class="lb">준비물</div><textarea class="fi" onchange="updateState('materials',this.value)" placeholder="예: 구리판, 열 변색 스티커, 초, 삼발이, 쇠그물, 스탠드" rows="3">길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판, 열 변색 붙임딱지, 삼발이, 쇠그물, 스탠드, 고정 집게, 초, 점화기</textarea></div></div></div><div class="card" style="margin-top:16px"><div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:6px">🎵 배경음악 / 도입 나레이션</div><div class="hint" style="margin-bottom:16px">HTML과 같은 폴더에 둘 mp3 파일명을 적어주세요. 비워두면 기본값(<code style="background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;color:#fff">bgm.mp3</code>)이 사용됩니다.</div><div style="display:flex;flex-direction:column;gap:16px"><div><div class="lb">🎼 배경음악 mp3 파일명</div><input class="fi" value="bgm.mp3" onchange="updateState('bgmFile',this.value)" placeholder="예: bgm_classical.mp3"><div class="hint">탐구 목표 팝업이 처음 클릭될 때 재생 시작됩니다.</div></div><div><div class="lb">🔊 탐구 목표 나레이션 mp3 파일명 (선택)</div><input class="fi" value="tts_take1.mp3" onchange="updateState('objectiveNarrationFile',this.value)" placeholder="예: tts_objective.mp3"><div class="hint">비워두면 "실험 단계" 탭의 Step 1 mp3 파일명을 사용합니다.</div></div></div></div></div><div style="position:fixed;bottom:0;left:0;right:0;padding:12px 24px;background:rgba(15,25,35,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;z-index:100"><button class="bs" onclick="switchTab(0)" style="opacity:0.3" disabled="">← 이전</button><div style="font-size:12px;color:rgba(255,255,255,0.35)">1 / 6</div><button class="bs" onclick="switchTab(1)">다음 →</button></div></div>
 
 <script>
 /* ═══════════════════════════════════════════════
@@ -105,10 +104,746 @@ select.fi { cursor: pointer; }
 
 /* ── 레퍼런스 장비 ── */
 var EQUIPMENT_REFS = [
-  { id: 'stand', name: '스탠드 (스탠드+클램프+고정집게)' },
-  { id: 'tripod', name: '삼발이' },
-  { id: 'wireGauze', name: '쇠그물 (석면 대용 철망)' },
-  { id: 'candleAssembly', name: '삼발이+쇠그물+초 (통합)' }
+  /* 고체열이동용 (spec 필드에 Three.js 레퍼런스 상세 포함) */
+  {
+    id: 'stand',
+    name: '스탠드 (스탠드+클램프+고정집게)',
+    spec: [
+      '**실물 구조**:',
+      '- **받침판**: 검정 직사각형 금속판, 모서리 4곳에 미끄럼 방지 발',
+      '- **수직 봉**: 크롬 원기둥, 받침판 뒤쪽에서 위로 올라감',
+      '- **클램프**: 은색 직육면체 몸체, 양쪽에 **검정 별모양 손잡이(star knob)** 2개',
+      '- **수평 봉**: 크롬 원기둥, 수직 봉보다 가늘음',
+      '- **고정 집게**: 크롬 프레임 + 피벗 리벳 + 코일 스프링 + **빨간색 집게 턱** 2개 + 하단 나비 나사',
+      '',
+      '**핵심 좌표 / 상수**:',
+      '- 스탠드 그룹 위치 `STAND_POS = (-1.5, 0, 0)`',
+      '- 집게 끝 X (스탠드 로컬) `CLAMP_TIP_X = 0.95`, 클램프 높이 `CLAMP_Y = 1.35`',
+      '- 따라서 집게 끝 월드 좌표 = `(-0.55, 1.35, 0)` — 구리판이 고정될 위치',
+      '- `getClampWorldPos()`: 집게 끝 월드 좌표를 반환하는 헬퍼',
+      '',
+      '**재질 (Material)**:',
+      '- `chrome` (수직봉/수평봉/피벗): `MeshPhongMaterial({ map: createChromeTexture(), color: 0xaaaaaa, specular: 0xffffff, shininess: 300, reflectivity: 1.0 })`',
+      '- `dark` (받침판/발/별모양 손잡이): `MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.35 })`',
+      '- `silverMetal` (클램프 몸체/리벳/나비너트): `MeshStandardMaterial({ color: 0xbbbbbb, roughness: 0.25, metalness: 0.85 })`',
+      '- `red` (집게 턱): `MeshStandardMaterial({ color: 0xcc2222, roughness: 0.35, metalness: 0.2 })`',
+      '',
+      '**주요 구성요소 / 치수**:',
+      '- **받침판**: `BoxGeometry(2.0, 0.13, 1.4)` 검정. 발 4개 `BoxGeometry(0.15, 0.06, 0.15)` 모서리에 배치',
+      '- **수직 봉**: `CylinderGeometry(0.05, 0.05, 3.2, 24)` 크롬. 받침판 한쪽 끝(x=-0.2)에서 위로',
+      '- **클램프 몸체**: `BoxGeometry(0.44, 0.20, 0.18)` 은색. 별모양 손잡이 2개 `CylinderGeometry(0.055, 0.055, 0.12 또는 0.08, 12)`',
+      '- **수평 봉**: `CylinderGeometry(0.035, 0.035, 1.375, 16)` 크롬, z축으로 약간 뒤쪽(-0.07)에 위치',
+      '- **고정 집게**: 피벗(`CylinderGeometry(0.02, 0.02, 0.26, 8)`) + 양쪽 리벳(`CylinderGeometry(0.032, 0.032, 0.025, 6)`) + 빨간 집게 턱 2개(`BoxGeometry(0.28, 0.045, 0.18)`, 살짝 기울임 ±0.05 rad) + 끝 부분 빨간 구체(`SphereGeometry(0.035, 8, 8)`, scale `(1, 0.6, 1.4)`) + 나비 나사(`CylinderGeometry(0.014, 0.014, 0.08, 6)` + `SphereGeometry(0.024, 6, 6)`)',
+      '',
+      '**치수 비율**: 받침판 가로:수직봉 높이 ≈ 1:2.5 / 수직봉:수평봉 굵기 ≈ 1.4:1',
+      '',
+      '**실행 가능한 구현 코드** (그대로 사용 권장):',
+      '',
+      '```javascript',
+      'var STAND_POS = new THREE.Vector3(-1.5, 0, 0);',
+      'var CLAMP_TIP_X = 0.95;',
+      'var CLAMP_Y = 1.35;',
+      '',
+      'function getClampWorldPos() {',
+      '  return new THREE.Vector3(STAND_POS.x + CLAMP_TIP_X, CLAMP_Y, 0);',
+      '}',
+      '',
+      'function buildStand() {',
+      '  var standGroup = new THREE.Group();',
+      '  var ct = createChromeTexture();',
+      '  var chrome = new THREE.MeshPhongMaterial({',
+      '    map: ct, color: 0xaaaaaa, specular: 0xffffff, shininess: 300, reflectivity: 1.0',
+      '  });',
+      '  var dark = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.35 });',
+      '  var silverMetal = new THREE.MeshStandardMaterial({ color: 0xbbbbbb, roughness: 0.25, metalness: 0.85 });',
+      '  var red = new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.35, metalness: 0.2 });',
+      '',
+      '  // 받침판',
+      '  standGroup.add(M(new THREE.BoxGeometry(2.0, 0.13, 1.4), dark, -0.6, 0.1, 0));',
+      '  var fx = [-1.4, 0.2], fz = [-0.55, 0.55];',
+      '  for (var i = 0; i < 2; i++) for (var j = 0; j < 2; j++)',
+      '    standGroup.add(M(new THREE.BoxGeometry(0.15, 0.06, 0.15), dark, fx[i], 0.02, fz[j]));',
+      '',
+      '  // 수직 봉',
+      '  standGroup.add(M(new THREE.CylinderGeometry(0.05, 0.05, 3.2, 24), chrome, -0.2, 1.77, 0));',
+      '',
+      '  // 클램프 몸체 (은색)',
+      '  standGroup.add(M(new THREE.BoxGeometry(0.44, 0.20, 0.18), silverMetal, -0.20, CLAMP_Y, -0.035));',
+      '  // 별모양 손잡이 (검정) 2개',
+      '  var kb1 = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.12, 12), dark);',
+      '  kb1.position.set(-0.50, CLAMP_Y, 0.05); kb1.rotation.z = Math.PI / 2; standGroup.add(kb1);',
+      '  var kb2 = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.08, 12), dark);',
+      '  kb2.position.set(0.00, CLAMP_Y, -0.15); kb2.rotation.x = Math.PI / 2; standGroup.add(kb2);',
+      '',
+      '  // 수평 봉',
+      '  var hb = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 1.375, 16), chrome);',
+      '  hb.position.set(0.0325, CLAMP_Y, -0.07); hb.rotation.z = Math.PI / 2; hb.castShadow = true;',
+      '  standGroup.add(hb);',
+      '',
+      '  // 고정 집게 — 피벗',
+      '  var px = 0.72;',
+      '  var pv = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.26, 8), chrome);',
+      '  pv.position.set(px, CLAMP_Y, 0); pv.rotation.x = Math.PI / 2; standGroup.add(pv);',
+      '  var r1 = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.025, 6), silverMetal);',
+      '  r1.position.set(px, CLAMP_Y, 0.14); r1.rotation.x = Math.PI / 2; standGroup.add(r1);',
+      '  var r2 = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.025, 6), silverMetal);',
+      '  r2.position.set(px, CLAMP_Y, -0.14); r2.rotation.x = Math.PI / 2; standGroup.add(r2);',
+      '',
+      '  // 빨간 집게 턱 (위/아래)',
+      '  var ju = M(new THREE.BoxGeometry(0.28, 0.045, 0.18), red, CLAMP_TIP_X - 0.1, CLAMP_Y + 0.05, 0);',
+      '  ju.rotation.z = 0.05; standGroup.add(ju);',
+      '  var jd = M(new THREE.BoxGeometry(0.28, 0.045, 0.18), red, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.05, 0);',
+      '  jd.rotation.z = -0.05; standGroup.add(jd);',
+      '  var tg = new THREE.SphereGeometry(0.035, 8, 8);',
+      '  var tu = M(tg, red, CLAMP_TIP_X + 0.04, CLAMP_Y + 0.06, 0); tu.scale.set(1, 0.6, 1.4); standGroup.add(tu);',
+      '  var td = M(tg, red, CLAMP_TIP_X + 0.04, CLAMP_Y - 0.06, 0); td.scale.set(1, 0.6, 1.4); standGroup.add(td);',
+      '',
+      '  // 나비 나사',
+      '  standGroup.add(M(new THREE.CylinderGeometry(0.014, 0.014, 0.08, 6), chrome, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.12, 0));',
+      '  standGroup.add(M(new THREE.SphereGeometry(0.024, 6, 6), silverMetal, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.16, 0));',
+      '',
+      '  standGroup.position.copy(STAND_POS);',
+      '  scene.add(standGroup);',
+      '  return standGroup;',
+      '}',
+      '```'
+    ].join('\n')
+  },
+  {
+    id: 'tripod',
+    name: '삼발이',
+    spec: [
+      '**실물 구조** (기본 삼발이 — 받침대 없음):',
+      '- **상단 링**: 크롬 원형 고리 (`TorusGeometry`)',
+      '- **다리 3개**: 120° 간격, 링에서 바닥으로 벌어지며 내려감',
+      '- **재질**: 크롬 도금 은색',
+      '',
+      '**핵심 치수**:',
+      '- 링 반경 `ringR = 0.19`, 링 높이 `ringY = 0.63`',
+      '- 다리 바닥 반경 `0.28` (바깥으로 약간 벌어짐)',
+      '- 다리 각도: 0, 120°, 240° (`li * 2 * Math.PI / 3`)',
+      '',
+      '**재질**:',
+      '- `lm` (링·다리 공통): `MeshStandardMaterial({ color: 0xc8c8c8, roughness: 0.2, metalness: 0.9 })`',
+      '',
+      '**구성요소**:',
+      '- 상단 링: `TorusGeometry(0.19, 0.010, 8, 36)` — 가는 고리',
+      '- 다리: `CylinderGeometry(0.011, 0.013, legLen, 8)` — 위에서 아래로 살짝 두꺼워짐. Quaternion으로 비스듬히 회전',
+      '- 발 받침: `CylinderGeometry(0.014, 0.014, 0.02, 8)` — 다리 끝 작은 원판',
+      '',
+      '**치수 비율**: 링 반지름:다리 벌림 ≈ 0.68:1 / 링 높이:다리 벌림 ≈ 2.25:1',
+      '',
+      '**실행 가능한 구현 코드** (그대로 사용 권장):',
+      '',
+      '```javascript',
+      'function buildTripod(wx, wy, wz) {',
+      '  var tripodGroup = new THREE.Group();',
+      '  var lm = new THREE.MeshStandardMaterial({ color: 0xc8c8c8, roughness: 0.2, metalness: 0.9 });',
+      '  var ringR = 0.19, ringY = 0.63;',
+      '  var topRing = new THREE.Mesh(new THREE.TorusGeometry(ringR, 0.010, 8, 36), lm);',
+      '  topRing.position.y = ringY; topRing.rotation.x = Math.PI / 2; tripodGroup.add(topRing);',
+      '',
+      '  for (var li = 0; li < 3; li++) {',
+      '    var ang = li * 2 * Math.PI / 3, sa = Math.sin(ang), ca = Math.cos(ang);',
+      '    var tx = ringR * sa, tz = ringR * ca, bx = 0.28 * sa, bz = 0.28 * ca;',
+      '    var dx = bx - tx, dy = -ringY, dz = bz - tz;',
+      '    var legLen = Math.sqrt(dx * dx + dy * dy + dz * dz);',
+      '    var leg = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.013, legLen, 8), lm);',
+      '    leg.position.set((tx + bx) / 2, ringY / 2, (tz + bz) / 2);',
+      '    var q = new THREE.Quaternion();',
+      '    q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dx, dy, dz).normalize());',
+      '    leg.setRotationFromQuaternion(q); leg.castShadow = true; tripodGroup.add(leg);',
+      '    tripodGroup.add(M(new THREE.CylinderGeometry(0.014, 0.014, 0.02, 8), lm, bx, 0.012, bz));',
+      '  }',
+      '  tripodGroup.position.set(wx, wy, wz);',
+      '  return tripodGroup;',
+      '}',
+      '```'
+    ].join('\n')
+  },
+  {
+    id: 'wireGauze',
+    name: '쇠그물 (석면 대용 철망)',
+    spec: [
+      '**실물 구조**:',
+      '- **정사각형 철망**: 한 변 ≈ 삼발이 링 지름 × 1.18, 삼발이 링 위에 올려놓음',
+      '- **외곽 프레임**: 두꺼운 금속 테두리 4변',
+      '- **철망 격자**: 촘촘한 와이어 20×20 이상, 프레임 안쪽에 가로·세로로 교차',
+      '- **세라믹 패드**: 가운데 원형, 연한 베이지색 (열원이 직접 닿지 않는 절연부)',
+      '- 세라믹 위에는 미세한 그을음 표현 (작은 반투명 원)',
+      '',
+      '**핵심 치수**:',
+      '- 정사각형 한 변의 절반 `gauzeSize = 0.225` (전체 변 길이 0.45)',
+      '- 프레임 두께 `frameT = 0.018`, 프레임 높이 `frameH = 0.008`',
+      '- 철망 가닥 수 `wireCount = 20` (가로/세로 각 20개)',
+      '- 철망 굵기 `wireThick = 0.0025`',
+      '- 세라믹 반경 `ceramicR = gauzeSize * 0.58`',
+      '- 그을음 반경 `ceramicR * 0.55`',
+      '',
+      '**재질**:',
+      '- `frameMat` (외곽 프레임): `MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 })`',
+      '- `wireMat` (철망 가닥): `MeshBasicMaterial({ color: 0x666666 })`',
+      '- `ceramicMat` (세라믹 패드): `MeshStandardMaterial({ color: 0xe8e0d4, roughness: 0.85, metalness: 0.0 })`',
+      '- `sootMat` (그을음): `MeshBasicMaterial({ color: 0x888877, transparent: true, opacity: 0.18 })`',
+      '',
+      '**적층 순서** (y 좌표):',
+      '- 프레임/철망: `gauzeY` 부근',
+      '- 세라믹: `gauzeY + 0.005`',
+      '- 그을음: `gauzeY + 0.006`',
+      '',
+      '**치수 비율**: 프레임 한 변 : 삼발이 링 지름 ≈ 1.18:1 / 세라믹 반지름 : 프레임 반 ≈ 0.58:1 / 철망 간격 ≈ 0.020',
+      '',
+      '**실행 가능한 구현 코드** (그대로 사용 권장):',
+      '',
+      '```javascript',
+      'function buildWireGauze(parentGroup, gauzeY) {',
+      '  var gauzeSize = 0.225;  // 정사각형 한 변의 절반 (전체 변 길이 0.45)',
+      '',
+      '  // — 외곽 프레임 (두꺼운 금속 테두리) —',
+      '  var frameMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 });',
+      '  var frameT = 0.018;  // 프레임 두께',
+      '  var frameH = 0.008;  // 프레임 높이',
+      '  // 상변',
+      '  parentGroup.add(M(new THREE.BoxGeometry(gauzeSize * 2, frameH, frameT), frameMat,',
+      '    0, gauzeY + frameH / 2, -gauzeSize + frameT / 2));',
+      '  // 하변',
+      '  parentGroup.add(M(new THREE.BoxGeometry(gauzeSize * 2, frameH, frameT), frameMat,',
+      '    0, gauzeY + frameH / 2, gauzeSize - frameT / 2));',
+      '  // 좌변',
+      '  parentGroup.add(M(new THREE.BoxGeometry(frameT, frameH, gauzeSize * 2), frameMat,',
+      '    -gauzeSize + frameT / 2, gauzeY + frameH / 2, 0));',
+      '  // 우변',
+      '  parentGroup.add(M(new THREE.BoxGeometry(frameT, frameH, gauzeSize * 2), frameMat,',
+      '    gauzeSize - frameT / 2, gauzeY + frameH / 2, 0));',
+      '',
+      '  // — 철망 격자 (촘촘하게) —',
+      '  var wireMat = new THREE.MeshBasicMaterial({ color: 0x666666 });',
+      '  var wireCount = 20;',
+      '  var innerSize = gauzeSize - frameT;',
+      '  var wireSpacing = (innerSize * 2) / (wireCount + 1);',
+      '  var wireThick = 0.0025;',
+      '',
+      '  for (var wi = 1; wi <= wireCount; wi++) {',
+      '    var offset = -innerSize + wi * wireSpacing;',
+      '    // 가로선',
+      '    var hw = new THREE.Mesh(',
+      '      new THREE.BoxGeometry(innerSize * 2, 0.002, wireThick), wireMat);',
+      '    hw.position.set(0, gauzeY + 0.003, offset);',
+      '    parentGroup.add(hw);',
+      '    // 세로선',
+      '    var vw = new THREE.Mesh(',
+      '      new THREE.BoxGeometry(wireThick, 0.002, innerSize * 2), wireMat);',
+      '    vw.position.set(offset, gauzeY + 0.003, 0);',
+      '    parentGroup.add(vw);',
+      '  }',
+      '',
+      '  // — 세라믹 패드 (가운데 원형, 연한 베이지) —',
+      '  var ceramicR = gauzeSize * 0.58;',
+      '  var ceramicMat = new THREE.MeshStandardMaterial({',
+      '    color: 0xe8e0d4, roughness: 0.85, metalness: 0.0',
+      '  });',
+      '  var ceramic = new THREE.Mesh(new THREE.CircleGeometry(ceramicR, 32), ceramicMat);',
+      '  ceramic.rotation.x = -Math.PI / 2;',
+      '  ceramic.position.y = gauzeY + 0.005;',
+      '  parentGroup.add(ceramic);',
+      '',
+      '  // 세라믹 위 그을음 자국 (반투명 어두운 원)',
+      '  var sootMat = new THREE.MeshBasicMaterial({',
+      '    color: 0x888877, transparent: true, opacity: 0.18',
+      '  });',
+      '  var soot = new THREE.Mesh(new THREE.CircleGeometry(ceramicR * 0.55, 20), sootMat);',
+      '  soot.rotation.x = -Math.PI / 2;',
+      '  soot.position.y = gauzeY + 0.006;',
+      '  parentGroup.add(soot);',
+      '}',
+      '```'
+    ].join('\n')
+  },
+  {
+    id: 'candleAssembly',
+    name: '삼발이+쇠그물+초 (통합)',
+    spec: [
+      '**※ 구성**: 가열 실험에서 삼발이, 쇠그물, 초는 **하나의 Group으로 묶어서** 사용자가 드롭한 위치에 동적 생성합니다.',
+      '',
+      '**전체 구조**:',
+      '- 삼발이 (링 + 다리 3개) — `buildTripod`와 동일 형상',
+      '- 쇠그물 (외곽 프레임 + 철망 격자 + 세라믹 패드 + 그을음) — `buildWireGauze`와 동일 형상',
+      '- 초 (납작한 티라이트 모양 + 심지)',
+      '- 불꽃 (외부 콘 + 내부 코어 + PointLight)',
+      '',
+      '**핵심 치수**:',
+      '- 삼발이 링 반경 `ringR = 0.19`, 링 높이 `ringY = 0.63`',
+      '- 쇠그물 위치: `ringY + 0.016` (링보다 살짝 위)',
+      '- 초 (티라이트): `CylinderGeometry(0.090, 0.090, 0.036, 18)` — 납작하고 넓은 형태',
+      '- 초 위치: `y = ringY + 0.036` (쇠그물 바로 위)',
+      '- 심지: `y = ringY + 0.066` 부근',
+      '- 불꽃: `y = ringY + 0.112`',
+      '- **전체 그룹 스케일**: `1.4156` (전체적으로 약 41% 확대)',
+      '- **그룹 위치**: `(wx, 0.02, wz)` — 사용자가 드롭한 좌표 + 바닥에서 살짝 띄움',
+      '',
+      '**재질**:',
+      '- `lm` (삼발이 링/다리/발받침): `MeshStandardMaterial({ color: 0xc8c8c8, roughness: 0.2, metalness: 0.9 })`',
+      '- `waxMat` (초 본체): `MeshStandardMaterial({ color: 0xf0ece0, roughness: 0.65, transparent: true, opacity: 0.88 })`',
+      '- 심지 위/아래: `MeshBasicMaterial({ color: 0x444444 })` / `MeshBasicMaterial({ color: 0x333333 })`',
+      '- 외부 불꽃: `MeshBasicMaterial({ color: 0xfdcb6e, transparent: true, opacity: 0.9 })`',
+      '- 내부 불꽃: `MeshBasicMaterial({ color: 0xfff8ee, transparent: true, opacity: 0.95 })`',
+      '- 불꽃 빛: `PointLight(0xff9500, 1.6, 4)`',
+      '',
+      '**중요한 이름(name) 속성** — `animate()` 루프에서 흔들림 애니메이션을 위해 참조:',
+      '- 외부 불꽃: `name = "flame"`',
+      '- 내부 불꽃: `name = "flameInner"`',
+      '- 불꽃 빛: `name = "flameLight"`',
+      '',
+      '**불꽃 흔들림** (animate() 루프에서 호출):',
+      '```javascript',
+      'if (flameMesh) {',
+      '  var tt = Date.now();',
+      '  flameMesh.scale.x = 1 + Math.sin(tt * 0.013) * 0.1;',
+      '  flameMesh.scale.y = 1 + Math.sin(tt * 0.016) * 0.15;',
+      '  if (innerFlameMesh) {',
+      '    innerFlameMesh.scale.x = 1 + Math.sin(tt * 0.017) * 0.08;',
+      '    innerFlameMesh.scale.y = 1 + Math.cos(tt * 0.011) * 0.12;',
+      '  }',
+      '  if (flameLight) flameLight.intensity = 1.6 + Math.sin(tt * 0.01) * 0.3;',
+      '}',
+      '```',
+      '',
+      '**실행 가능한 구현 코드** (그대로 사용 권장):',
+      '',
+      '```javascript',
+      'function buildCandleAssembly(wx, wz) {',
+      '  var group = new THREE.Group();',
+      '  var lm = new THREE.MeshStandardMaterial({ color: 0xc8c8c8, roughness: 0.2, metalness: 0.9 });',
+      '  var ringR = 0.19, ringY = 0.63;',
+      '  group.add(function(){ var r = new THREE.Mesh(new THREE.TorusGeometry(ringR, 0.010, 8, 36), lm);',
+      '    r.position.y = ringY; r.rotation.x = Math.PI / 2; return r; }());',
+      '  for (var li = 0; li < 3; li++) {',
+      '    var ang = li * 2 * Math.PI / 3, sa = Math.sin(ang), ca = Math.cos(ang);',
+      '    var tx = ringR * sa, tz = ringR * ca, bx = 0.28 * sa, bz = 0.28 * ca;',
+      '    var dx = bx - tx, dy = -ringY, dz = bz - tz;',
+      '    var al = Math.sqrt(dx * dx + dy * dy + dz * dz);',
+      '    var arm = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.013, al, 8), lm);',
+      '    arm.position.set((tx + bx) / 2, ringY / 2, (tz + bz) / 2);',
+      '    var aq = new THREE.Quaternion();',
+      '    aq.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dx, dy, dz).normalize());',
+      '    arm.setRotationFromQuaternion(aq); arm.castShadow = true; group.add(arm);',
+      '    group.add(M(new THREE.CylinderGeometry(0.014, 0.014, 0.02, 8), lm, bx, 0.012, bz));',
+      '  }',
+      '  buildWireGauze(group, ringY + 0.016);',
+      '',
+      '  // 초 (티라이트 — 납작하고 넓은 형태)',
+      '  var waxMat = new THREE.MeshStandardMaterial({ color: 0xf0ece0, roughness: 0.65, transparent: true, opacity: 0.88 });',
+      '  var wax = new THREE.Mesh(new THREE.CylinderGeometry(0.090, 0.090, 0.036, 18), waxMat);',
+      '  wax.position.y = ringY + 0.036; wax.castShadow = true; group.add(wax);',
+      '  group.add(M(new THREE.CylinderGeometry(0.003, 0.003, 0.022, 4),',
+      '    new THREE.MeshBasicMaterial({ color: 0x444444 }), 0, ringY + 0.066, 0));',
+      '  group.add(M(new THREE.CylinderGeometry(0.003, 0.002, 0.008, 4),',
+      '    new THREE.MeshBasicMaterial({ color: 0x333333 }), 0, ringY + 0.081, 0));',
+      '',
+      '  // 불꽃 (외부 + 내부 + PointLight)',
+      '  var fg = new THREE.SphereGeometry(0.035, 10, 14); fg.scale(1, 2.4, 1);',
+      '  var fm = new THREE.Mesh(fg, new THREE.MeshBasicMaterial({ color: 0xfdcb6e, transparent: true, opacity: 0.9 }));',
+      '  fm.position.y = ringY + 0.112; fm.name = "flame"; group.add(fm);',
+      '  var ig = new THREE.SphereGeometry(0.018, 8, 10); ig.scale(1, 2.0, 1);',
+      '  var im = new THREE.Mesh(ig, new THREE.MeshBasicMaterial({ color: 0xfff8ee, transparent: true, opacity: 0.95 }));',
+      '  im.position.y = ringY + 0.122; im.name = "flameInner"; group.add(im);',
+      '  var fl = new THREE.PointLight(0xff9500, 1.6, 4); fl.position.y = ringY + 0.112; fl.name = "flameLight"; group.add(fl);',
+      '',
+      '  group.scale.set(1.4156, 1.4156, 1.4156);',
+      '  group.position.set(wx, 0.02, wz);',
+      '  return group;',
+      '}',
+      '```'
+    ].join('\n')
+  },
+
+  /* 액체열이동용 (신규 — spec 필드에 Three.js 레퍼런스 상세 포함) */
+  {
+    id: 'tripodWithShelf',
+    name: '받침대가 있는 삼발이',
+    spec: [
+      '**※ 주의**: 일반 "삼발이"와 다릅니다. 다리 중간에 **초를 올리는 원형 받침대(shelf)** 가 달려 있는 구조입니다.',
+      '',
+      '**전체 구조**:',
+      '- 세 개의 다리(상단 세그먼트 + 하단 세그먼트 + 발)',
+      '- 상단 링(쇠그물이 올라갈 자리) + 크로스바 3개',
+      '- **중간 받침대(shelf)** — 초를 놓는 원형 플레이트 (이 구조가 "받침대가 있는 삼발이"의 핵심)',
+      '- 받침대 위의 쇠그물(wire gauze)',
+      '',
+      '**핵심 치수 / 좌표**:',
+      '- 상단 링 높이 `topRingY = 1.02`, 받침대 높이 `shelfY = 0.75`, 다리 바닥 높이 `footY = 0.0`',
+      '- 상단 링 반경 `0.3`, 받침대 반경 `0.22`, 다리 바닥 반경 `0.55` (바깥으로 벌어짐)',
+      '- 다리 각도: 0, 2.094(120°), 4.189(240°) rad',
+      '',
+      '**재질 (Material)**:',
+      '- `darkGray` (다리·링·브래킷): `MeshStandardMaterial({ color: 0x666666, roughness: 0.35, metalness: 0.7 })`',
+      '- `copperMat` (다리 손잡이 혹): `MeshStandardMaterial({ color: 0xc87533, roughness: 0.4, metalness: 0.6 })`',
+      '- `shelfMat` (받침대): `MeshStandardMaterial({ color: 0x777777, roughness: 0.35, metalness: 0.7 })`',
+      '- `frameMat` (쇠그물 외곽 프레임): `MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 })`',
+      '- `wireMat` (쇠그물 철망 격자): `MeshBasicMaterial({ color: 0x666666 })`',
+      '- `ceramicMat` (가운데 세라믹 패드): `MeshStandardMaterial({ color: 0xe8e0d4, roughness: 0.85, metalness: 0.0 })`',
+      '- `sootMat` (세라믹 위 그을음): `MeshBasicMaterial({ color: 0x888877, transparent: true, opacity: 0.18 })`',
+      '',
+      '**주요 구성요소**:',
+      '- **다리 (3개)**: 상단 세그먼트 `BoxGeometry(0.035, upperLen, 0.015)` (링→shelf), 하단 세그먼트 `BoxGeometry(0.035, lowerLen, 0.015)` (shelf→바닥, 바깥으로 벌어짐), 발 `BoxGeometry(0.04, 0.025, 0.08)`. 다리 중간에 **구리색 구형 손잡이 혹** `SphereGeometry(0.03, 10, 10)`',
+      '- **상단 링**: `TorusGeometry(0.32, 0.022, 8, 32)` — 두꺼운 고리. 크로스바 3개 `BoxGeometry(0.32, 0.018, 0.022)`',
+      '- **쇠그물 (표준 레퍼런스)**: 정사각형 형태 (한 변 0.45). 4가지 요소로 구성 — ① 외곽 금속 프레임 4변(`BoxGeometry`, 두께 `0.018`, 높이 `0.008`) ② 철망 격자 **20×20** (`BoxGeometry(innerSize*2, 0.002, 0.0025)` 가로/세로, 굵기 `0.0025`) ③ 세라믹 패드(`CircleGeometry`, 반경 = `gauzeSize × 0.58`) ④ 그을음 자국(`CircleGeometry`, 반경 = 세라믹 × 0.55, opacity `0.18`). 적층 순서: 프레임(0.005) → 세라믹(0.005) → 그을음(0.006) — 살짝씩 띄움',
+      '- **촛불 받침대 (shelf) — 핵심 특징**: 원판 `CylinderGeometry(0.22, 0.22, 0.01, 24)`, 림 `TorusGeometry(0.22, 0.008, 6, 24)`, 다리→받침대 연결 브래킷, 수직 스터브 `BoxGeometry(0.02, 0.06, 0.015)`',
+      '',
+      '**설계 메모**: 촛불은 받침대(`y=0.76`) 위에, 비커는 상단 쇠그물(`y≈1.04`) 위에 놓임. 다리가 바깥으로 벌어진 형상이라 안정적으로 서 있음.',
+      '',
+      '**실행 가능한 구현 코드** (그대로 사용 권장):',
+      '',
+      '```javascript',
+      'function buildTripodWithShelf(wx, wz) {',
+      '  var group = new THREE.Group();',
+      '  var darkGray = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.35, metalness: 0.7 });',
+      '  var copperMat = new THREE.MeshStandardMaterial({ color: 0xc87533, roughness: 0.4, metalness: 0.6 });',
+      '  var shelfMat  = new THREE.MeshStandardMaterial({ color: 0x777777, roughness: 0.35, metalness: 0.7 });',
+      '  // 쇠그물 표준 재질 4종 (외곽 프레임 / 철망 / 세라믹 패드 / 그을음)',
+      '  var frameMat   = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 });',
+      '  var wireMat    = new THREE.MeshBasicMaterial({ color: 0x666666 });',
+      '  var ceramicMat = new THREE.MeshStandardMaterial({ color: 0xe8e0d4, roughness: 0.85, metalness: 0.0 });',
+      '  var sootMat    = new THREE.MeshBasicMaterial({ color: 0x888877, transparent: true, opacity: 0.18 });',
+      '',
+      '  var legAngles = [0, 2.094, 4.189];',
+      '  var topRingY = 1.02, shelfY = 0.75, footY = 0.0;',
+      '  var topR = 0.3, shelfR = 0.35, botR = 0.55;',
+      '',
+      '  // 다리 3개 (각재 상단 세그먼트 + 하단 세그먼트 + 발 + 구리색 혹)',
+      '  for (var i = 0; i < 3; i++) {',
+      '    var a = legAngles[i];',
+      '    var tx = Math.cos(a)*topR,  tz = Math.sin(a)*topR;',
+      '    var sx = Math.cos(a)*shelfR, sz = Math.sin(a)*shelfR;',
+      '    var bx = Math.cos(a)*botR,  bz = Math.sin(a)*botR;',
+      '',
+      '    // 상단 세그먼트 (top ring → shelf)',
+      '    var upperLen = Math.sqrt((sx-tx)*(sx-tx)+(shelfY-topRingY)*(shelfY-topRingY)+(sz-tz)*(sz-tz));',
+      '    var upperLeg = new THREE.Mesh(new THREE.BoxGeometry(0.035, upperLen, 0.015), darkGray);',
+      '    upperLeg.position.set((tx+sx)/2, (topRingY+shelfY)/2, (tz+sz)/2);',
+      '    var uq = new THREE.Quaternion();',
+      '    uq.setFromUnitVectors(new THREE.Vector3(0,1,0), new THREE.Vector3(sx-tx, shelfY-topRingY, sz-tz).normalize());',
+      '    upperLeg.setRotationFromQuaternion(uq);',
+      '    upperLeg.castShadow = true;',
+      '    group.add(upperLeg);',
+      '',
+      '    // 하단 세그먼트 (shelf → 바닥, 바깥으로 벌어짐)',
+      '    var lowerLen = Math.sqrt((bx-sx)*(bx-sx)+(footY-shelfY)*(footY-shelfY)+(bz-sz)*(bz-sz));',
+      '    var lowerLeg = new THREE.Mesh(new THREE.BoxGeometry(0.035, lowerLen, 0.015), darkGray);',
+      '    lowerLeg.position.set((sx+bx)/2, (shelfY+footY)/2, (sz+bz)/2);',
+      '    var lq = new THREE.Quaternion();',
+      '    lq.setFromUnitVectors(new THREE.Vector3(0,1,0), new THREE.Vector3(bx-sx, footY-shelfY, bz-sz).normalize());',
+      '    lowerLeg.setRotationFromQuaternion(lq);',
+      '    lowerLeg.castShadow = true;',
+      '    group.add(lowerLeg);',
+      '',
+      '    // 발',
+      '    var foot = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.025, 0.08), darkGray);',
+      '    foot.position.set(bx, 0.012, bz); foot.rotation.y = a; foot.castShadow = true;',
+      '    group.add(foot);',
+      '',
+      '    // 구리색 손잡이 혹 (shelf 높이)',
+      '    var knob = new THREE.Mesh(new THREE.SphereGeometry(0.03, 10, 10), copperMat);',
+      '    knob.position.set(Math.cos(a)*(shelfR+0.025), shelfY, Math.sin(a)*(shelfR+0.025));',
+      '    group.add(knob);',
+      '  }',
+      '',
+      '  // 상단 링 (두꺼운 고리) + 크로스바 3개',
+      '  var ring = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.022, 8, 32), darkGray);',
+      '  ring.position.y = topRingY; ring.rotation.x = Math.PI/2; ring.castShadow = true;',
+      '  group.add(ring);',
+      '  for (var ci = 0; ci < 3; ci++) {',
+      '    var ca = ci*Math.PI*2/3 + Math.PI/6;',
+      '    var bar = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.018, 0.022), darkGray);',
+      '    bar.position.set(Math.cos(ca)*0.16, topRingY, Math.sin(ca)*0.16);',
+      '    bar.rotation.y = -ca;',
+      '    group.add(bar);',
+      '  }',
+      '',
+      '  // ── 쇠그물 (표준 레퍼런스: 외곽 프레임 + 철망 20×20 + 세라믹 패드 + 그을음) ──',
+      '  // 좌표계: 상단 링 위에 살짝 올림. 프레임 바닥 = topRingY + 0.008',
+      '  var gauzeY = topRingY + 0.008;       // 쇠그물 프레임 바닥 y',
+      '  var gauzeSize = 0.225;               // 정사각형 한 변의 절반 (전체 변 0.45)',
+      '  var frameT = 0.018;                  // 프레임 두께',
+      '  var frameH = 0.008;                  // 프레임 높이',
+      '',
+      '  // — 외곽 프레임 4변 (두꺼운 금속 테두리) —',
+      '  // 상변',
+      '  var fTop = new THREE.Mesh(new THREE.BoxGeometry(gauzeSize*2, frameH, frameT), frameMat);',
+      '  fTop.position.set(0, gauzeY + frameH/2, -gauzeSize + frameT/2);',
+      '  group.add(fTop);',
+      '  // 하변',
+      '  var fBot = new THREE.Mesh(new THREE.BoxGeometry(gauzeSize*2, frameH, frameT), frameMat);',
+      '  fBot.position.set(0, gauzeY + frameH/2,  gauzeSize - frameT/2);',
+      '  group.add(fBot);',
+      '  // 좌변',
+      '  var fLeft = new THREE.Mesh(new THREE.BoxGeometry(frameT, frameH, gauzeSize*2), frameMat);',
+      '  fLeft.position.set(-gauzeSize + frameT/2, gauzeY + frameH/2, 0);',
+      '  group.add(fLeft);',
+      '  // 우변',
+      '  var fRight = new THREE.Mesh(new THREE.BoxGeometry(frameT, frameH, gauzeSize*2), frameMat);',
+      '  fRight.position.set(gauzeSize - frameT/2, gauzeY + frameH/2, 0);',
+      '  group.add(fRight);',
+      '',
+      '  // — 철망 격자 (촘촘하게 20×20) —',
+      '  var wireCount = 20;',
+      '  var innerSize = gauzeSize - frameT;',
+      '  var wireSpacing = (innerSize * 2) / (wireCount + 1);',
+      '  var wireThick = 0.0025;',
+      '  for (var wi = 1; wi <= wireCount; wi++) {',
+      '    var offset = -innerSize + wi * wireSpacing;',
+      '    // 가로선',
+      '    var hw = new THREE.Mesh(new THREE.BoxGeometry(innerSize*2, 0.002, wireThick), wireMat);',
+      '    hw.position.set(0, gauzeY + 0.003, offset);',
+      '    group.add(hw);',
+      '    // 세로선',
+      '    var vw = new THREE.Mesh(new THREE.BoxGeometry(wireThick, 0.002, innerSize*2), wireMat);',
+      '    vw.position.set(offset, gauzeY + 0.003, 0);',
+      '    group.add(vw);',
+      '  }',
+      '',
+      '  // — 세라믹 패드 (가운데 원형, 연한 베이지) —',
+      '  var ceramicR = gauzeSize * 0.58;',
+      '  var ceramic = new THREE.Mesh(new THREE.CircleGeometry(ceramicR, 32), ceramicMat);',
+      '  ceramic.rotation.x = -Math.PI / 2;',
+      '  ceramic.position.set(0, gauzeY + 0.005, 0);',
+      '  group.add(ceramic);',
+      '',
+      '  // — 세라믹 위 그을음 자국 (반투명 어두운 원) —',
+      '  var soot = new THREE.Mesh(new THREE.CircleGeometry(ceramicR * 0.55, 20), sootMat);',
+      '  soot.rotation.x = -Math.PI / 2;',
+      '  soot.position.set(0, gauzeY + 0.006, 0);',
+      '  group.add(soot);',
+      '',
+      '  // 중간 원형 받침대 (shelf) — 초를 올리는 자리',
+      '  var shelf = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.01, 24), shelfMat);',
+      '  shelf.position.y = shelfY; shelf.castShadow = true;',
+      '  group.add(shelf);',
+      '  var shelfRim = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.008, 6, 24), shelfMat);',
+      '  shelfRim.position.y = shelfY + 0.005; shelfRim.rotation.x = Math.PI/2;',
+      '  group.add(shelfRim);',
+      '',
+      '  // 받침대 ↔ 다리 연결 브래킷 + 수직 스터브',
+      '  for (var si = 0; si < 3; si++) {',
+      '    var sa = legAngles[si];',
+      '    var legX = Math.cos(sa)*shelfR, legZ = Math.sin(sa)*shelfR;',
+      '    var edgeX = Math.cos(sa)*0.22,  edgeZ = Math.sin(sa)*0.22;',
+      '    var brDx = legX-edgeX, brDz = legZ-edgeZ;',
+      '    var brLen = Math.sqrt(brDx*brDx + brDz*brDz);',
+      '    var bracket = new THREE.Mesh(new THREE.BoxGeometry(brLen+0.02, 0.018, 0.018), darkGray);',
+      '    bracket.position.set((legX+edgeX)/2, shelfY, (legZ+edgeZ)/2);',
+      '    bracket.rotation.y = -sa;',
+      '    group.add(bracket);',
+      '    var stub = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.06, 0.015), darkGray);',
+      '    stub.position.set(legX, shelfY, legZ);',
+      '    group.add(stub);',
+      '  }',
+      '',
+      '  // 초 (티라이트) — 받침대 위',
+      '  var holder = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.13, 0.012, 20),',
+      '    new THREE.MeshStandardMaterial({ color: 0xdddddd, roughness: 0.3, metalness: 0.8 }));',
+      '  holder.position.y = shelfY + 0.015; holder.castShadow = true;',
+      '  group.add(holder);',
+      '  var wax = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.090, 0.035, 18),',
+      '    new THREE.MeshStandardMaterial({ color: 0xf5f0e8, roughness: 0.7 }));',
+      '  wax.position.y = shelfY + 0.038; wax.castShadow = true;',
+      '  group.add(wax);',
+      '  // 심지',
+      '  var wick = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.025, 4),',
+      '    new THREE.MeshBasicMaterial({ color: 0x333333 }));',
+      '  wick.position.y = shelfY + 0.068;',
+      '  group.add(wick);',
+      '',
+      '  // 불꽃 (초기 opacity=0, 점화 시 켜짐) + PointLight',
+      '  var fg = new THREE.SphereGeometry(0.03, 10, 14); fg.scale(1, 2.2, 1);',
+      '  var fm = new THREE.Mesh(fg, new THREE.MeshBasicMaterial({ color: 0xfdcb6e, transparent: true, opacity: 0 }));',
+      '  fm.position.y = shelfY + 0.105; fm.name = "flame";',
+      '  group.add(fm); flameMesh = fm;',
+      '  var ig = new THREE.SphereGeometry(0.015, 8, 10); ig.scale(1, 1.8, 1);',
+      '  var im = new THREE.Mesh(ig, new THREE.MeshBasicMaterial({ color: 0xfff8ee, transparent: true, opacity: 0 }));',
+      '  im.position.y = shelfY + 0.110; im.name = "flameInner";',
+      '  group.add(im); innerFlameMesh = im;',
+      '  var flL = new THREE.PointLight(0xff9500, 0, 3);',
+      '  flL.position.y = shelfY + 0.105; flL.name = "flameLight";',
+      '  group.add(flL); flameLight = flL;',
+      '',
+      '  // 비커 위치 계산용 y값 저장',
+      '  group.userData.gauzeTopY = topRingY + 0.022;  // 비커가 얹힐 y',
+      '  group.userData.flameY    = shelfY + 0.105;    // 점화기 접근 y',
+      '',
+      '  group.position.set(wx, 0, wz);',
+      '  return group;',
+      '}',
+      '```',
+      '',
+      '**비커 및 점화기 연동 규칙**:',
+      '- 비커 그룹의 월드 y = `1.042` (쇠그물 상단)',
+      '- 점화기 접근 타겟 y = `candleGroup.position.y + candleGroup.userData.flameY` (= 약 0.855)',
+      '- 스케일링 하지 말 것 (`group.scale.set(1.4, ...)` 금지) — 위 수치가 그대로 쓰임'
+    ].join('\n')
+  },
+  {
+    id: 'beaker',
+    name: '비커',
+    spec: [
+      '**전체 구조**: 투명 유리 실린더 + 바닥판 + 상단 림(lip) + 내부 물(water) + 수면(surface). 옆면에 **눈금 + 숫자 라벨(100, 200, 300, 400, 500 mL)** 이 캔버스 텍스처로 그려짐.',
+      '',
+      '**핵심 치수 / 좌표**:',
+      '- `BEAKER_SCALE = 0.6048` (60.48%), `BEAKER_H = 0.83` (높이 축소 계수, 17% 낮음)',
+      '- 비커 전체 높이: `1.4 × 0.6048 × 0.83 ≈ 0.703`',
+      '- 비커 반경: `0.45 × 0.6048 ≈ 0.272`',
+      '- 비커 그룹 위치: `(0, 1.045, 0)` — 쇠그물 바로 위',
+      '- 물 높이: 내부 높이의 **75%** (3/4)',
+      '',
+      '**재질 (Material)**:',
+      '- **유리 바디 (outer)**: `MeshPhysicalMaterial({ color: 0xffffff, opacity: 0.30, roughness: 0.05, metalness: 0.0, transparent: true, side: THREE.DoubleSide, depthWrite: false })`',
+      '- **바닥**: `MeshPhysicalMaterial({ color: 0xffffff, opacity: 0.25, transparent: true })`',
+      '- **림**: `MeshPhysicalMaterial({ color: 0xdddddd, opacity: 0.45, roughness: 0.1, transparent: true })`',
+      '- **물**: `MeshPhysicalMaterial({ color: 0x5BB5E0, opacity: 0.40, transparent: true })` — 하늘색',
+      '- **수면**: `MeshPhysicalMaterial({ color: 0x7CC8E8, opacity: 0.35, transparent: true })` — 밝은 하늘색',
+      '',
+      '**눈금 텍스처 (Canvas)**:',
+      '- 캔버스 크기: `1024 × 512`',
+      '- 눈금 X 위치: `740` (캔버스 오른쪽, 비커 앞면 우측에 보이도록)',
+      '- 눈금 Y 범위: `80`(500 마크) ~ `430`(100 마크)',
+      '- 눈금 선: 회색 `rgba(100,100,100,0.7)`, 두께 `3`',
+      '- 숫자: `bold 32px Arial`, 회색 `rgba(90,90,90,0.75)`',
+      '- 눈금 값: **100, 200, 300, 400, 500** (mL) — 각 눈금: 세로 기준선 + 가로 tick(길이 50) + 숫자 라벨',
+      '',
+      '**주요 구성요소**:',
+      '- 외벽: `CylinderGeometry(beakerR, beakerR, beakerH, 64, 1, true)` — 열린 실린더, 눈금 텍스처 매핑',
+      '- 바닥: `CylinderGeometry(beakerR, beakerR, 0.02×BEAKER_SCALE, 32)`',
+      '- 림: `TorusGeometry(beakerR, 0.01×BEAKER_SCALE, 8, 32)` — 상단 테두리',
+      '- 물: `CylinderGeometry(0.44×BEAKER_SCALE, 0.44×BEAKER_SCALE, waterH, 32)` — 내부 반경이 외벽보다 살짝 작음',
+      '- 수면: `CylinderGeometry(0.44×BEAKER_SCALE, 0.44×BEAKER_SCALE, 0.01, 32)` — 얇은 원판',
+      '',
+      '**설계 메모**: `depthWrite: false`로 유리의 투명도를 제대로 렌더링. 물은 75% 수위로 일정 — 대류 애니메이션에서 잉크가 내부에서 움직이는 공간 확보. 눈금이 캔버스 텍스처라 실제 geometry가 아니며, UV 상 오른쪽 측면에 위치.'
+    ].join('\n')
+  },
+  {
+    id: 'dropper',
+    name: '스포이트',
+    spec: [
+      '**전체 구조**: **파란 고무 벌브(bulb) + 유리관 상부 + 구형 돌출부(bulge) + 유리관 하부 + 뾰족한 팁(tip)**. 내부에 보라색 잉크가 `LatheGeometry`로 **동적으로 채워지고 비워짐**. 애니메이션 시작 시 `dropperGroup.scale.set(2.0, 2.0, 2.0)`로 **2배 스케일** 적용.',
+      '',
+      '**핵심 치수 / 좌표** (스케일 적용 전 원본):',
+      '- 고무 벌브 위치 Y: `0.38`, 반경 `0.035` (세로 1.2배 스케일)',
+      '- 벌브 목(neck) 위치 Y: `0.34`',
+      '- 상부 유리관 Y: `0.27` (길이 0.12)',
+      '- 구형 돌출부 Y: `0.20` (반경 0.025)',
+      '- 하부 유리관 Y: `0.09` (길이 0.20)',
+      '- 팁 Y: `-0.015`',
+      '- 잉크 상단(가득 참): `y = 0.07`, 잉크 튜브-팁 경계: `y = -0.01`, 잉크 바닥 끝점: `y = -0.03`',
+      '- 튜브 내부 반경: `0.011`',
+      '',
+      '**재질 (Material)**:',
+      '- `bulbMat` (고무 벌브·목): `MeshStandardMaterial({ color: 0x3b6b9a, roughness: 0.6 })` — 파란색',
+      '- `glassMat` (유리 파트 전체): `MeshPhysicalMaterial({ color: 0xdde8f0, opacity: 0.18, roughness: 0.05, metalness: 0.0, transparent: true, depthWrite: false })`',
+      '- `inkMat` (잉크): `MeshBasicMaterial({ color: 0x7c3aed, opacity: 0.92, transparent: true, depthWrite: true })` — 보라색',
+      '',
+      '**주요 구성요소**:',
+      '- ① 파란 고무 벌브: `SphereGeometry(0.035, 10, 10)` + 세로 스케일 1.2',
+      '- ② 벌브 목: `CylinderGeometry(0.022, 0.015, 0.04, 8)`',
+      '- ③ 상부 유리관: `CylinderGeometry(0.013, 0.013, 0.12, 8)` (renderOrder=1)',
+      '- ④ 구형 유리 돌출부: `SphereGeometry(0.025, 10, 10)` (renderOrder=1)',
+      '- ⑤ 하부 유리관: `CylinderGeometry(0.013, 0.013, 0.20, 8)` (renderOrder=1)',
+      '- ⑥ 테이퍼드 팁: `ConeGeometry(0.013, 0.05, 8)`, `rotation.z = π` (뒤집어서 아래로 뾰족)',
+      '- ⑦ 내부 잉크: 동적 `LatheGeometry` — `buildInkGeometry(currentTop)`로 매 프레임 재생성',
+      '',
+      '**잉크 동적 지오메트리 로직**:',
+      '- 튜브 영역(`currentTop > -0.01`): 원통형 프로파일 (윗면 캡 → 튜브 → 팁 경계 → 팁 끝점)',
+      '- 팁 영역(`currentTop <= -0.01`): 원뿔대(truncated cone) 프로파일, 반경 선형 보간',
+      '- `LatheGeometry`의 세그먼트 수: 16',
+      '',
+      '**3단계 애니메이션**:',
+      '- **Stage 1 (1500ms)**: 비커 위쪽에서 비커 안으로 **하강** (ease-in-out)',
+      '- **Stage 2 (1800ms)**: 잉크를 **방출** — `currentTop`이 `0.07 → -0.03`으로 감소하며 잉크 기하가 줄어듦, 동시에 `createInkParticles()` 호출',
+      '- **Stage 3 (1000ms)**: 위쪽으로 **후퇴** 후 scene에서 제거',
+      '',
+      '**설계 메모**: 사이드 패널 SVG 아이콘도 동일한 구조(파란 벌브 / 유리 튜브 상부 / 구형 bulge / 유리 튜브 하부 / 테이퍼드 팁). 잉크를 채운 상태에서는 tool-label이 **"잉크 든 스포이트"** 로 변경됨.'
+    ].join('\n')
+  },
+  {
+    id: 'inkBottle',
+    name: '잉크통',
+    spec: [
+      '**전체 구조**: 짙은 남보라색 병 + 밝은 라벨 영역 + 어두운 뚜껑 + 내부 잉크(살짝 보이는). 옆면에 **"잉크"** 텍스트가 캔버스 텍스처 라벨로 붙음.',
+      '',
+      '**핵심 치수 / 좌표**:',
+      '- 병: `CylinderGeometry(0.12, 0.14, 0.25, 16)` — 위 좁고 아래 넓음. 중심 Y = `0.13`',
+      '- 라벨 영역: `CylinderGeometry(0.125, 0.145, 0.12, 16)` — 병 외벽 바로 위에 덮는 슬리브',
+      '- 뚜껑: `CylinderGeometry(0.08, 0.10, 0.06, 16)`, 위치 Y = `0.28`',
+      '- 내부 잉크: `CylinderGeometry(0.10, 0.12, 0.15, 16)`, 위치 Y = `0.10`',
+      '- "잉크" 텍스트 라벨: `PlaneGeometry(0.16, 0.08)`, 위치 `(0, 0.13, 0.146)` — 병 앞면에 부착',
+      '- 그룹 위치: `(1.8, 0, 0.5)` — 비커 옆쪽',
+      '',
+      '**재질 (Material)**:',
+      '- `bottleMat` (병): `MeshStandardMaterial({ color: 0x2d1b69, roughness: 0.3, metalness: 0.1 })` — 짙은 남보라',
+      '- `labelMat` (라벨 슬리브): `MeshStandardMaterial({ color: 0xf0e6ff, roughness: 0.5 })` — 연한 라벤더',
+      '- `capMat` (뚜껑): `MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.4, metalness: 0.3 })` — 거의 검정',
+      '- `inkMat` (내부 잉크): `MeshBasicMaterial({ color: 0x6c5ce7, opacity: 0.8, transparent: true })` — 보라',
+      '- `labelPlane` (텍스트): `MeshBasicMaterial` with `CanvasTexture`, 투명',
+      '',
+      '**라벨 텍스처 (Canvas)**:',
+      '- 캔버스 크기: `128 × 64`',
+      '- 텍스트: `\'잉크\'` (가운데 정렬, x=64, y=40)',
+      '- 폰트: `bold 28px sans-serif`',
+      '- 색상: `#2d1b69` (병과 같은 남보라색)',
+      '',
+      '**설계 메모**: 스포이트 드래그 대상 중 하나 — 스포이트를 잉크통 위로 드롭하면 **잉크가 채워진 상태**로 전환. 약병 형태의 실린더 구조 (위가 좁고 아래가 넓은 사다리꼴 단면).',
+      '',
+      '**공통 헬퍼 함수** (`M` 사용):',
+      '```javascript',
+      'function M(geometry, material, x, y, z){',
+      '  var m = new THREE.Mesh(geometry, material);',
+      '  m.position.set(x, y, z);',
+      '  return m;',
+      '}',
+      '```'
+    ].join('\n')
+  },
+  {
+    id: 'lighter',
+    name: '점화기',
+    spec: [
+      '**전체 구조**: **긴 노즐형 유틸리티 라이터** — 노즐(metal tube)이 손잡이(handle)보다 김. 노란 손잡이 + 뒷면 캡 + 손가락 구멍(2개) + 트리거 버튼 + 회색 커넥터 + 긴 금속 노즐 + 노즐 끝 팁 홀 + 노즐 끝 불꽃.',
+      '',
+      '**핵심 치수 / 좌표**:',
+      '- 손잡이(body): `BoxGeometry(0.14, 0.055, 0.04)`, 위치 `(0.05, 0.028, 0)`',
+      '- 뒷면 캡: `CylinderGeometry(0.0275, 0.0275, 0.04, 8)`, x축 90° 회전, 위치 `(0.12, 0.028, 0)`',
+      '- 손가락 구멍: `TorusGeometry(0.016, 0.004, 8, 16)` × 2 (양면), 위치 `(0.06, 0.028, ±0.021)`',
+      '- 트리거: `BoxGeometry(0.018, 0.013, 0.028)`, 위치 `(0.01, 0.06, 0)`',
+      '- 회색 커넥터: `BoxGeometry(0.03, 0.045, 0.035)`, 위치 `(-0.03, 0.035, 0)`',
+      '- **금속 노즐 (긴 튜브)**: `CylinderGeometry(0.005, 0.006, 0.28, 8)`, z축 `π/2 × 0.97` 회전 (거의 수평, 살짝 위로), 위치 `(-0.18, 0.05, 0)`',
+      '- 노즐 끝 팁 홀: `SphereGeometry(0.0025, 4, 4)` × 3, `(-0.32, 0.055~0.061, 0)`',
+      '- **노즐 끝 불꽃**: `SphereGeometry(0.015, 8, 8)` + 세로 2.5배 스케일, 위치 `(-0.33, 0.065, 0)`',
+      '',
+      '**재질 (Material)**:',
+      '- `handleMat` (노란 손잡이·뒷면 캡): `MeshStandardMaterial({ color: 0xe8d44d, roughness: 0.3, metalness: 0.05 })` — 노랑',
+      '- `holeMat` (손가락 구멍 테두리): `MeshStandardMaterial({ color: 0x666666, roughness: 0.5, metalness: 0.3 })`',
+      '- `triggerMat` (트리거): `MeshStandardMaterial({ color: 0x999999, roughness: 0.4, metalness: 0.3 })`',
+      '- `connMat` (회색 커넥터): `MeshStandardMaterial({ color: 0x78909C, roughness: 0.3, metalness: 0.4 })` — 블루그레이',
+      '- `nozzleMat` (금속 노즐): `MeshStandardMaterial({ color: 0xB0BEC5, roughness: 0.15, metalness: 0.8 })` — 밝은 회색',
+      '- `tipMat` (노즐 끝 점): `MeshBasicMaterial({ color: 0x555555 })`',
+      '- 불꽃(`lFlame`): `MeshBasicMaterial({ color: 0xfdcb6e, opacity: 0.9, transparent: true })` — 주황노랑',
+      '',
+      '**애니메이션**:',
+      '- **초기 위치**: `(0.45, candleGroup.y + 0.02, 0.15)` — 촛불 측면 위쪽',
+      '- **목표 위치**: `(0.33, candleGroup.y + 0.02, 0)` — 심지 근처로 접근',
+      '- **접근 시간**: 800ms (ease-in-out)',
+      '- **불꽃 깜빡임**: `lFlame.scale.y = 1 + Math.sin(t × 0.02) × 0.2` (매 프레임)',
+      '- **점화 후**:',
+      '  - 초의 `flameMesh.opacity = 0.9`, `innerFlameMesh.opacity = 0.95`, `flameLight.intensity = 1.5`',
+      '  - 600ms 뒤 라이터 불꽃 opacity=0 → 400ms 뒤 scene에서 제거',
+      '  - 이후 `startWaterWarming()`, `startInkRising()` 호출',
+      '',
+      '**설계 메모**:',
+      '- **노즐이 손잡이보다 길다** — 긴 노즐 토치 라이터 스타일',
+      '- 노즐은 거의 수평이지만 `0.97`을 곱해 **끝이 살짝 위쪽**으로 기울어짐 (심지 접근에 자연스러움)',
+      '- 노즐 끝에 **팁 홀 3개**가 나란히 배치되어 가스 분사구처럼 보임',
+      '- 손잡이 양면에 손가락 구멍 관통 (Torus 2개로 표현)'
+    ].join('\n')
+  }
 ];
 
 /* ── 기존 코드 템플릿 (참고용) ── */
@@ -128,12 +863,40 @@ var CODE_TEMPLATES = [
 ];
 
 /* ── 상태 ── */
+
+/* ═══ 내장 백업 데이터 (자동 복원) ═══ */
+var EMBEDDED_BACKUP = "{\"activeTab\":0,\"copied\":false,\"unit\":\"5학년 2학기, 2단원 열과 우리 생활\",\"title\":\"고체에서 열의 이동 관찰하기\",\"objective\":\"고체에서 열의 이동을 관찰하고 열이 어떻게 이동하는지 설명할 수 있다.\",\"concept\":\"전도 - 온도가 높은 곳에서 낮은 곳으로 물체를 따라 열이 이동\",\"materials\":\"길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판, 열 변색 붙임딱지, 삼발이, 쇠그물, 스탠드, 고정 집게, 초, 점화기\",\"bgmFile\":\"bgm.mp3\",\"objectiveNarrationFile\":\"tts_take1.mp3\",\"refChecks\":{\"tripodWithShelf\":false,\"beaker\":false,\"dropper\":false,\"inkBottle\":false,\"lighter\":false,\"stand\":true,\"candleAssembly\":true},\"customEquips\":[],\"steps\":[{\"id\":\"1777034427303_0.6236291917788565\",\"studentAction\":\"길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판 중 하나를 3D 씬의 고정 집게 쪽 드롭 존으로 드래그\\n\",\"uiTransition\":\"사이드 패널 숨김 -> '초' 패널 표시\",\"guideMessage\":\"구리판 한 개를 골라 고정 집게 쪽으로 옮겨 보세요.\",\"completionCondition\":\"3D 드롭 존에 구리판 드롭 성공\",\"customInteraction\":\"\",\"narrationKey\":\"tts_take2.mp3\",\"narrationText\":\"\",\"segments\":[{\"guide\":\"구리판 한 개를 골라 고정 집게 쪽으로 옮겨 보세요.\",\"mp3File\":\"tts_take2.mp3\",\"ttsText\":\"\",\"delaySec\":0}]},{\"id\":\"1777034575403_0.9448014297595257\",\"studentAction\":\"초를 구리판 아래 초록색 표시 부분 드롭 존으로 드래그\",\"uiTransition\":\"사이드 패널에 '다시 하기' 버튼 및 텍스트 표시\",\"guideMessage\":\"초를 구리판 아래 초록색 표시 부분으로 옮겨 보세요.\",\"completionCondition\":\"3D 드롭 존에 초 드롭 성공\",\"customInteraction\":\"\",\"narrationKey\":\"tts_take3.mp3\",\"narrationText\":\"\",\"segments\":[{\"guide\":\"초를 구리판 아래 초록색 표시 부분으로 옮겨 보세요.\",\"mp3File\":\"tts_take3.mp3\",\"ttsText\":\"\",\"delaySec\":0}]},{\"id\":\"1777034575584_0.5409494527647543\",\"studentAction\":\"\",\"uiTransition\":\"열 변색 붙임딱지의 색깔이 모두 변하면 우측 하단에 '실험 정리하기' 버튼 나타남.\",\"guideMessage\":\"열 변색 붙임딱지의 색깔 변화를 관찰해 보세요.\\n초에서 가까운 곳부터 구리판을 따라 색이 변해요.\",\"completionCondition\":\"\",\"customInteraction\":\"\",\"narrationKey\":\"tts_take4.mp3, tts_take5.mp3\",\"narrationText\":\"\",\"segments\":[{\"guide\":\"열 변색 붙임딱지의 색깔 변화를 관찰해 보세요.\",\"mp3File\":\"tts_take4.mp3\",\"ttsText\":\"\",\"delaySec\":0},{\"guide\":\"초에서 가까운 곳부터 구리판을 따라 색이 변해요.\",\"mp3File\":\"tts_take5.mp3\",\"ttsText\":\"\",\"delaySec\":3}]}],\"simDescription\":\"- 열 변색 붙임딱지의 색깔이 분홍색에서 흰색으로 변할 때 초를 중심으로 원 모양으로 초에서 멀어질수록 색깔이 변함. 초에서 가까운 곳부터 변해야 되고, 초를 드래그하자마자 변하기 시작해야 돼.\\n- 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판에서 열 변색 붙임딱지의 색깔이 변하는 빠르기는 모두 똑같게 만들어 줘.\",\"simVisual\":\"- 초를 구리판 아래로 드래그하면 열 변색 붙임딱지의 색깔이 바로 변하기 시작하도록 만들어 줘.\\n- 구리판 아래 책상 바닥에 구리판과 똑같은 모양으로 초록색으로 표시해 줘. 초록색 영역 내에서 초를 원하는 곳에 드래그할 수 있도록 만들어 줘.\\n- 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판 모두 두께를 1mm로 표현해 줘.\",\"simNote\":\"- 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판 모두 구리판을 고정집게로 드래그했을 때 구리판이 고정집게의 끝부분에 고정되도록 구현해 줘.\\n- 3D 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판 모두 구리판 윗면에 분홍색 열 변색 붙임딱지가 붙어 있는 모습으로 만들어 줘.\\n- 우측 패널에 있는 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판도 모두 구리판 윗면에 분홍색 열 변색 붙임딱지가 붙어 있는 모습으로 만들어 줘.\\n- ㄷ모양 구리판의 모양은 ㄷ모양으로 잘 표현해 줘.\",\"simUseTemplate\":\"\",\"summaryTitle\":\"실험 결과 정리\",\"summaryBody\":\"고체에서 열이 이동하는 모습을 관찰했어요!\",\"summaryConceptBox\":\"고체에서는 온도가 높은 곳에서 온도가 낮은 곳으로 물체를 따라 열이 이동합니다.\\n이러한 열의 이동 방식을 전도라고 합니다.\",\"summaryNarration\":\"\",\"summaryNarrationFile\":\"tts_take6.mp3, tts_take7.mp3\",\"summarySegments\":[{\"mp3File\":\"tts_take6.mp3\",\"ttsText\":\"\",\"delaySec\":0},{\"mp3File\":\"tts_take7.mp3\",\"ttsText\":\"\",\"delaySec\":1}],\"variantGroups\":[],\"openTemplates\":{},\"activePreview\":1}";
+var EMBED_KEY = 'jisiseo_v9_embed_loaded_solid_1777192299309';
+(function loadEmbeddedOnce() {
+  try {
+    // 이미 한 번 불러왔으면 건너뛰기 (사용자가 초기화 후 재로드한 경우 대비)
+    if (sessionStorage.getItem(EMBED_KEY) === '1') return;
+    var existing = localStorage.getItem('jisiseo_v9_state_solid');
+    // [내장본] 항상 내장 데이터를 우선 적용 (다른 사용자/기기에서 깨끗하게 보이도록)
+    var needEmbed = true;
+    if (!existing) {
+      needEmbed = true;
+    } else {
+      try { JSON.parse(existing); } catch(e) { needEmbed = true; }
+    }
+    if (needEmbed) {
+      localStorage.setItem('jisiseo_v9_state_solid', EMBEDDED_BACKUP);
+      console.log('[자동복원] 내장 백업 데이터를 복원했습니다.');
+    }
+    sessionStorage.setItem(EMBED_KEY, '1');
+  } catch (e) {
+    console.warn('[자동복원] 실패:', e);
+  }
+})();
+
 var state = {
   activeTab: 0,
   copied: false,
 
   // 기본 정보
   unit: '', title: '', objective: '', concept: '', materials: '',
+  bgmFile: '',            // ★ 배경음악 mp3 파일명 (비우면 bgm.mp3 기본값)
+  objectiveNarrationFile: '',  // ★ 탐구 목표 팝업 TTS 파일명 (빈 값 시 각 Step 탭의 take1 사용)
 
   // 장비 — 레퍼런스 체크리스트 + 커스텀 장비
   refChecks: {},  // { stand: true, tripod: false, ... }
@@ -150,22 +913,267 @@ var state = {
 
   // 결과 요약
   summaryTitle: '', summaryBody: '', summaryConceptBox: '', summaryNarration: '',
+  summaryNarrationFile: '',  // ★ v14 호환 — v15에서는 summarySegments로 통합
+  summarySegments: [],        // ★ v15 신설: 결과 요약 다중 mp3 순차 재생
+                              //    각 항목: { mp3File, ttsText, delaySec }
+
+  // ★ v15 신설: 학생 선택지 변형 그룹 (예: 구리판 길게/정사각형/ㄷ모양)
+  // 한 그룹 = 학생이 단계 N에서 고를 수 있는 N개의 카드
+  // 각 그룹: { id, groupName, stepIndex, sharedSurfaceDecor, variants: [...] }
+  // 각 variant: { id, name, shapeDesc, svgPattern, modelDesc }
+  variantGroups: [],
 
   // 템플릿 토글
-  openTemplates: {}
+  openTemplates: {},
+
+  // 미리보기 활성 지시서 (1=1/2, 2=2/2, 3=뼈대)
+  activePreview: 1
 };
+
+/* ═══ 자동 저장 (localStorage) ═══ */
+var STORAGE_KEY = 'jisiseo_v9_state_solid';
+var SAVE_STATUS_EL = null;
+
+// 페이지 로드 시 이전 저장 내용 복원
+(function restoreState() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      // 구조가 바뀌어도 안전하게 — 현재 state의 키 기준으로 덮어쓰기
+      for (var k in parsed) {
+        if (parsed.hasOwnProperty(k)) state[k] = parsed[k];
+      }
+      console.log('[자동저장] 이전 입력 내용을 복원했습니다.');
+    }
+  } catch (e) {
+    console.warn('[자동저장] 복원 실패:', e);
+  }
+  // ★ v15: v14 데이터 → v15 구조 마이그레이션
+  migrateState();
+})();
+
+// 저장 함수 (디바운스 적용 — 500ms 내 연속 입력은 1번만 저장)
+var saveTimer = null;
+function saveState() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(function() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      showSaveStatus('✓ 자동 저장됨');
+    } catch (e) {
+      showSaveStatus('⚠ 저장 실패: ' + e.message);
+    }
+  }, 500);
+}
+
+function showSaveStatus(msg) {
+  if (!SAVE_STATUS_EL) SAVE_STATUS_EL = document.getElementById('save-status');
+  if (SAVE_STATUS_EL) {
+    SAVE_STATUS_EL.textContent = msg;
+    SAVE_STATUS_EL.style.opacity = '1';
+    setTimeout(function() {
+      if (SAVE_STATUS_EL) SAVE_STATUS_EL.style.opacity = '0.4';
+    }, 1200);
+  }
+}
+
+// JSON 파일로 내보내기
+function exportStateJSON() {
+  var data = JSON.stringify(state, null, 2);
+  var blob = new Blob([data], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  var now = new Date();
+  var stamp = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '_' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+  a.href = url;
+  a.download = '지시서_백업_' + stamp + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ★ 현재 입력 내용을 HTML 파일에 내장하여 저장 (GitHub Pages 공유용)
+// 이 함수로 받은 HTML 파일은 다른 폴더로 옮기거나 GitHub에 올려도 작성 내용이 그대로 보존됨
+function exportEmbeddedHTML() {
+  try {
+    // 현재 페이지의 전체 HTML 소스를 가져옴
+    var htmlSource = document.documentElement.outerHTML;
+    // <!DOCTYPE html> 선언 추가 (outerHTML에는 포함되지 않음)
+    htmlSource = '<!DOCTYPE html>\n' + htmlSource;
+
+    // 현재 state를 JSON 문자열로 직렬화 (EMBEDDED_BACKUP에 들어갈 형태와 동일)
+    var stateJSON = JSON.stringify(state);
+    // JS 문자열 리터럴로 안전하게 삽입하기 위해 한 번 더 stringify (이중 인코딩)
+    var newEmbedLiteral = JSON.stringify(stateJSON);
+
+    // 기존 EMBEDDED_BACKUP 변수 선언부를 정규식으로 찾아 새 값으로 교체
+    // 패턴: var EMBEDDED_BACKUP = "..."; (멀티라인 큰따옴표 문자열)
+    // 큰따옴표 안의 \" 이스케이프 처리된 내용 포함하여 매칭
+    var pattern = /var\s+EMBEDDED_BACKUP\s*=\s*"(?:\\.|[^"\\])*"\s*;/;
+    if (!pattern.test(htmlSource)) {
+      alert('내장 백업 변수를 찾지 못했습니다. HTML 구조가 변경되었을 수 있습니다.');
+      return;
+    }
+    var replaced = htmlSource.replace(pattern, 'var EMBEDDED_BACKUP = ' + newEmbedLiteral + ';');
+
+    // 추가 안전장치: 다른 사람이 열었을 때 localStorage에 이미 다른 데이터가 있어도
+    // 이 파일에 내장된 데이터를 우선 적용하도록 EMBED_KEY를 새 값으로 변경
+    // (이렇게 하면 기존 sessionStorage 플래그가 무효화되어 강제로 새 백업이 적용됨)
+    var newKey = 'jisiseo_v9_embed_loaded_solid_' + Date.now();
+    replaced = replaced.replace(
+      /var\s+EMBED_KEY\s*=\s*'jisiseo_v9_embed_loaded_solid'\s*;/,
+      "var EMBED_KEY = '" + newKey + "';"
+    );
+    // 또한 기존 localStorage 데이터를 강제로 덮어쓰도록 needEmbed 분기를 수정
+    // (loadEmbeddedOnce 함수 안에서 existing 검사 부분을 항상 true로)
+    replaced = replaced.replace(
+      "// localStorage가 비어있거나 파싱 실패한 경우에만 내장 데이터 사용\n    var needEmbed = false;",
+      "// [내장본] 항상 내장 데이터를 우선 적용 (다른 사용자/기기에서 깨끗하게 보이도록)\n    var needEmbed = true;"
+    );
+
+    // 파일 다운로드
+    var blob = new Blob([replaced], {type: 'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var now = new Date();
+    var stamp = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '_' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+    a.href = url;
+    a.download = '지시서_내장본_' + stamp + '.html';
+    a.click();
+    URL.revokeObjectURL(url);
+    showSaveStatus('✓ 내장 HTML로 저장됨');
+  } catch (e) {
+    alert('내장 HTML 저장 실패: ' + e.message);
+    console.error(e);
+  }
+}
+
+// JSON 파일에서 불러오기
+function importStateJSON() {
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,application/json';
+  input.onchange = function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var parsed = JSON.parse(ev.target.result);
+        if (!confirm('현재 입력 내용이 불러온 파일로 대체됩니다. 계속하시겠습니까?')) return;
+        for (var k in parsed) {
+          if (parsed.hasOwnProperty(k)) state[k] = parsed[k];
+        }
+        saveState();
+        render();
+        alert('불러오기 완료!');
+      } catch (err) {
+        alert('파일을 읽을 수 없습니다: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// 전체 초기화
+function clearAllState() {
+  if (!confirm('모든 입력 내용을 삭제하고 처음 상태로 되돌립니다. 정말 진행하시겠습니까?\n\n(되돌릴 수 없습니다. 먼저 "내보내기"로 백업하세요.)')) return;
+  if (!confirm('한 번 더 확인합니다. 정말 전부 지우시겠습니까?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
 
 function newStep() {
   return {
     id: Date.now() + '_' + Math.random(),
-    studentAction: '', uiTransition: '', guideMessage: '',
+    studentAction: '', uiTransition: '',
     completionCondition: '', customInteraction: '',
-    narrationKey: '', narrationText: ''
+    // ★ v15: 가이드+나레이션을 세그먼트 배열로 관리
+    // 각 세그먼트: { guide, mp3File, ttsText, delaySec }
+    //   - guide: 화면 가이드 박스에 표시될 문구
+    //   - mp3File: 재생할 mp3 파일명 (없으면 ttsText로 TTS 폴백)
+    //   - ttsText: mp3 없을 때 음성 합성으로 읽을 텍스트
+    //   - delaySec: 이전 세그먼트 종료 후 다음 세그먼트까지 대기 시간(초)
+    segments: [newSegment()],
+    // ↓ v14 호환 필드 (구버전 데이터 마이그레이션 시 채움 → render 시 segments[0]으로 복사)
+    guideMessage: '', narrationKey: '', narrationText: ''
   };
+}
+
+function newSegment() {
+  return { guide: '', mp3File: '', ttsText: '', delaySec: 0 };
 }
 
 function newEquip() {
   return { id: Date.now() + '_' + Math.random(), name: '', photoNote: '' };
+}
+
+/* ═══ v14 → v15 데이터 마이그레이션 ═══
+   v14 단계 구조: { guideMessage, narrationKey, narrationText }
+   v15 구조: { segments: [{ guide, mp3File, ttsText, delaySec }, ...] }
+   기존 입력값을 보존하기 위해 segments가 없으면 v14 필드를 첫 세그먼트로 복사 */
+function migrateState() {
+  if (!Array.isArray(state.steps)) state.steps = [];
+  if (state.steps.length === 0) state.steps.push(newStep());
+  for (var i = 0; i < state.steps.length; i++) {
+    var s = state.steps[i];
+    if (!s.segments || !Array.isArray(s.segments) || !s.segments.length) {
+      s.segments = [{
+        guide: s.guideMessage || '',
+        mp3File: s.narrationKey || '',
+        ttsText: s.narrationText || '',
+        delaySec: 0
+      }];
+    } else {
+      // 각 세그먼트의 누락 필드 보강
+      for (var sg = 0; sg < s.segments.length; sg++) {
+        var seg = s.segments[sg];
+        if (typeof seg.guide !== 'string') seg.guide = '';
+        if (typeof seg.mp3File !== 'string') seg.mp3File = '';
+        if (typeof seg.ttsText !== 'string') seg.ttsText = '';
+        if (typeof seg.delaySec !== 'number') seg.delaySec = parseFloat(seg.delaySec) || 0;
+      }
+    }
+    // Step 누락 필드 보강
+    if (typeof s.studentAction !== 'string') s.studentAction = '';
+    if (typeof s.uiTransition !== 'string') s.uiTransition = '';
+    if (typeof s.completionCondition !== 'string') s.completionCondition = '';
+    if (typeof s.customInteraction !== 'string') s.customInteraction = '';
+    if (!s.id) s.id = Date.now() + '_' + Math.random();
+  }
+  // 결과 요약 세그먼트
+  if (!Array.isArray(state.summarySegments) || !state.summarySegments.length) {
+    state.summarySegments = [{
+      mp3File: state.summaryNarrationFile || '',
+      ttsText: state.summaryNarration || '',
+      delaySec: 0
+    }];
+  } else {
+    for (var ss = 0; ss < state.summarySegments.length; ss++) {
+      var seg2 = state.summarySegments[ss];
+      if (typeof seg2.mp3File !== 'string') seg2.mp3File = '';
+      if (typeof seg2.ttsText !== 'string') seg2.ttsText = '';
+      if (typeof seg2.delaySec !== 'number') seg2.delaySec = parseFloat(seg2.delaySec) || 0;
+    }
+  }
+  // 학생 선택지 변형 그룹
+  if (!Array.isArray(state.variantGroups)) state.variantGroups = [];
+  for (var vg = 0; vg < state.variantGroups.length; vg++) {
+    var grp = state.variantGroups[vg];
+    if (typeof grp.groupName !== 'string') grp.groupName = '';
+    if (typeof grp.stepIndex !== 'number' && typeof grp.stepIndex !== 'string') grp.stepIndex = 0;
+    if (typeof grp.sharedSurfaceDecor !== 'string') grp.sharedSurfaceDecor = '';
+    if (!Array.isArray(grp.variants)) grp.variants = [];
+    for (var vr = 0; vr < grp.variants.length; vr++) {
+      var v = grp.variants[vr];
+      if (typeof v.name !== 'string') v.name = '';
+      if (typeof v.shapeDesc !== 'string') v.shapeDesc = '';
+      if (typeof v.svgPattern !== 'string') v.svgPattern = '';
+      if (typeof v.modelDesc !== 'string') v.modelDesc = '';
+      if (!v.id) v.id = Date.now() + '_' + Math.random();
+    }
+  }
 }
 
 /* ── 렌더링 ── */
@@ -182,8 +1190,23 @@ function render() {
 
   var html = '';
 
+  /* ── 헤더 ── */
+  html += '<div style="padding:20px 24px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap">';
+  html += '<div style="width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 16px rgba(0,184,148,0.3)">🧬</div>';
+  html += '<div style="flex:1;min-width:200px"><div style="font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.5px">가상실험실 제작 지시서 빌더 <span style="font-size:11px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;margin-left:4px">v15</span></div>';
+  html += '<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px">뼈대 채우기 지시서 자동 생성 · 다중 TTS 세그먼트 · 학생 선택지 변형 그룹 지원</div></div>';
+  // 저장 버튼 그룹
+  html += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
+  html += '<span id="save-status" style="font-size:11px;color:#55efc4;opacity:0.4;transition:opacity 0.3s;margin-right:4px">✓ 자동 저장됨</span>';
+  html += '<button onclick="exportStateJSON()" style="padding:7px 12px;font-size:12px;font-weight:600;background:rgba(0,184,148,0.15);border:1px solid rgba(0,184,148,0.4);color:#55efc4;border-radius:8px;cursor:pointer;font-family:inherit" title="현재 입력값을 JSON 파일로 저장">💾 내보내기</button>';
+  html += '<button onclick="exportEmbeddedHTML()" style="padding:7px 12px;font-size:12px;font-weight:600;background:rgba(253,203,110,0.15);border:1px solid rgba(253,203,110,0.45);color:#fdcb6e;border-radius:8px;cursor:pointer;font-family:inherit" title="현재 입력 내용을 HTML 파일에 내장하여 저장. GitHub Pages에 올리면 누가 열어도 텍스트가 그대로 보입니다.">📦 내장 HTML로 저장</button>';
+  html += '<button onclick="importStateJSON()" style="padding:7px 12px;font-size:12px;font-weight:600;background:rgba(116,185,255,0.12);border:1px solid rgba(116,185,255,0.35);color:#74b9ff;border-radius:8px;cursor:pointer;font-family:inherit" title="JSON 파일에서 입력값 복원">📂 불러오기</button>';
+  html += '<button onclick="clearAllState()" style="padding:7px 12px;font-size:12px;font-weight:600;background:rgba(255,118,117,0.12);border:1px solid rgba(255,118,117,0.35);color:#ff7675;border-radius:8px;cursor:pointer;font-family:inherit" title="모든 입력 초기화">🗑 초기화</button>';
+  html += '</div>';
+  html += '</div>';
+
   /* ── 탭 바 ── */
-  html += '<div style="display:flex;gap:4px;padding:8px 24px 0;overflow-x:auto;flex-wrap:nowrap">';
+  html += '<div style="display:flex;gap:4px;padding:16px 24px 0;overflow-x:auto;flex-wrap:nowrap">';
   for (var ti = 0; ti < tabs.length; ti++) {
     html += '<button class="tab-btn' + (state.activeTab === ti ? ' active' : '') + '" onclick="switchTab(' + ti + ')">';
     html += '<span>' + tabs[ti].icon + '</span><span class="tl">' + tabs[ti].label + '</span></button>';
@@ -214,6 +1237,18 @@ function render() {
   html += '</div>';
 
   app.innerHTML = html;
+
+  // 자동저장: 모든 입력 필드의 변경사항을 감지
+  // (onchange="..." 핸들러들이 state를 업데이트한 뒤 saveState가 호출되도록
+  //  input/change 이벤트에 추가 리스너를 단다. 기존 핸들러와 충돌하지 않음)
+  var inputs = app.querySelectorAll('input, textarea, select');
+  for (var ii = 0; ii < inputs.length; ii++) {
+    inputs[ii].addEventListener('input', saveState);
+    inputs[ii].addEventListener('change', saveState);
+  }
+  SAVE_STATUS_EL = document.getElementById('save-status');
+  // 버튼 클릭 등으로 state가 바뀌고 render가 재호출될 때도 저장
+  saveState();
 }
 
 /* ═══ 탭 0: 기본 정보 ═══ */
@@ -229,6 +1264,16 @@ function renderBasicInfo() {
   h += field('준비물', 'textarea', 'materials', '예: 구리판, 열 변색 스티커, 초, 삼발이, 쇠그물, 스탠드');
 
   h += '</div></div>';
+
+  // ── 오디오 섹션 ──
+  h += '<div class="card" style="margin-top:16px">';
+  h += '<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:6px">🎵 배경음악 / 도입 나레이션</div>';
+  h += '<div class="hint" style="margin-bottom:16px">HTML과 같은 폴더에 둘 mp3 파일명을 적어주세요. 비워두면 기본값(<code style="background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;color:#fff">bgm.mp3</code>)이 사용됩니다.</div>';
+  h += '<div style="display:flex;flex-direction:column;gap:16px">';
+  h += field('🎼 배경음악 mp3 파일명', 'input', 'bgmFile', '예: bgm_classical.mp3', '탐구 목표 팝업이 처음 클릭될 때 재생 시작됩니다.');
+  h += field('🔊 탐구 목표 나레이션 mp3 파일명 (선택)', 'input', 'objectiveNarrationFile', '예: tts_objective.mp3', '비워두면 "실험 단계" 탭의 Step 1 mp3 파일명을 사용합니다.');
+  h += '</div></div>';
+
   return h;
 }
 
@@ -244,10 +1289,17 @@ function renderEquipment() {
   for (var ri = 0; ri < EQUIPMENT_REFS.length; ri++) {
     var r = EQUIPMENT_REFS[ri];
     var checked = !!state.refChecks[r.id];
+    var hasSpec = !!r.spec;
+    // 장비별 부연 설명 (헷갈리기 쉬운 장비 구분)
+    var subtitle = hasSpec ? '상세 스펙 레퍼런스 포함' : '레퍼런스 코드 자동 포함';
+    if (r.id === 'tripod') subtitle = '기본 삼발이 (받침대 없음) — 레퍼런스 코드 자동 포함';
+    if (r.id === 'tripodWithShelf') subtitle = '⚠ 일반 삼발이와 다름: 다리 중간에 초 받침대 있음 — 상세 스펙 포함';
+    if (r.id === 'candleAssembly') subtitle = '삼발이+쇠그물+초 통합 — 쇠그물 표준 레퍼런스 자동 포함 (별도 체크 불필요)';
+    if (r.id === 'wireGauze') subtitle = '쇠그물 표준 레퍼런스 (통합 항목 사용 시에는 자동 포함됨)';
     h += '<label style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:' + (checked ? 'rgba(0,184,148,0.08)' : 'rgba(255,255,255,0.02)') + ';border:1.5px solid ' + (checked ? 'rgba(0,184,148,0.3)' : 'rgba(255,255,255,0.06)') + ';border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.2s">';
     h += '<input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="toggleRef(\'' + r.id + '\')" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer">';
-    h += '<div style="flex:1"><div style="font-size:14px;font-weight:600;color:' + (checked ? '#fff' : 'rgba(255,255,255,0.6)') + '">' + r.name + '</div>';
-    h += '<div style="font-size:11.5px;color:rgba(255,255,255,0.35);margin-top:2px">레퍼런스 코드 자동 포함</div></div>';
+    h += '<div style="flex:1"><div style="font-size:14px;font-weight:600;color:' + (checked ? '#fff' : 'rgba(255,255,255,0.6)') + '">' + r.name + (hasSpec ? ' <span style="font-size:10.5px;color:var(--accent2);font-weight:700;background:rgba(0,206,201,0.12);padding:2px 7px;border-radius:6px;margin-left:4px;vertical-align:middle">📐 상세</span>' : '') + '</div>';
+    h += '<div style="font-size:11.5px;color:rgba(255,255,255,0.35);margin-top:2px">' + subtitle + '</div></div>';
     if (checked) h += '<span style="font-size:12px;color:var(--accent);font-weight:600">✓ 사용</span>';
     h += '</label>';
   }
@@ -284,6 +1336,77 @@ function renderEquipment() {
   }
 
   h += '</div>';
+
+  // ★ v15: 학생 선택지 변형 그룹 (한 단계에 카드 N장 — 예: 구리판 길게/정사각형/ㄷ모양)
+  h += '<div class="card" style="margin-top:16px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
+  h += '<div style="font-size:17px;font-weight:700;color:#fff">🎴 학생 선택지 변형 그룹 <span class="badge">' + state.variantGroups.length + '개</span></div>';
+  h += '<button class="bp" onclick="addVariantGroup()" style="font-size:13px;padding:8px 16px">+ 그룹 추가</button>';
+  h += '</div>';
+  h += '<div class="hint" style="margin-bottom:16px">한 단계에서 학생이 <strong>여러 형태 중 하나를 골라 드래그</strong>해야 하는 경우(예: <strong>구리판 3종 — 길게 자른/정사각형/ㄷ모양</strong>) 사용합니다. 각 변형은 <strong>우측 패널 SVG 카드</strong> + <strong>3D 모델</strong> 양쪽에 모두 만들어지도록 지시서에 명시됩니다.</div>';
+
+  for (var vgi = 0; vgi < state.variantGroups.length; vgi++) {
+    var vg = state.variantGroups[vgi];
+    h += '<div class="scard" style="margin-bottom:14px">';
+
+    // 그룹 헤더
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
+    h += '<span style="font-size:14px;font-weight:700;color:#fff">그룹 ' + (vgi + 1) + (vg.groupName ? ': ' + esc(vg.groupName) : '') + '</span>';
+    h += '<button class="bd" onclick="removeVariantGroup(' + vgi + ')">그룹 삭제</button>';
+    h += '</div>';
+
+    // 그룹명 + 단계 인덱스
+    h += '<div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:10px" class="g2">';
+    h += '<div><div class="lb" style="font-size:11px">📦 그룹 이름 <span style="font-size:10px;color:rgba(255,255,255,0.4)">(예: 구리판)</span></div>';
+    h += '<input class="fi" value="' + esc(vg.groupName) + '" onchange="updateVariantGroup(' + vgi + ',\'groupName\',this.value)" placeholder="예: 구리판" style="font-size:12.5px;padding:7px 10px"></div>';
+    h += '<div><div class="lb" style="font-size:11px">🔢 어느 Step에서 표시? <span style="font-size:10px;color:rgba(255,255,255,0.4)">(0부터)</span></div>';
+    h += '<input class="fi" type="number" min="0" value="' + esc(vg.stepIndex) + '" onchange="updateVariantGroup(' + vgi + ',\'stepIndex\',this.value)" placeholder="0" style="font-size:12.5px;padding:7px 10px"></div>';
+    h += '</div>';
+
+    // 공통 표면 장식
+    h += '<div style="margin-bottom:12px"><div class="lb" style="font-size:11px">🎨 모든 변형의 공통 표면/장식 (선택) <span style="font-size:10px;color:rgba(255,255,255,0.4)">(예: 분홍색 열 변색 붙임딱지가 윗면에 배치)</span></div>';
+    h += '<textarea class="fi" onchange="updateVariantGroup(' + vgi + ',\'sharedSurfaceDecor\',this.value)" placeholder="예: 모든 변형의 윗면에 분홍색(#ff9bc0) 열 변색 붙임딱지가 붙어 있는 모습. SVG 카드와 3D 모델 양쪽 모두 표시." rows="2" style="font-size:12.5px;padding:7px 10px">' + esc(vg.sharedSurfaceDecor) + '</textarea></div>';
+
+    // 변형들
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 8px">';
+    h += '<span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7)">▸ 변형 목록 (' + vg.variants.length + '개)</span>';
+    h += '<button class="bs" onclick="addVariant(' + vgi + ')" style="font-size:11px;padding:4px 10px">+ 변형 추가</button>';
+    h += '</div>';
+
+    for (var vi = 0; vi < vg.variants.length; vi++) {
+      var v = vg.variants[vi];
+      h += '<div style="margin-bottom:10px;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:8px;border-left:3px solid var(--accent2)">';
+
+      h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+      h += '<span style="font-size:12px;font-weight:600;color:var(--accent2)">변형 ' + (vi + 1) + (v.name ? ': ' + esc(v.name) : '') + '</span>';
+      h += '<button class="bd" onclick="removeVariant(' + vgi + ',' + vi + ')" style="padding:2px 8px;font-size:11px">삭제</button>';
+      h += '</div>';
+
+      h += '<div style="margin-bottom:8px"><div class="lb" style="font-size:11px">🏷 변형 이름 <span style="font-size:10px;color:rgba(255,255,255,0.4)">(예: 길게 자른 구리판)</span></div>';
+      h += '<input class="fi" value="' + esc(v.name) + '" onchange="updateVariant(' + vgi + ',' + vi + ',\'name\',this.value)" placeholder="예: 길게 자른 구리판" style="font-size:12.5px;padding:7px 10px"></div>';
+
+      h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" class="g2">';
+      h += '<div><div class="lb" style="font-size:11px">🖼 우측 패널 SVG 카드 모양</div>';
+      h += '<textarea class="fi" onchange="updateVariant(' + vgi + ',' + vi + ',\'svgPattern\',this.value)" placeholder="예: 가로 직사각형(폭 82, 높이 12), 윗면에 분홍 붙임딱지 5개 일렬" rows="3" style="font-size:12px;padding:7px 10px">' + esc(v.svgPattern) + '</textarea></div>';
+      h += '<div><div class="lb" style="font-size:11px">🎲 3D 모델 형태 설명</div>';
+      h += '<textarea class="fi" onchange="updateVariant(' + vgi + ',' + vi + ',\'modelDesc\',this.value)" placeholder="예: BoxGeometry(1.6, 0.001, 0.2), 두께 1mm. 윗면에 분홍 붙임딱지 메시 일렬 배치" rows="3" style="font-size:12px;padding:7px 10px">' + esc(v.modelDesc) + '</textarea></div>';
+      h += '</div>';
+
+      h += '</div>';
+    }
+
+    h += '</div>';
+  }
+
+  if (state.variantGroups.length === 0) {
+    h += '<div class="hint" style="text-align:center;padding:20px;background:rgba(0,0,0,0.18);border-radius:10px">';
+    h += '학생이 한 단계에서 여러 형태 중 하나를 고르는 실험이라면 그룹을 추가하세요.<br>';
+    h += '<span style="font-size:11px;color:rgba(255,255,255,0.4)">(일반 장비처럼 단일 형태면 위쪽 "실험 장비" 섹션만으로 충분합니다.)</span>';
+    h += '</div>';
+  }
+
+  h += '</div>';
+
   return h;
 }
 
@@ -303,29 +1426,69 @@ function renderSteps() {
     // 헤더
     h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">';
     h += '<div style="display:flex;align-items:center;gap:10px">';
-    h += '<div style="width:30px;height:30px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">' + i + '</div>';
-    h += '<span style="font-size:15px;font-weight:600;color:#fff">Step ' + i + (i === 0 ? ' (초기 상태)' : '') + '</span></div>';
+    h += '<div style="width:30px;height:30px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">' + (i + 1) + '</div>';
+    h += '<span style="font-size:15px;font-weight:600;color:#fff">Step ' + (i + 1) + '</span></div>';
     h += '<div style="display:flex;gap:4px">';
     h += '<button class="bs" onclick="moveStep(' + i + ',-1)" style="padding:4px 10px;font-size:14px">↑</button>';
     h += '<button class="bs" onclick="moveStep(' + i + ',1)" style="padding:4px 10px;font-size:14px">↓</button>';
     h += '<button class="bd" onclick="removeStep(' + i + ')">삭제</button>';
     h += '</div></div>';
 
-    // 필드 그리드
+    // 필드 그리드 (학생 행동/UI 전환/완료 조건 — 가이드 메시지는 세그먼트로 이동)
     h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" class="g2">';
     h += stepField('🖐 학생 행동 (조작 활동)', i, 'studentAction', '예: 삼발이+쇠그물 카드를 3D 씬의 드롭 존으로 드래그');
     h += stepField('🔄 UI 전환', i, 'uiTransition', '예: 사이드 패널 숨김, 속도 조절 바 표시');
-    h += stepField('💬 가이드 메시지', i, 'guideMessage', '예: 삼발이와 쇠그물을 실험대 위에 올려놓으세요.');
     h += stepField('✅ 완료 조건', i, 'completionCondition', '예: 3D 드롭 존에 장비 드롭 성공');
+    h += stepField('🎮 실험별 고유 인터랙션 (선택)', i, 'customInteraction', '예: 재배치, 되돌리기, 방향 전환 등');
     h += '</div>';
 
-    h += '<div style="margin-top:12px"><div class="lb">🎮 실험별 고유 인터랙션 (선택)</div>';
-    h += '<input class="fi" value="' + esc(s.customInteraction) + '" onchange="updateStep(' + i + ',\'customInteraction\',this.value)" placeholder="예: 재배치, 되돌리기, 방향 전환 등"></div>';
-
-    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px" class="g2">';
-    h += '<div><div class="lb">🔊 mp3 파일명</div><input class="fi" value="' + esc(s.narrationKey) + '" onchange="updateStep(' + i + ',\'narrationKey\',this.value)" placeholder="예: tts_take3.mp3"></div>';
-    h += '<div><div class="lb">📝 나레이션 대사 <span style="font-size:10.5px;color:rgba(255,255,255,0.3);font-weight:400">(mp3 없을 시 TTS 재생)</span></div><input class="fi" value="' + esc(s.narrationText) + '" onchange="updateStep(' + i + ',\'narrationText\',this.value)" placeholder="예: 삼발이와 쇠그물을 준비하세요."></div>';
+    // ★ v15: 가이드+나레이션 세그먼트 리스트
+    h += '<div style="margin-top:16px;padding:12px 14px 14px;background:rgba(0,0,0,0.18);border-radius:10px;border:1px solid rgba(255,255,255,0.06)">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">';
+    h += '<div style="font-size:13px;font-weight:700;color:#fff">💬🔊 가이드 + 나레이션 세그먼트 ';
+    h += '<span style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.5)">(' + s.segments.length + '개 — 위에서 아래로 순차 재생)</span></div>';
+    h += '<button class="bp" onclick="addSegment(' + i + ')" style="font-size:11px;padding:4px 10px">+ 세그먼트 추가</button>';
     h += '</div>';
+
+    h += '<div class="hint" style="margin-bottom:10px;font-size:11.5px">한 단계 안에서 <strong>가이드 메시지가 바뀌거나 mp3가 끊어 재생</strong>되어야 하면 세그먼트를 여러 개로 나누세요. 각 세그먼트의 mp3가 끝난 뒤 "지연 시간"만큼 기다린 다음 다음 세그먼트로 넘어갑니다.</div>';
+
+    for (var sg = 0; sg < s.segments.length; sg++) {
+      var seg = s.segments[sg];
+      h += '<div style="margin-bottom:10px;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:8px;border-left:3px solid var(--accent)">';
+
+      // 세그먼트 헤더
+      h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+      h += '<span style="font-size:12px;font-weight:600;color:var(--accent2)">▸ 세그먼트 ' + (sg + 1) + '</span>';
+      h += '<div style="display:flex;gap:3px">';
+      h += '<button class="bs" onclick="moveSegment(' + i + ',' + sg + ',-1)" style="padding:2px 7px;font-size:11px">↑</button>';
+      h += '<button class="bs" onclick="moveSegment(' + i + ',' + sg + ',1)" style="padding:2px 7px;font-size:11px">↓</button>';
+      h += '<button class="bd" onclick="removeSegment(' + i + ',' + sg + ')" style="padding:2px 7px;font-size:11px">삭제</button>';
+      h += '</div></div>';
+
+      // 가이드 메시지
+      h += '<div style="margin-bottom:8px"><div class="lb" style="font-size:11px">💬 가이드 메시지 <span style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:400">(이 세그먼트 동안 화면에 표시될 문구)</span></div>';
+      h += '<textarea class="fi" onchange="updateSegment(' + i + ',' + sg + ',\'guide\',this.value)" placeholder="예: 열 변색 붙임딱지의 색깔 변화를 관찰해 보세요." rows="2" style="font-size:12.5px">' + esc(seg.guide) + '</textarea></div>';
+
+      // mp3 + TTS 폴백 (2열)
+      h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px" class="g2">';
+      h += '<div><div class="lb" style="font-size:11px">🔊 mp3 파일명</div>';
+      h += '<input class="fi" value="' + esc(seg.mp3File) + '" onchange="updateSegment(' + i + ',' + sg + ',\'mp3File\',this.value)" placeholder="예: tts_take4.mp3" style="font-size:12.5px;padding:7px 10px"></div>';
+      h += '<div><div class="lb" style="font-size:11px">📝 나레이션 대사 <span style="font-size:10px;color:rgba(255,255,255,0.3);font-weight:400">(mp3 없을 시 TTS 재생)</span></div>';
+      h += '<input class="fi" value="' + esc(seg.ttsText) + '" onchange="updateSegment(' + i + ',' + sg + ',\'ttsText\',this.value)" placeholder="예: 색깔 변화를 관찰해 보세요." style="font-size:12.5px;padding:7px 10px"></div>';
+      h += '</div>';
+
+      // 지연 시간
+      if (sg > 0) {
+        h += '<div><div class="lb" style="font-size:11px">⏱ 이전 세그먼트 종료 후 지연 시간 (초) <span style="font-size:10px;color:rgba(255,255,255,0.3);font-weight:400">(0이면 이전 mp3 끝나자마자 즉시 재생)</span></div>';
+        h += '<input class="fi" type="number" min="0" step="0.5" value="' + esc(seg.delaySec) + '" onchange="updateSegment(' + i + ',' + sg + ',\'delaySec\',this.value)" placeholder="0" style="font-size:12.5px;padding:7px 10px;max-width:130px"></div>';
+      } else {
+        h += '<div style="font-size:11px;color:rgba(255,255,255,0.35);font-style:italic">▸ 첫 세그먼트는 단계 시작과 동시에 즉시 재생됩니다.</div>';
+      }
+
+      h += '</div>';
+    }
+
+    h += '</div>'; // 세그먼트 박스 닫기
 
     h += '</div>';
   }
@@ -394,13 +1557,72 @@ function renderSummary() {
   h += field('제목', 'input', 'summaryTitle', '예: 실험 결과 정리');
   h += field('본문', 'textarea', 'summaryBody', '예: 고체 물질의 한쪽 끝을 가열하면 열이 온도가 높은 곳에서 낮은 곳으로 이동합니다.');
   h += field('핵심 개념 박스', 'textarea', 'summaryConceptBox', '예: 전도: 고체에서 열이 온도가 높은 곳에서 낮은 곳으로 이동하는 현상');
-  h += field('정리 나레이션 텍스트 (선택)', 'textarea', 'summaryNarration', '결과 요약 시 TTS로 읽을 나레이션 전문');
   h += '</div></div>';
+
+  // ── 결과 요약 나레이션 (TTS) 섹션 — v15: 다중 세그먼트 지원 ──
+  h += '<div class="card" style="margin-top:16px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
+  h += '<div style="font-size:17px;font-weight:700;color:#fff">🎙 결과 요약 나레이션 (' + state.summarySegments.length + '개 세그먼트)</div>';
+  h += '<button class="bp" onclick="addSummarySegment()" style="font-size:12px;padding:6px 14px">+ 세그먼트 추가</button>';
+  h += '</div>';
+  h += '<div class="hint" style="margin-bottom:16px">결과 요약 팝업이 표시될 때 순차적으로 재생됩니다. mp3 파일명을 적으면 해당 파일이 재생되고, 실패 시 <strong style="color:var(--accent2)">대사 텍스트</strong>로 TTS 폴백됩니다. <strong>여러 mp3를 끊어 재생</strong>하고 싶으면 세그먼트를 여러 개 추가하세요.</div>';
+  h += '<div style="display:flex;flex-direction:column;gap:12px">';
+
+  for (var ssi = 0; ssi < state.summarySegments.length; ssi++) {
+    var sseg = state.summarySegments[ssi];
+    h += '<div style="padding:12px 14px;background:rgba(0,0,0,0.18);border-radius:10px;border-left:3px solid var(--accent)">';
+
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">';
+    h += '<span style="font-size:13px;font-weight:600;color:var(--accent2)">▸ 세그먼트 ' + (ssi + 1) + '</span>';
+    h += '<div style="display:flex;gap:3px">';
+    h += '<button class="bs" onclick="moveSummarySegment(' + ssi + ',-1)" style="padding:3px 8px;font-size:11px">↑</button>';
+    h += '<button class="bs" onclick="moveSummarySegment(' + ssi + ',1)" style="padding:3px 8px;font-size:11px">↓</button>';
+    h += '<button class="bd" onclick="removeSummarySegment(' + ssi + ')" style="padding:3px 8px;font-size:11px">삭제</button>';
+    h += '</div></div>';
+
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" class="g2">';
+    h += '<div><div class="lb" style="font-size:11px">🔊 mp3 파일명</div>';
+    h += '<input class="fi" value="' + esc(sseg.mp3File) + '" onchange="updateSummarySegment(' + ssi + ',\'mp3File\',this.value)" placeholder="예: tts_summary1.mp3" style="font-size:12.5px;padding:7px 10px"></div>';
+    h += '<div><div class="lb" style="font-size:11px">📝 나레이션 대사 <span style="font-size:10px;color:rgba(255,255,255,0.3);font-weight:400">(mp3 없을 시 TTS 재생)</span></div>';
+    h += '<textarea class="fi" onchange="updateSummarySegment(' + ssi + ',\'ttsText\',this.value)" placeholder="이 세그먼트에서 읽을 대사" rows="2" style="font-size:12.5px;padding:7px 10px">' + esc(sseg.ttsText) + '</textarea></div>';
+    h += '</div>';
+
+    if (ssi > 0) {
+      h += '<div style="margin-top:10px"><div class="lb" style="font-size:11px">⏱ 이전 세그먼트 종료 후 지연 시간 (초)</div>';
+      h += '<input class="fi" type="number" min="0" step="0.5" value="' + esc(sseg.delaySec) + '" onchange="updateSummarySegment(' + ssi + ',\'delaySec\',this.value)" placeholder="0" style="font-size:12.5px;padding:7px 10px;max-width:130px"></div>';
+    } else {
+      h += '<div style="font-size:11px;color:rgba(255,255,255,0.35);font-style:italic;margin-top:8px">▸ 첫 세그먼트는 결과 요약 팝업이 뜨자마자 즉시 재생됩니다.</div>';
+    }
+
+    h += '</div>';
+  }
+
+  h += '</div></div>';
+
   return h;
 }
 
-/* ═══ 탭 5: 미리보기 ═══ */
+/* ═══ 탭 5: 미리보기 (뼈대 채우기 지시서 전용) ═══ */
 function renderPreview() {
+  var result = generateMarkdown();
+
+  // ── 복사 / 다운로드 버튼 ──
+  var h = '<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">';
+  h += '<button class="bp" onclick="copyMd()" id="copy-btn">📋 뼈대 지시서 복사</button>';
+  h += '<button class="bs" onclick="downloadMd()" style="display:flex;align-items:center;gap:5px">⬇ 뼈대 지시서 다운로드</button>';
+  h += '</div>';
+
+  // ── 헤더 + 미리보기 본문 ──
+  h += '<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:8px">';
+  h += '<span style="background:linear-gradient(135deg,var(--accent),var(--accent2));padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700">뼈대</span>';
+  h += 'v1 뼈대 베이스 — 마커 영역만 수정</div>';
+  h += '<div class="preview-md" id="preview-md-active">' + esc(result.md3) + '</div>';
+
+  return h;
+}
+
+/* (구버전 renderPreview 본체는 아래에 무시되도록 보존 — 진입 불가 영역) */
+function _renderPreview_legacy_unused() {
   var result = generateMarkdown();
 
   var h = '<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">';
@@ -462,7 +1684,7 @@ function generateMarkdown() {
     var stepSection = '### 1-2. 실험 단계 설계\n\n';
     stepSection += '교과서의 "탐구 과정"을 가상실험 Step으로 변환한 결과:\n\n';
     state.steps.forEach(function(s, i) {
-      stepSection += '#### Step ' + i + (i === 0 ? ' (초기 상태)' : '') + '\n';
+      stepSection += '#### Step ' + (i + 1) + '\n';
       stepSection += '- **학생 행동**: ' + (s.studentAction || '(교과서 참고하여 결정)') + '\n';
       stepSection += '- **UI 전환**: ' + (s.uiTransition || '(자동 결정)') + '\n';
       stepSection += '- **가이드 메시지**: ' + (s.guideMessage || '(교과서 문구 참고)') + '\n';
@@ -483,6 +1705,42 @@ function generateMarkdown() {
     checkedRefs.forEach(function(r) { equipSection += '- **' + r.name + '**: 레퍼런스 시트 코드 사용 (`' + r.id + '`)\n'; });
     customs.forEach(function(e) { equipSection += '- **' + e.name + '**: 교과서 사진 참고하여 새로 모델링' + (e.photoNote ? ' — ' + e.photoNote : '') + '\n'; });
     equipSection += '\n';
+
+    // 체크된 레퍼런스 중 spec(상세 Three.js 레퍼런스)이 있는 장비는 상세 블록 추가
+    // ※ 통합 빌더(예: candleAssembly)가 내부에서 호출하는 의존 빌더(예: wireGauze)도
+    //    spec이 누락되지 않도록 자동 보강한다. (★⑤ 블록과 동일한 정의를 공유)
+    var EQUIP_DEPS_1_3 = {
+      candleAssembly: ['wireGauze']
+    };
+    var refIdToObj_1_3 = {};
+    for (var rii13 = 0; rii13 < EQUIPMENT_REFS.length; rii13++) {
+      refIdToObj_1_3[EQUIPMENT_REFS[rii13].id] = EQUIPMENT_REFS[rii13];
+    }
+    var detailedRefs = [];
+    var addedIds_1_3 = {};
+    function pushDetailed(refObj) {
+      if (!refObj || addedIds_1_3[refObj.id]) return;
+      if (!refObj.spec) return;
+      addedIds_1_3[refObj.id] = true;
+      detailedRefs.push(refObj);
+    }
+    for (var crI13 = 0; crI13 < checkedRefs.length; crI13++) {
+      var thisRef13 = checkedRefs[crI13];
+      var deps13 = EQUIP_DEPS_1_3[thisRef13.id] || [];
+      // 의존 항목을 본체보다 먼저 출력 (정의가 호출보다 위쪽에 오도록)
+      for (var di13 = 0; di13 < deps13.length; di13++) {
+        pushDetailed(refIdToObj_1_3[deps13[di13]]);
+      }
+      pushDetailed(thisRef13);
+    }
+    if (detailedRefs.length > 0) {
+      equipSection += '#### 📐 장비별 3D 모델링 상세 레퍼런스\n\n';
+      equipSection += '> 아래는 각 장비의 Three.js 구현 스펙입니다. 치수·재질·구성요소를 그대로 따라 주세요.\n> 레퍼런스에 없는 장비만 교과서 사진을 보고 새로 모델링하면 됩니다.\n\n';
+      detailedRefs.forEach(function(r) {
+        equipSection += '##### ' + r.name + ' (`' + r.id + '`)\n\n';
+        equipSection += r.spec + '\n\n';
+      });
+    }
 
     md1 = md1.replace(/### 1-3\. 3D 오브젝트 파악[\s\S]*?(?=---)/, equipSection);
   }
@@ -510,44 +1768,797 @@ function generateMarkdown() {
     }
   }
 
-  // 오디오 매핑: 사용자가 입력한 경우 원본의 예시를 대체
-  var hasNarration = state.steps.some(function(s) { return s.narrationKey || s.narrationText; });
-  if (hasNarration) {
-    var audioSection = '### 외부 mp3 파일 방식 (base64 내장 금지!)\n\n```javascript\n';
-    audioSection += '// 오디오 파일 매핑\nvar audioFiles = {\n';
+  // ═══ 오디오 시스템: audioFiles 매핑 + Step별 호출 지침 + 팝업/요약/BGM 실제 코드 ═══
+  var hasStepNarration = state.steps.some(function(s) { return s.narrationKey || s.narrationText; });
+  var hasSummaryNarr = !!(state.summaryNarrationFile || state.summaryNarration);
+  var hasObjectiveNarr = !!(state.objectiveNarrationFile);
+
+  if (hasStepNarration || hasSummaryNarr || hasObjectiveNarr || state.bgmFile) {
+    var bgm = state.bgmFile || 'bgm.mp3';
+    var objectiveFile = state.objectiveNarrationFile || 'tts_take1.mp3';
+    var summaryFile = state.summaryNarrationFile || 'tts_summary.mp3';
+
+    var audioSection = '### 외부 mp3 파일 방식 (base64 내장 금지!)\n\n';
+    audioSection += '> **필수**: 아래 매핑과 호출 규칙을 그대로 적용하세요. LLM이 재해석하여 키를 바꾸거나 호출 위치를 옮기면 mp3가 재생되지 않습니다.\n\n';
+    audioSection += '```javascript\n';
+    audioSection += '// ── 오디오 파일 매핑 ──\n';
+    audioSection += 'var audioFiles = {\n';
+    audioSection += "  objective: '" + objectiveFile + "',  // 탐구 목표 팝업 나레이션\n";
     state.steps.forEach(function(s, i) {
       if (s.narrationKey) {
-        var fname = s.narrationKey;
-        // 키는 항상 take1, take2... 형식 (playAudio 호출과 일치)
-        var key = 'take' + (i + 1);
-        audioSection += "  " + key + ": '" + fname + "',  // Step " + i + "\n";
+        var key = 'step' + i;
+        audioSection += "  " + key + ": '" + s.narrationKey + "',  // Step " + (i + 1) + "\n";
       }
     });
-    audioSection += '};\n\n// TTS 폴백용 텍스트\nvar audioTexts = {\n';
+    if (state.summaryNarrationFile || state.summaryNarration) {
+      audioSection += "  summary: '" + summaryFile + "',  // 결과 요약 팝업\n";
+    }
+    audioSection += '};\n\n';
+
+    audioSection += '// ── TTS 폴백 텍스트 (mp3 재생 실패 시 사용) ──\n';
+    audioSection += 'var audioTexts = {\n';
+    if (state.objective) {
+      audioSection += "  objective: '" + state.objective.replace(/'/g, "\\'").replace(/\n/g, ' ') + "',\n";
+    }
     state.steps.forEach(function(s, i) {
       if (s.narrationText) {
-        // 키는 항상 take1, take2... 형식 (playAudio 호출과 일치)
-        var key = 'take' + (i + 1);
-        audioSection += "  " + key + ": '" + s.narrationText.replace(/'/g, "\\'") + "',\n";
+        var key = 'step' + i;
+        audioSection += "  " + key + ": '" + s.narrationText.replace(/'/g, "\\'").replace(/\n/g, ' ') + "',\n";
       }
     });
-    audioSection += '};\n```\n\n';
+    if (state.summaryNarration) {
+      audioSection += "  summary: '" + state.summaryNarration.replace(/'/g, "\\'").replace(/\n/g, ' ') + "',\n";
+    }
+    audioSection += '};\n\n';
+
+    audioSection += '// ── 배경음악 파일 ──\n';
+    audioSection += "var BGM_FILE = '" + bgm + "';  // 탐구 목표 팝업 첫 클릭 시 재생 시작\n";
+    audioSection += '```\n\n';
+
+    // ★ Step별 호출 규칙 (명시적 테이블)
+    audioSection += '### Step별 오디오 호출 규칙 (반드시 준수)\n\n';
+    audioSection += '아래 표의 각 Step에 진입했을 때 **즉시 해당 오디오 키를 `playAudio()`로 호출**하세요.\n';
+    audioSection += 'Step 전환이 드래그/드롭 완료나 타이머로 트리거되는 경우에도, 전환 직후 호출을 반드시 포함해야 합니다.\n\n';
+    audioSection += '| Step | 진입 조건 | 오디오 키 | 나레이션 내용 |\n';
+    audioSection += '|------|----------|-----------|--------------|\n';
+    state.steps.forEach(function(s, i) {
+      if (s.narrationKey || s.narrationText) {
+        var cond = i === 0 ? '탐구 목표 팝업 닫힘' : ('Step ' + i + ' 완료');
+        var preview = (s.narrationText || s.narrationKey || '—').replace(/\|/g, '｜');
+        if (preview.length > 45) preview = preview.substring(0, 45) + '…';
+        audioSection += '| ' + (i + 1) + ' | ' + cond + ' | `step' + i + '` | ' + preview + ' |\n';
+      }
+    });
+    audioSection += '\n**예시 — Step 전환 함수 내부에서:**\n\n';
+    audioSection += '```javascript\n';
+    audioSection += 'function goToStep(n) {\n';
+    audioSection += '  currentStep = n;\n';
+    audioSection += '  updateDots(n);\n';
+    audioSection += '  updateGuide(GUIDE_MESSAGES[n]);\n';
+    audioSection += "  playAudio('step' + n);  // ★ 이 호출이 누락되면 mp3가 재생되지 않음\n";
+    audioSection += '}\n';
+    audioSection += '```\n\n';
+
+    // ★ 탐구 목표 팝업 실제 코드 (BGM + objective 나레이션)
+    audioSection += '### 탐구 목표 팝업 동작 — 실제 코드 (그대로 사용)\n\n';
+    audioSection += 'v1에서 만든 팝업의 클릭 핸들러를 아래 코드로 교체:\n\n';
+    audioSection += '```javascript\n';
+    audioSection += 'var popupClickCount = 0;\n';
+    audioSection += "var popup = document.getElementById('objective-popup');\n";
+    audioSection += "popup.addEventListener('click', function handlePopupClick() {\n";
+    audioSection += '  popupClickCount++;\n';
+    audioSection += '  if (popupClickCount === 1) {\n';
+    audioSection += '    // 첫 클릭: 배경음악 시작 + 탐구 목표 나레이션 재생\n';
+    audioSection += '    startBgMusic();\n';
+    audioSection += "    playAudio('objective');\n";
+    audioSection += '  } else {\n';
+    audioSection += '    // 두 번째 클릭: 팝업 닫고 Step 1 진입\n';
+    audioSection += "    popup.style.display = 'none';\n";
+    audioSection += "    popup.removeEventListener('click', handlePopupClick);\n";
+    audioSection += '    stopAudio();\n';
+    audioSection += '    setTimeout(function() {\n';
+    audioSection += '      goToStep(0);  // Step 1 가이드 + step0 오디오 재생\n';
+    audioSection += '    }, 300);\n';
+    audioSection += '  }\n';
+    audioSection += '});\n';
+    audioSection += '```\n\n';
+
+    // ★ 결과 요약 나레이션 (입력된 경우)
+    if (hasSummaryNarr) {
+      audioSection += '### 결과 요약 나레이션 — 실제 코드\n\n';
+      audioSection += '결과 요약 오버레이를 표시할 때 아래 코드로 자동 재생합니다:\n\n';
+      audioSection += '```javascript\n';
+      audioSection += 'function goToSummary() {\n';
+      audioSection += "  document.getElementById('next-btn').style.display = 'none';\n";
+      audioSection += "  document.getElementById('summary-overlay').style.display = 'flex';\n";
+      audioSection += '  isSimulating = false;\n';
+      audioSection += "  playAudio('summary');  // 결과 요약 나레이션 재생\n";
+      audioSection += '}\n';
+      audioSection += '```\n\n';
+    }
+
+    // ★ BGM 파일명 반영 (startBgMusic 함수)
+    audioSection += '### 배경음악 함수 — BGM_FILE 변수 사용\n\n';
+    audioSection += '```javascript\n';
+    audioSection += 'var bgAudio = null, bgOn = false;\n\n';
+    audioSection += 'function startBgMusic() {\n';
+    audioSection += '  if (!bgAudio) {\n';
+    audioSection += '    bgAudio = new Audio(BGM_FILE);\n';
+    audioSection += '    bgAudio.loop = true; bgAudio.volume = 0.06;\n';
+    audioSection += '  }\n';
+    audioSection += '  var p = bgAudio.play();\n';
+    audioSection += '  if (p && p.then) p.then(function() { bgOn = true; updateMusicIcon(); })\n';
+    audioSection += "    .catch(function() { console.warn('배경음악 재생 실패'); });\n";
+    audioSection += '}\n';
+    audioSection += '```\n\n';
 
     md2 = md2.replace(/### 외부 mp3 파일 방식[\s\S]*?(?=### TTS 초기화)/, audioSection);
+
+    // 추가로, orig2의 탐구 목표 팝업 샘플 코드 블록을 통째로 제거 (위에서 이미 실제 코드를 제공했음)
+    md2 = md2.replace(/### 탐구 목표 팝업 동작 수정[\s\S]*?(?=### 각 Step 전환 시 오디오 재생)/, '');
+    md2 = md2.replace(/### 각 Step 전환 시 오디오 재생[\s\S]*?(?=---)/, '');
   }
 
   // 결과 요약 내용: 사용자가 입력한 경우 추가
-  if (state.summaryTitle || state.summaryBody || state.summaryConceptBox || state.summaryNarration) {
+  if (state.summaryTitle || state.summaryBody || state.summaryConceptBox || state.summaryNarration || state.summaryNarrationFile) {
     var summaryInsert = '\n### 결과 요약 팝업 내용\n\n';
     if (state.summaryTitle) summaryInsert += '- **제목**: ' + state.summaryTitle + '\n';
     if (state.summaryBody) summaryInsert += '- **본문**: ' + state.summaryBody + '\n';
     if (state.summaryConceptBox) summaryInsert += '- **핵심 개념 박스**: ' + state.summaryConceptBox + '\n';
-    if (state.summaryNarration) summaryInsert += '- **정리 나레이션**: ' + state.summaryNarration + '\n';
-    summaryInsert += '\n';
+    if (state.summaryNarrationFile) summaryInsert += '- **정리 나레이션 mp3**: `' + state.summaryNarrationFile + '` (키: `summary`)\n';
+    if (state.summaryNarration) summaryInsert += '- **정리 나레이션 대사**: ' + state.summaryNarration + '\n';
+    summaryInsert += '\n결과 요약 팝업 진입 시 `playAudio(\'summary\')`를 호출하여 위 mp3를 재생하세요. mp3가 없으면 대사로 TTS 폴백됩니다.\n\n';
     md2 = md2.replace('## 5. 결과 요약 연결', '## 5. 결과 요약 연결' + summaryInsert);
   }
 
-  return { md1: md1, md2: md2 };
+  // ═══ 공통 UI 규칙: 팝업창 제목에 이모지 사용 금지 ═══
+  // md1 (주의사항), md2 (주의사항) 모두에 규칙 추가 — LLM이 아이콘/이모지를 제목 앞에 자동으로 붙이는 경향 차단
+  var popupEmojiRule = '\n## 팝업창 UI 규칙 (필수)\n\n' +
+    '**탐구 목표 팝업창(`#objective-popup`)과 실험 결과 정리 팝업창(`#summary-overlay`)의 제목·본문·핵심 개념 박스에 이모지를 절대 사용하지 마세요.**\n\n' +
+    '- 제목 예시: `🎯 탐구 목표` ❌ → `탐구 목표` ✅\n' +
+    '- 제목 예시: `🌊 실험 결과 정리` ❌ → `실험 결과 정리` ✅\n' +
+    '- 핵심 개념 박스 앞의 `💡`, `📌`, `✨` 등도 모두 제거\n' +
+    '- 사용자가 이모지를 포함해 입력했더라도, 팝업 렌더링 시에는 이모지를 제외하고 텍스트만 표시\n\n' +
+    '헤더·마스코트·버튼 등 팝업 외 UI 요소에는 기존 이모지를 유지해도 됩니다. 이 규칙은 **팝업창 내부 텍스트에만** 적용됩니다.\n';
+
+  md1 = md1.replace(/## 주의사항/, popupEmojiRule + '\n## 주의사항');
+  md2 = md2.replace(/## 주의사항/, popupEmojiRule + '\n## 주의사항');
+
+  /* ============================================================
+     ★ 지시서 3: 뼈대 채우기 지시서
+     ============================================================ */
+  var md3 = generateCanMarkdown();
+
+  return { md1: md1, md2: md2, md3: md3 };
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ★ 뼈대 채우기 지시서 생성기
+   첨부한 가상실험실_뼈대_v1.html의 ★① ~ ★⑧ 영역만 채우도록 지시
+   =══════════════════════════════════════════════════════════════ */
+function generateCanMarkdown() {
+  // ── 헬퍼: 빈 값 처리 ──
+  function val(v, fallback) {
+    if (v === undefined || v === null) return fallback || '(미입력)';
+    var s = String(v).trim();
+    return s ? s : (fallback || '(미입력)');
+  }
+  function bullet(arr, indent) {
+    if (!arr || !arr.length) return '(미입력)';
+    var pad = indent || '';
+    return arr.map(function(x) { return pad + '- ' + x; }).join('\n');
+  }
+
+  // ── 색상 테마 추론 ──
+  // simUseTemplate 기준으로 기본 추천 + 안내. 사용자가 직접 결정해야 함을 명시.
+  var themeAdvice = '';
+  var titleStr = (state.title || '').toLowerCase();
+  var conceptStr = (state.concept || '').toLowerCase();
+  var combo = titleStr + ' ' + conceptStr + ' ' + (state.simDescription || '').toLowerCase();
+  var themeSuggest;
+  if (state.simUseTemplate === 'heatConduction' || /고체|전도|금속|구리|판/.test(combo)) {
+    themeSuggest = {
+      name: '열전도/고체 (따뜻한 톤)',
+      accent: '#ff6b9d',
+      accent2: '#feca57',
+      accentLight: '#ffd9e6'
+    };
+  } else if (state.simUseTemplate === 'convection' || /대류|액체|물|잉크|비커/.test(combo)) {
+    themeSuggest = {
+      name: '대류/액체 (시원한 톤)',
+      accent: '#00b8d4',
+      accent2: '#0288d1',
+      accentLight: '#b3e5fc'
+    };
+  } else if (/자석|자기|자성/.test(combo)) {
+    themeSuggest = {
+      name: '자석 (붉은-파란 대비)',
+      accent: '#e74c3c',
+      accent2: '#3498db',
+      accentLight: '#fadbd8'
+    };
+  } else if (/식물|꽃|광합성|성장/.test(combo)) {
+    themeSuggest = {
+      name: '식물/생물 (자연 녹색)',
+      accent: '#2ecc71',
+      accent2: '#27ae60',
+      accentLight: '#d5f5e3'
+    };
+  } else {
+    themeSuggest = {
+      name: '기본 (민트/청록)',
+      accent: '#00b894',
+      accent2: '#00cec9',
+      accentLight: '#a7f3d0'
+    };
+  }
+
+  // ── 장비 목록 (체크된 것 + 커스텀) ──
+  var checkedRefs = EQUIPMENT_REFS.filter(function(r) { return state.refChecks[r.id]; });
+  var customs = (state.customEquips || []).filter(function(e) { return e.name; });
+  var equipList = [];
+  for (var ei = 0; ei < checkedRefs.length; ei++) equipList.push(checkedRefs[ei].name);
+  for (var ej = 0; ej < customs.length; ej++) equipList.push(customs[ej].name + ' (커스텀)');
+
+  // ── 단계 정보 정리 (v15: 세그먼트 기반) ──
+  var nSteps = (state.steps || []).length;
+  var stepDescs = [];
+  for (var si = 0; si < nSteps; si++) {
+    var s = state.steps[si];
+    var line = '**Step ' + (si + 1) + '**';
+    if (s.studentAction) line += ' — 학생 행동: ' + s.studentAction;
+    if (s.uiTransition) line += '\n  - UI 전환: ' + s.uiTransition;
+    if (s.customInteraction) line += '\n  - 고유 인터랙션: ' + s.customInteraction;
+    if (s.completionCondition) line += '\n  - 완료 조건: ' + s.completionCondition;
+
+    // 세그먼트 출력 — 한 줄 또는 여러 줄
+    var segArr = s.segments || [];
+    if (segArr.length === 1) {
+      var only = segArr[0];
+      if (only.guide) line += '\n  - 가이드: "' + only.guide.replace(/\n/g, ' ') + '"';
+      if (only.mp3File) line += '\n  - mp3: `' + only.mp3File + '`';
+      if (only.ttsText) line += '\n  - 나레이션 대사: "' + only.ttsText.replace(/\n/g, ' ') + '"';
+    } else if (segArr.length > 1) {
+      line += '\n  - 가이드 + 나레이션 (' + segArr.length + '개 세그먼트, **순차 재생**):';
+      for (var sgi = 0; sgi < segArr.length; sgi++) {
+        var sg = segArr[sgi];
+        var bulletPrefix = '\n    ' + (sgi + 1) + ') ';
+        var parts = [];
+        if (sg.guide) parts.push('가이드 "' + sg.guide.replace(/\n/g, ' ') + '"');
+        if (sg.mp3File) parts.push('mp3 `' + sg.mp3File + '`');
+        if (sg.ttsText) parts.push('TTS 폴백 "' + sg.ttsText.replace(/\n/g, ' ') + '"');
+        if (sgi === 0) {
+          parts.push('단계 시작 즉시 재생');
+        } else {
+          var d = parseFloat(sg.delaySec) || 0;
+          parts.push('이전 세그먼트 종료 후 ' + d + '초 지연');
+        }
+        line += bulletPrefix + parts.join(' / ');
+      }
+    }
+    stepDescs.push(line);
+  }
+
+  // ── 시뮬레이션 코어 패턴 ──
+  var simTemplate = '(자유 구현 — 사용자 기술 기반)';
+  if (state.simUseTemplate) {
+    var tmpl = CODE_TEMPLATES.find(function(t) { return t.id === state.simUseTemplate; });
+    if (tmpl) simTemplate = tmpl.title + ' — ' + tmpl.desc;
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // 본문 생성 시작
+  // ════════════════════════════════════════════════════════════
+  var md = '';
+  md += '# 가상실험실 뼈대 채우기 지시서\n\n';
+  md += '> **이 지시서는 "처음부터 HTML을 다 만들어라"가 아닙니다.**\n';
+  md += '> 첨부한 `가상실험실_뼈대_v1.html`(공통 코드만 들어있는 뼈대 HTML)의\n';
+  md += '> **★① ~ ★⑧ 마커 영역만 채워주세요.** 마커 밖의 코드는 절대 수정하지 마세요.\n\n';
+  md += '> **사용법:**\n';
+  md += '> 1. 첨부된 `가상실험실_뼈대_v1.html` 파일을 엽니다.\n';
+  md += '> 2. 아래 ★① ~ ★⑧ 지시에 따라 각 마커 영역만 수정합니다.\n';
+  md += '> 3. 마커 밖의 코드(공통 구조, 변수명, 함수명, CSS 클래스명, 이벤트 시스템 등)는 **절대 변경하지 마세요.**\n';
+  md += '> 4. 결과 파일명: `가상실험실_' + (state.title || '[실험주제]').replace(/[\\/:*?"<>|]/g, '_') + '.html`\n\n';
+  md += '---\n\n';
+
+  /* ── 실험 기본 정보 ── */
+  md += '## 실험 기본 정보\n\n';
+  md += '| 항목 | 내용 |\n|------|------|\n';
+  md += '| 단원 | ' + val(state.unit) + ' |\n';
+  md += '| 제목 | ' + val(state.title) + ' |\n';
+  md += '| 탐구 목표 | ' + val(state.objective).replace(/\n/g, ' ') + ' |\n';
+  md += '| 핵심 개념 | ' + val(state.concept).replace(/\n/g, ' ') + ' |\n';
+  md += '| 준비물 | ' + val(state.materials).replace(/\n/g, ' ') + ' |\n\n';
+  md += '---\n\n';
+
+  /* ── ★① 색상 테마 ── */
+  md += '## ★① 색상 테마 (CSS 변수 3개)\n\n';
+  md += '뼈대 HTML 상단의 ★① 마커 영역(`<style>` 안의 `:root` 블록)에 있는 CSS 변수 **3개**를 아래 값으로 교체하세요.\n\n';
+  md += '**추천 테마: ' + themeSuggest.name + '**\n\n';
+  md += '```css\n';
+  md += ':root {\n';
+  md += '  --accent: ' + themeSuggest.accent + ';        /* 메인 강조 색상 — 버튼, 활성 dot, 그라데이션 시작점 */\n';
+  md += '  --accent2: ' + themeSuggest.accent2 + ';       /* 그라데이션 페어 색상 — 그라데이션 끝점 */\n';
+  md += '  --accent-light: ' + themeSuggest.accentLight + ';  /* 완료 상태 표시용 — 완료된 dot 배경, 약한 강조 */\n';
+  md += '}\n';
+  md += '```\n\n';
+  md += '> 이 3개 변수만 바꾸면 헤더 그라데이션, dot, 버튼, 가이드 박스 강조선 등 전체 톤이 일관되게 변경됩니다. 다른 CSS는 건드리지 마세요.\n\n';
+  md += '---\n\n';
+
+  /* ── ★② HTML 요소 수정 ── */
+  md += '## ★② HTML 요소 수정\n\n';
+  md += '뼈대 HTML 본문의 ★② 마커가 붙은 HTML 영역들을 아래 내용으로 채우세요.\n\n';
+
+  md += '### ★②-1 페이지 제목 / 헤더 타이틀\n\n';
+  md += '- `<title>` 태그: `' + val(state.title) + '`\n';
+  md += '- 헤더 서브타이틀(h1 옆 부제): `' + val(state.title) + '`\n\n';
+
+  md += '### ★②-2 탐구 목표 팝업 (`#objective-popup`)\n\n';
+  md += '- 팝업 제목: **`탐구 목표`** (이모지 ❌ — 텍스트만)\n';
+  md += '- 팝업 본문: `' + val(state.objective).replace(/\n/g, ' ') + '`\n\n';
+
+  md += '### ★②-3 스텝 인디케이터 dot 개수\n\n';
+  md += '- 사용자가 설계한 단계 수: **' + nSteps + '단계**\n';
+  md += '- 뼈대 HTML의 `#step-dots` 컨테이너 안에 `<div class="dot"></div>`를 **' + nSteps + '개** 배치하세요.\n';
+  md += '- 첫 번째 dot에 `active` 클래스를 붙여 시작 시 강조되게 하세요.\n\n';
+
+  md += '### ★②-4 사이드 카드 패널 (단계별 선택지/장비 카드)\n\n';
+  md += '학생이 드래그 앤 드롭하는 장비 카드들을 사이드 패널에 배치하세요.\n';
+  md += '체크된 장비 목록 (탭 3에서 선택한 항목 + 커스텀 장비):\n\n';
+  md += (equipList.length ? bullet(equipList) : '- (장비를 선택하지 않았습니다 — 탭 3에서 장비를 선택하세요)') + '\n\n';
+
+  // ★ v15: 변형 그룹 — 사이드 패널 SVG 카드 명세
+  if (state.variantGroups && state.variantGroups.length > 0) {
+    md += '#### 학생 선택지 변형 카드 (필수 구현)\n\n';
+    md += '아래 변형 그룹은 **사이드 카드 패널의 SVG 카드 + 3D 모델 양쪽 모두에 동일한 외형**으로 만들어야 합니다. 우측 패널의 SVG 카드는 `<svg>` 요소로 구현하고, 각 변형의 명세를 충실히 반영하세요.\n\n';
+    for (var vg2 = 0; vg2 < state.variantGroups.length; vg2++) {
+      var grp = state.variantGroups[vg2];
+      md += '##### 그룹 ' + (vg2 + 1) + ': ' + (grp.groupName || '(이름 없음)') + ' — Step ' + ((grp.stepIndex || 0) + 1) + '에 표시\n\n';
+      if (grp.sharedSurfaceDecor) {
+        md += '> **모든 변형 공통 표면/장식**: ' + grp.sharedSurfaceDecor.replace(/\n/g, ' ') + '\n>\n> ⚠️ **이 공통 장식은 사이드 패널 SVG 카드 + 3D 모델 양쪽 모두에 동일하게 표현되어야 합니다.**\n\n';
+      }
+      for (var vri = 0; vri < grp.variants.length; vri++) {
+        var vr = grp.variants[vri];
+        md += '- **변형 ' + (vri + 1) + ': ' + (vr.name || '(이름 없음)') + '**\n';
+        if (vr.svgPattern) {
+          md += '  - SVG 카드 모양: ' + vr.svgPattern.replace(/\n/g, ' ') + '\n';
+        }
+        if (vr.modelDesc) {
+          md += '  - 3D 모델 형태: ' + vr.modelDesc.replace(/\n/g, ' ') + '\n';
+        }
+      }
+      md += '\n';
+    }
+  }
+
+  md += '각 단계마다 어떤 카드가 표시되어야 하는지는 아래 `★⑥` 영역의 단계별 흐름을 참고하세요.\n\n';
+
+  md += '### ★②-5 결과 요약 팝업 (`#summary-overlay`)\n\n';
+  if (state.summaryTitle || state.summaryBody || state.summaryConceptBox) {
+    md += '- 팝업 제목: **`' + val(state.summaryTitle, '실험 결과 정리') + '`** (이모지 ❌ — 텍스트만)\n';
+    if (state.summaryBody)       md += '- 본문: `' + state.summaryBody.replace(/\n/g, ' ') + '`\n';
+    if (state.summaryConceptBox) md += '- 핵심 개념 박스: \n```\n' + state.summaryConceptBox + '\n```\n  *(핵심 개념 박스 앞에 💡, 📌, ✨ 등 이모지를 절대 붙이지 마세요)*\n';
+  } else {
+    md += '- (결과 요약 내용이 입력되지 않았습니다 — 탭 4에서 입력하세요)\n';
+  }
+  md += '\n---\n\n';
+
+  /* ── ★③ 오디오 매핑 (v15: 세그먼트 기반) ── */
+  md += '## ★③ 오디오 매핑\n\n';
+  md += '뼈대 HTML의 `★③ 오디오 시스템` 영역 안에 있는 `audioFiles`와 `audioTexts` 두 객체를 아래 내용으로 채우세요.\n\n';
+  md += '> **중요 (v15)**: 한 단계 안에서 여러 mp3가 순차 재생되어야 하는 경우, 각 세그먼트에 별도의 키를 부여합니다. 키 형식은 `takeN_M` (N=Step 인덱스+2, M=세그먼트 번호)이며, 단일 세그먼트인 단계는 기존처럼 `takeN`으로 둡니다.\n\n';
+
+  // ★ v15: 세그먼트 단위로 오디오 키 만들기
+  // - 한 Step의 세그먼트가 1개면: take{N+2}
+  // - 한 Step의 세그먼트가 2개 이상이면: take{N+2}_1, take{N+2}_2, ...
+  // - 결과 요약 세그먼트가 1개면: summary
+  // - 결과 요약 세그먼트가 2개 이상이면: summary_1, summary_2, ...
+  function buildAudioKey(stepIdx, segIdx, totalSegs) {
+    if (totalSegs <= 1) return 'take' + (stepIdx + 2);
+    return 'take' + (stepIdx + 2) + '_' + (segIdx + 1);
+  }
+  function buildSummaryKey(segIdx, totalSegs) {
+    if (totalSegs <= 1) return 'summary';
+    return 'summary_' + (segIdx + 1);
+  }
+
+  var objNarrFile = state.objectiveNarrationFile || 'tts_take1.mp3';
+  md += '### audioFiles (실제 mp3 파일명 매핑)\n\n';
+  md += '```javascript\n';
+  md += 'var audioFiles = {\n';
+  md += "  take1: '" + objNarrFile + "',  // 탐구 목표 팝업 나레이션\n";
+  for (var k = 0; k < nSteps; k++) {
+    var sk = state.steps[k];
+    var segs = sk.segments || [];
+    if (segs.length === 0) continue;
+    for (var si = 0; si < segs.length; si++) {
+      var key = buildAudioKey(k, si, segs.length);
+      var fn = segs[si].mp3File || ('tts_take' + (k + 2) + (segs.length > 1 ? '_' + (si + 1) : '') + '.mp3');
+      var labelPart = segs.length > 1 ? ' (세그먼트 ' + (si + 1) + ')' : '';
+      md += "  " + key + ": '" + fn + "',  // Step " + (k + 1) + labelPart + " 나레이션\n";
+    }
+  }
+  // 결과 요약
+  var summaryHasContent = false;
+  for (var sumi = 0; sumi < state.summarySegments.length; sumi++) {
+    if (state.summarySegments[sumi].mp3File || state.summarySegments[sumi].ttsText) {
+      summaryHasContent = true; break;
+    }
+  }
+  if (summaryHasContent) {
+    for (var smi = 0; smi < state.summarySegments.length; smi++) {
+      var ssg = state.summarySegments[smi];
+      if (!ssg.mp3File && !ssg.ttsText) continue;
+      var skey = buildSummaryKey(smi, state.summarySegments.length);
+      var sfn = ssg.mp3File || ('tts_summary' + (state.summarySegments.length > 1 ? '_' + (smi + 1) : '') + '.mp3');
+      var sLabel = state.summarySegments.length > 1 ? ' (세그먼트 ' + (smi + 1) + ')' : '';
+      md += "  " + skey + ": '" + sfn + "',  // 결과 요약" + sLabel + " 나레이션\n";
+    }
+  }
+  md += '};\n';
+  md += '```\n\n';
+
+  // audioTexts (TTS 폴백)
+  md += '### audioTexts (mp3가 없을 때의 TTS 폴백 텍스트)\n\n';
+  md += '```javascript\n';
+  md += 'var audioTexts = {\n';
+  var objText = (state.objective || '').replace(/'/g, "\\'").replace(/\n/g, ' ');
+  md += "  take1: '" + (objText || '[탐구 목표 나레이션 전문]') + "',\n";
+  for (var k2 = 0; k2 < nSteps; k2++) {
+    var sk2 = state.steps[k2];
+    var segs2 = sk2.segments || [];
+    for (var si2 = 0; si2 < segs2.length; si2++) {
+      var key2 = buildAudioKey(k2, si2, segs2.length);
+      var seg2 = segs2[si2];
+      var txt = (seg2.ttsText || seg2.guide || '').replace(/'/g, "\\'").replace(/\n/g, ' ');
+      md += "  " + key2 + ": '" + (txt || '[Step ' + (k2 + 1) + (segs2.length > 1 ? ' 세그먼트 ' + (si2 + 1) : '') + ' 나레이션]') + "',\n";
+    }
+  }
+  if (summaryHasContent) {
+    for (var smi2 = 0; smi2 < state.summarySegments.length; smi2++) {
+      var ssg2 = state.summarySegments[smi2];
+      if (!ssg2.mp3File && !ssg2.ttsText) continue;
+      var skey2 = buildSummaryKey(smi2, state.summarySegments.length);
+      var stxt = (ssg2.ttsText || '').replace(/'/g, "\\'").replace(/\n/g, ' ');
+      md += "  " + skey2 + ": '" + (stxt || '[결과 요약' + (state.summarySegments.length > 1 ? ' 세그먼트 ' + (smi2 + 1) : '') + ' 나레이션]') + "',\n";
+    }
+  }
+  md += '};\n';
+  md += '```\n\n';
+
+  md += '> **BGM 파일**: `' + val(state.bgmFile, 'bgm.mp3') + '` (뼈대 HTML의 `startBgMusic()` 함수 안 `new Audio(...)` 부분에서 이미 처리됨 — 파일명만 일치시키세요)\n\n';
+  md += '---\n\n';
+
+  /* ── ★④ 가이드 메시지 (v15: 세그먼트 기반 — 단계별 + 세그먼트별 오디오 체이닝 명세) ── */
+  md += '## ★④ 가이드 메시지 + 세그먼트 체이닝\n\n';
+  md += '뼈대 HTML의 `★④` 마커 영역에 아래 두 가지를 모두 채우세요:\n\n';
+  md += '1. `guideMessages` 배열 — Step별 **첫 세그먼트** 가이드 메시지 (하위 호환용)\n';
+  md += '2. `stepSegments` 객체 — **세그먼트가 2개 이상인 Step**의 순차 재생 정보\n\n';
+
+  // guideMessages 배열 (각 Step의 첫 세그먼트 가이드)
+  md += '### guideMessages (Step별 첫 세그먼트 가이드)\n\n';
+  md += '```javascript\n';
+  md += 'var guideMessages = [\n';
+  for (var g = 0; g < nSteps; g++) {
+    var firstSeg = (state.steps[g].segments || [])[0] || {};
+    var gm = (firstSeg.guide || '').replace(/'/g, "\\'").replace(/\n/g, ' ');
+    md += "  '" + (gm || '[Step ' + (g + 1) + ' 가이드 메시지]') + "',  // Step " + (g + 1) + '\n';
+  }
+  md += '];\n';
+  md += '```\n\n';
+
+  // stepSegments — 다중 세그먼트가 있는 Step만
+  var hasMultiSegSteps = false;
+  for (var ms = 0; ms < nSteps; ms++) {
+    if ((state.steps[ms].segments || []).length > 1) { hasMultiSegSteps = true; break; }
+  }
+  var hasMultiSummary = state.summarySegments.length > 1;
+
+  if (hasMultiSegSteps) {
+    md += '### stepSegments (다중 세그먼트 — 한 단계 안에서 가이드/mp3가 순차 변경되는 경우)\n\n';
+    md += '> 키는 Step 인덱스(0부터). 값은 `{ guide, audioKey, delayMs }` 객체의 배열. **앞 세그먼트의 mp3가 끝나면 `delayMs`만큼 기다린 뒤 다음 세그먼트의 가이드를 갱신하고 mp3를 재생합니다.**\n\n';
+    md += '```javascript\n';
+    md += 'var stepSegments = {\n';
+    for (var ms2 = 0; ms2 < nSteps; ms2++) {
+      var msSegs = state.steps[ms2].segments || [];
+      if (msSegs.length <= 1) continue;
+      md += '  ' + ms2 + ': [\n';
+      for (var msi = 0; msi < msSegs.length; msi++) {
+        var msg = msSegs[msi];
+        var msGuide = (msg.guide || '').replace(/'/g, "\\'").replace(/\n/g, ' ');
+        var msKey = buildAudioKey(ms2, msi, msSegs.length);
+        var msDelayMs = Math.round((parseFloat(msg.delaySec) || 0) * 1000);
+        md += "    { guide: '" + msGuide + "', audioKey: '" + msKey + "', delayMs: " + msDelayMs + ' },\n';
+      }
+      md += '  ],\n';
+    }
+    md += '};\n';
+    md += '```\n\n';
+  } else {
+    md += '> 모든 Step이 단일 세그먼트라 `stepSegments`는 비워둬도 됩니다 (`var stepSegments = {};`).\n\n';
+  }
+
+  if (hasMultiSummary) {
+    md += '### summarySegments (결과 요약 다중 mp3 순차 재생)\n\n';
+    md += '```javascript\n';
+    md += 'var summarySegments = [\n';
+    for (var sums = 0; sums < state.summarySegments.length; sums++) {
+      var sumg = state.summarySegments[sums];
+      if (!sumg.mp3File && !sumg.ttsText) continue;
+      var sumKey = buildSummaryKey(sums, state.summarySegments.length);
+      var sumDelayMs = Math.round((parseFloat(sumg.delaySec) || 0) * 1000);
+      md += "  { audioKey: '" + sumKey + "', delayMs: " + sumDelayMs + ' },\n';
+    }
+    md += '];\n';
+    md += '```\n\n';
+  }
+
+  md += '### 호출 패턴\n\n';
+  md += '- 각 Step 진입 시 `playStepSegments(stepIndex)`를 호출하세요. 이 함수가 `stepSegments[stepIndex]`가 있으면 세그먼트 체인을 실행하고, 없으면 기존 방식(`updateGuideByStep` + `playAudio(\'take\' + (n+2))`)으로 폴백합니다.\n';
+  if (hasMultiSummary) {
+    md += '- 결과 요약 팝업 표시 직후 `playSummarySegments()`를 호출하세요. `summarySegments` 배열을 순차 재생합니다.\n';
+  } else if (summaryHasContent) {
+    md += "- 결과 요약 팝업 표시 직후 `playAudio('summary')`를 호출하세요.\n";
+  }
+  md += '\n> **중요**: 뼈대 v2에는 `playStepSegments`, `playSummarySegments` 함수가 이미 구현되어 있습니다. 이 함수들이 mp3 종료 시점을 정확히 감지해 다음 세그먼트로 넘어가므로, **수동으로 `setTimeout`으로 mp3 길이를 추측하지 마세요.**\n\n';
+  md += '---\n\n';
+
+  /* ── ★⑤ 3D 장비 build 함수들 ── */
+  md += '## ★⑤ 3D 장비 build 함수들\n\n';
+  md += '뼈대 HTML의 `★⑤` 마커 영역에 아래 장비들의 `buildXxx()` 함수를 추가하세요. 각 함수는 Three.js Group을 만들어 `scene.add(...)` 합니다.\n\n';
+
+  if (equipList.length === 0) {
+    md += '- (선택된 장비가 없습니다 — 탭 3에서 사용할 장비를 체크하세요)\n\n';
+  } else {
+    /* ── ★⑤ 의존성 자동 주입 ──
+       일부 통합 빌더(candleAssembly 등)는 다른 빌더 함수를 내부에서 호출합니다.
+       사용자가 통합 항목만 체크하고 의존 항목을 빠뜨려도 빌드 코드의 정의가
+       지시서에 누락되지 않도록, 출력 단계에서 의존 항목을 자동으로 끼워 넣습니다.
+
+       의존 관계 정의: { 항목id: [의존하는_항목id, ...] } */
+    var EQUIP_DEPS = {
+      candleAssembly: ['wireGauze']  // candleAssembly의 빌더 코드가 buildWireGauze를 호출
+    };
+    var refIdToObj = {};
+    for (var rii = 0; rii < EQUIPMENT_REFS.length; rii++) {
+      refIdToObj[EQUIPMENT_REFS[rii].id] = EQUIPMENT_REFS[rii];
+    }
+    // buildRefs = checkedRefs + 자동 주입된 의존 항목 (중복 제거, 의존 항목은 어느 위치든 본체보다 먼저 오도록)
+    var buildRefs = [];
+    var addedIds = {};
+    function pushRef(refObj, autoFromId) {
+      if (!refObj || addedIds[refObj.id]) return;
+      addedIds[refObj.id] = true;
+      // autoFromId가 있으면 자동 주입된 의존 항목임을 표시 (출력 시 안내 문구 추가)
+      buildRefs.push({ ref: refObj, autoFromId: autoFromId || null });
+    }
+    for (var crI = 0; crI < checkedRefs.length; crI++) {
+      var thisRef = checkedRefs[crI];
+      var deps = EQUIP_DEPS[thisRef.id] || [];
+      // 본체보다 먼저 의존 항목을 넣어야 가독성/논리 순서가 자연스러움
+      for (var di = 0; di < deps.length; di++) {
+        var depObj = refIdToObj[deps[di]];
+        if (depObj) pushRef(depObj, thisRef.id);
+      }
+      pushRef(thisRef, null);
+    }
+    var injectedCount = buildRefs.length - checkedRefs.length;
+
+    md += '### 필요한 장비 목록 (' + (buildRefs.length + customs.length) + '개)\n\n';
+    if (injectedCount > 0) {
+      md += '> ※ 통합 장비가 내부적으로 호출하는 빌더 함수의 정의도 함께 포함했습니다 (자동 보강).\n\n';
+    }
+    for (var eqi = 0; eqi < buildRefs.length; eqi++) {
+      var er = buildRefs[eqi].ref;
+      var autoFromId = buildRefs[eqi].autoFromId;
+      var autoNote = '';
+      if (autoFromId) {
+        var fromObj = refIdToObj[autoFromId];
+        var fromName = fromObj ? fromObj.name : autoFromId;
+        autoNote = ' _(자동 포함 — `' + fromName + '`의 내부 호출에 필요)_';
+      }
+      md += '#### ' + (eqi + 1) + '. ' + er.name + autoNote + '\n\n';
+      md += '- 함수명: `build' + er.id.charAt(0).toUpperCase() + er.id.slice(1) + '()` (또는 적절한 이름)\n';
+      if (er.spec && typeof er.spec === 'string' && er.spec.length > 0) {
+        md += '- 상세 스펙:\n\n';
+        // spec은 '\n'으로 join된 문자열 — 각 줄 앞에 공백 2칸 들여쓰기
+        md += er.spec.split('\n').map(function(line) {
+          return line ? '  ' + line : '';
+        }).join('\n') + '\n';
+      } else {
+        md += '- 일반적인 비례와 재질로 구현 (실험실 장비 사진 검색 후 참고)\n';
+      }
+      md += '\n';
+    }
+    for (var ci = 0; ci < customs.length; ci++) {
+      var cu = customs[ci];
+      md += '#### ' + (buildRefs.length + ci + 1) + '. ' + cu.name + ' (커스텀)\n\n';
+      if (cu.shape) md += '- 형태: ' + cu.shape + '\n';
+      if (cu.size)  md += '- 크기: ' + cu.size + '\n';
+      if (cu.color) md += '- 색상: ' + cu.color + '\n';
+      if (cu.note)  md += '- 비고: ' + cu.note + '\n';
+      md += '\n';
+    }
+  }
+
+  // ★ v15: 변형 그룹의 3D 모델 명세 (사이드 패널 SVG와 동일한 외형으로)
+  if (state.variantGroups && state.variantGroups.length > 0) {
+    md += '### 학생 선택지 변형 그룹의 3D 모델 (필수 구현)\n\n';
+    md += '아래 변형 그룹들은 **각 변형마다 별도의 build 함수**를 만들어 주세요. **★②-4의 사이드 패널 SVG 카드와 동일한 외형**(특히 공통 표면/장식)이 3D에서도 보여야 합니다.\n\n';
+    for (var vg3 = 0; vg3 < state.variantGroups.length; vg3++) {
+      var grp3 = state.variantGroups[vg3];
+      md += '#### 그룹 ' + (vg3 + 1) + ': ' + (grp3.groupName || '(이름 없음)') + '\n\n';
+      if (grp3.sharedSurfaceDecor) {
+        md += '- **공통 표면/장식 (모든 변형에 동일 적용)**: ' + grp3.sharedSurfaceDecor.replace(/\n/g, ' ') + '\n';
+        md += '- 권장: 공통 표면 헬퍼 함수(예: `addSharedDecor(plateGroup, ...)`)를 만들어 모든 변형 build 함수 끝에서 호출하세요.\n';
+      }
+      md += '\n';
+      for (var vri2 = 0; vri2 < grp3.variants.length; vri2++) {
+        var vr2 = grp3.variants[vri2];
+        var fnName = 'build' + (grp3.groupName || 'Variant').replace(/[^A-Za-z0-9]/g, '') + (vr2.name ? '_' + vr2.name.replace(/[^A-Za-z0-9가-힣]/g, '').slice(0, 10) : '_v' + (vri2 + 1));
+        md += '- **변형 ' + (vri2 + 1) + ': ' + (vr2.name || '(이름 없음)') + '** — 함수명 예: `' + fnName + '()`\n';
+        if (vr2.modelDesc) {
+          md += '  - 형태: ' + vr2.modelDesc.replace(/\n/g, ' ') + '\n';
+        }
+        if (vr2.svgPattern) {
+          md += '  - 참고(SVG와 통일감): ' + vr2.svgPattern.replace(/\n/g, ' ') + '\n';
+        }
+      }
+      md += '\n';
+    }
+  }
+
+  md += '> 장비를 만들고 `scene.add(group)` 한 뒤, 적절한 위치에 배치하세요. 뼈대 HTML의 `init3DScene()` 함수 끝부분(★⑤ 마커가 있는 곳)에서 호출합니다.\n\n';
+  md += '---\n\n';
+
+  /* ── ★⑥ 드래그 인터랙션 ── */
+  md += '## ★⑥ 드래그 인터랙션 (단계별 바인딩)\n\n';
+  md += '뼈대 HTML의 `★⑥` 마커 영역에 단계별 드래그 이벤트와 단계 전환 로직을 작성하세요.\n';
+  md += '공통 드래그 시스템(마우스+터치, 고스트 엘리먼트, screenToWorld)은 뼈대에 이미 구현되어 있으니, **단계별 바인딩**만 추가하면 됩니다.\n\n';
+
+  md += '### 단계별 흐름 (' + nSteps + '단계)\n\n';
+  if (stepDescs.length === 0) {
+    md += '- (단계가 입력되지 않았습니다 — 탭 2에서 단계를 입력하세요)\n\n';
+  } else {
+    for (var sd = 0; sd < stepDescs.length; sd++) {
+      md += stepDescs[sd] + '\n\n';
+    }
+  }
+
+  md += '### 구현 방식\n\n';
+  md += '- 각 카드 요소(`.card[data-step="N"]`)에 `mousedown` + `touchstart` 이벤트 바인딩\n';
+  md += '- 드래그 시 고스트 엘리먼트 생성 → 따라다니기\n';
+  md += '- `mouseup`/`touchend` 시 3D 드롭 존(`#drop-zone-indicator` 또는 raycaster) 안인지 검사\n';
+  md += '- 성공 시 `currentStep++`, `updateDots()`, `updateGuide(...)`, 다음 패널 표시, 다음 take 오디오 재생\n';
+  md += '- **드래그 영역(드롭 존)은 화면 확대/축소/회전과 무관하게 3D 좌표에 고정** — 매 프레임 raycaster로 화면 좌표 갱신\n\n';
+  md += '---\n\n';
+
+  /* ── ★⑦ 시뮬레이션 코어 ── */
+  md += '## ★⑦ 시뮬레이션 코어 (실험의 본체)\n\n';
+  md += '뼈대 HTML의 `★⑦` 마커 영역에 시뮬레이션 코어 코드를 작성하세요.\n\n';
+
+  md += '### 사용 패턴: ' + simTemplate + '\n\n';
+
+  if (state.simDescription) {
+    md += '### 핵심 현상 (사용자 기술)\n\n';
+    md += state.simDescription + '\n\n';
+  }
+  if (state.simVisual) {
+    md += '### 시각화 방법\n\n';
+    md += state.simVisual + '\n\n';
+  }
+  if (state.simNote) {
+    md += '### 추가 참고\n\n';
+    md += state.simNote + '\n\n';
+  }
+
+  md += '### 구현 가이드\n\n';
+  md += '- 시뮬레이션 시작 트리거: 마지막 학생 행동 단계 완료 시 `isSimulating = true`\n';
+  md += '- `animate()` 루프에서 `isSimulating`이 true이면 매 프레임 시뮬레이션 업데이트\n';
+  md += '- 속도 조절(`simSpeed`)을 시뮬 코어에서 참조하여 가속/감속 지원 — 뼈대의 `★⑦` 영역에는 `simSpeed` 변수와 속도 조절 UI가 이미 들어있습니다\n';
+  md += '- 시뮬레이션 시작 약 10~15초 후 `summaryBtn` 또는 `next-btn`을 표시 (뼈대 코드에 패턴 있음)\n';
+  md += '- **추가/제거 시 뼈대의 공통 함수(`updateSimulation()`, `simSpeed` 변수, `next-btn` 표시 로직)는 그대로 활용** — 새로 만들지 마세요\n\n';
+  md += '---\n\n';
+
+  /* ── ★⑧ 리셋 처리 ── */
+  md += '## ★⑧ 리셋 처리 (실험별 상태 초기화)\n\n';
+  md += '뼈대 HTML의 `★⑧` 마커 영역(`resetExperiment()` 함수 안의 실험별 정리 블록 + `restartExperiment()` 안)에 아래 코드를 추가하세요.\n\n';
+
+  md += '```javascript\n';
+  md += '// ★⑧ 실험별 상태/3D 오브젝트 정리 코드\n';
+  md += 'function resetExperimentSpecific() {\n';
+  md += '  // 1) 동적으로 생성된 3D 오브젝트 제거\n';
+  md += '  //    예: scene.remove(inkParticles); inkParticles = null;\n';
+  md += '  //         scene.remove(flameMesh);   flameMesh   = null;\n';
+  md += '\n';
+  md += '  // 2) 시뮬레이션 상태 변수 초기화\n';
+  md += '  //    예: convTime = 0; particleData = []; heatGrid = [];\n';
+  md += '\n';
+  md += '  // 3) 사이드 패널 초기화 (모든 카드 다시 표시 또는 첫 단계 카드만 표시)\n';
+  md += '  //    공통 함수가 처리하는 부분(currentStep, updateDots, updateGuide)은 뼈대이 자동 처리\n';
+  md += '}\n';
+  md += '```\n\n';
+  md += '### 결과 요약 나레이션 트리거 (있는 경우)\n\n';
+  if (summaryHasContent) {
+    md += '`★⑧` 영역의 `goToSummary()` 함수 안에서 결과 요약 팝업을 띄운 직후 다음을 호출하세요:\n\n';
+    md += '```javascript\n';
+    if (hasMultiSummary) {
+      md += "playSummarySegments();  // 결과 요약 다중 세그먼트 순차 재생 (뼈대 v2 함수)\n";
+    } else {
+      md += "playAudio('summary');  // 결과 요약 나레이션 (mp3 또는 TTS 폴백)\n";
+    }
+    md += '```\n\n';
+  } else {
+    md += '- (결과 요약 나레이션이 입력되지 않았습니다)\n\n';
+  }
+  md += '---\n\n';
+
+  /* ── 최종 체크리스트 ── */
+  md += '## 최종 체크리스트\n\n';
+  md += '뼈대 HTML 수정 후 다음을 확인하세요:\n\n';
+  md += '- [ ] ★① CSS 변수 3개만 변경됐는가? (다른 CSS는 그대로)\n';
+  md += '- [ ] ★② `<title>`, 헤더, 탐구 목표 팝업, dot 개수(' + nSteps + '개), 사이드 카드, 결과 요약이 모두 채워졌는가?\n';
+
+  // 오디오 키 체크 — 세그먼트 구조에 맞춰 동적으로
+  var audioKeyHints = ['`take1`'];
+  for (var ck = 0; ck < nSteps; ck++) {
+    var ckSegs = (state.steps[ck].segments || []);
+    if (ckSegs.length <= 1) {
+      audioKeyHints.push('`take' + (ck + 2) + '`');
+    } else {
+      for (var cks = 0; cks < ckSegs.length; cks++) {
+        audioKeyHints.push('`take' + (ck + 2) + '_' + (cks + 1) + '`');
+      }
+    }
+  }
+  if (summaryHasContent) {
+    if (state.summarySegments.length <= 1) {
+      audioKeyHints.push('`summary`');
+    } else {
+      for (var cs = 0; cs < state.summarySegments.length; cs++) {
+        if (state.summarySegments[cs].mp3File || state.summarySegments[cs].ttsText) {
+          audioKeyHints.push('`summary_' + (cs + 1) + '`');
+        }
+      }
+    }
+  }
+  md += '- [ ] ★③ `audioFiles`와 `audioTexts`의 키가 일치하는가? (' + audioKeyHints.join(', ') + ')\n';
+  md += '- [ ] ★④ `guideMessages` 배열 길이가 ' + nSteps + '인가?\n';
+  if (hasMultiSegSteps || hasMultiSummary) {
+    md += '- [ ] ★④ `stepSegments`' + (hasMultiSummary ? ' / `summarySegments`' : '') + ' 객체가 정확히 정의되어 있고, 각 audioKey가 audioFiles의 키와 일치하는가?\n';
+    md += '- [ ] ★④ Step 진입 시 `playStepSegments(stepIndex)`가 호출되는가? (다중 세그먼트 단계에서 가이드가 자동 갱신되어야 함)\n';
+  }
+  md += '- [ ] ★⑤ 모든 장비 build 함수가 `init3DScene` 끝에서 호출되는가?\n';
+  if (state.variantGroups && state.variantGroups.length > 0) {
+    md += '- [ ] ★②-4 + ★⑤ **학생 선택지 변형 그룹**: 우측 패널 SVG 카드 + 3D 모델 **양쪽 모두에** 각 변형이 정확히 표현되어 있는가? (공통 표면/장식 포함)\n';
+  }
+  md += '- [ ] ★⑥ 단계별 드래그 → 단계 전환 → 다음 take 오디오 재생이 끊김 없이 작동하는가?\n';
+  md += '- [ ] ★⑦ 시뮬레이션이 마지막 학생 행동 후 자동 시작하는가? `isSimulating` 플래그가 토글되는가?\n';
+  md += '- [ ] ★⑧ 리셋 시 모든 동적 오브젝트가 정리되고, 새로 시작 시 잔재가 남지 않는가?\n';
+  md += '- [ ] **마커 밖 코드(공통 구조, 변수명, 함수명, 클래스명)를 변경하지 않았는가?**\n\n';
+
+  /* ── 공통 UI 규칙 ── */
+  md += '## 팝업창 UI 규칙 (필수)\n\n';
+  md += '**탐구 목표 팝업창(`#objective-popup`)과 실험 결과 정리 팝업창(`#summary-overlay`)의 제목·본문·핵심 개념 박스에 이모지를 절대 사용하지 마세요.**\n\n';
+  md += '- 제목 예시: `🎯 탐구 목표` ❌ → `탐구 목표` ✅\n';
+  md += '- 제목 예시: `🌊 실험 결과 정리` ❌ → `실험 결과 정리` ✅\n';
+  md += '- 핵심 개념 박스 앞의 `💡`, `📌`, `✨` 등도 모두 제거\n';
+  md += '- 사용자가 이모지를 포함해 입력했더라도, 팝업 렌더링 시에는 이모지를 제외하고 텍스트만 표시\n\n';
+  md += '헤더·마스코트·버튼 등 팝업 외 UI 요소에는 기존 이모지를 유지해도 됩니다. 이 규칙은 **팝업창 내부 텍스트에만** 적용됩니다.\n\n';
+
+  /* ── 최종 주의사항 ── */
+  md += '## 주의사항 (꼭 지켜주세요)\n\n';
+  md += '1. **마커 밖 코드는 절대 수정 금지** — CSS 클래스명, 변수명, 함수명, 이벤트 시스템, 공통 구조는 그대로 유지하세요.\n';
+  md += '2. **var만 사용** (let/const 금지) — 뼈대 전체가 ES5 호환으로 작성되어 있습니다.\n';
+  md += '3. **mouse + touch 이벤트 모두 바인딩** — 둘 중 하나만 하면 모바일 또는 데스크톱 중 하나에서 작동하지 않습니다.\n';
+  md += '4. **오디오는 외부 mp3 파일** (base64 내장 금지) — 같은 폴더에 mp3 파일들을 함께 두세요.\n';
+  md += '5. **드래그 고스트 offset 계산** — `ox = clientX - rect.left`로 카드 좌상단 기준 오프셋을 정확히 잡으세요.\n';
+  md += '6. **각 Step별 UI 표시/숨김 정확히 구현** — 한 단계의 카드는 다음 단계로 넘어갈 때 사라져야 합니다.\n';
+  md += '7. **나레이션은 교과서 전체 문장 그대로 사용** — 학생이 들을 텍스트는 입력값을 그대로 쓰고, 임의로 줄이거나 늘리지 마세요.\n';
+  md += '8. **결과 파일은 단일 HTML** — 외부 CSS/JS 파일로 분리하지 마세요. (mp3는 별개)\n';
+
+  return md;
 }
 
 
@@ -556,7 +2567,8 @@ function generateMarkdown() {
    ═══════════════════════════════════════ */
 
 function esc(s) {
-  if (!s) return '';
+  if (s == null) return '';                    // null/undefined → 빈 문자열
+  if (typeof s !== 'string') s = String(s);    // 숫자 등 비문자열 → 문자열 변환
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
@@ -606,6 +2618,98 @@ function moveStep(i, dir) {
 }
 function updateStep(i, field, val) { state.steps[i][field] = val; }
 
+/* ═══ v15: 세그먼트 핸들러 (한 단계 안에 가이드+TTS 여러 개 순차 재생) ═══ */
+function addSegment(stepIdx) {
+  state.steps[stepIdx].segments.push(newSegment());
+  render();
+}
+function removeSegment(stepIdx, segIdx) {
+  if (state.steps[stepIdx].segments.length <= 1) return;
+  state.steps[stepIdx].segments.splice(segIdx, 1);
+  render();
+}
+function moveSegment(stepIdx, segIdx, dir) {
+  var arr = state.steps[stepIdx].segments;
+  var ni = segIdx + dir;
+  if (ni < 0 || ni >= arr.length) return;
+  var tmp = arr[segIdx]; arr[segIdx] = arr[ni]; arr[ni] = tmp;
+  render();
+}
+function updateSegment(stepIdx, segIdx, field, val) {
+  var seg = state.steps[stepIdx].segments[segIdx];
+  if (field === 'delaySec') {
+    var n = parseFloat(val);
+    seg.delaySec = isNaN(n) ? 0 : n;
+  } else {
+    seg[field] = val;
+  }
+  saveState();
+}
+
+/* 결과 요약 세그먼트 핸들러 */
+function addSummarySegment() {
+  state.summarySegments.push({ mp3File: '', ttsText: '', delaySec: 0 });
+  render();
+}
+function removeSummarySegment(idx) {
+  if (state.summarySegments.length <= 1) return;
+  state.summarySegments.splice(idx, 1);
+  render();
+}
+function moveSummarySegment(idx, dir) {
+  var arr = state.summarySegments;
+  var ni = idx + dir;
+  if (ni < 0 || ni >= arr.length) return;
+  var tmp = arr[idx]; arr[idx] = arr[ni]; arr[ni] = tmp;
+  render();
+}
+function updateSummarySegment(idx, field, val) {
+  var seg = state.summarySegments[idx];
+  if (field === 'delaySec') {
+    var n = parseFloat(val);
+    seg.delaySec = isNaN(n) ? 0 : n;
+  } else {
+    seg[field] = val;
+  }
+  saveState();
+}
+
+/* 학생 선택지 변형 그룹 핸들러 */
+function addVariantGroup() {
+  state.variantGroups.push({
+    id: Date.now() + '_' + Math.random(),
+    groupName: '',
+    stepIndex: 0,
+    sharedSurfaceDecor: '',
+    variants: [{ id: Date.now() + '_a', name: '', shapeDesc: '', svgPattern: '', modelDesc: '' }]
+  });
+  render();
+}
+function removeVariantGroup(idx) {
+  state.variantGroups.splice(idx, 1);
+  render();
+}
+function updateVariantGroup(idx, field, val) {
+  state.variantGroups[idx][field] = val;
+  saveState();
+}
+function addVariant(groupIdx) {
+  state.variantGroups[groupIdx].variants.push({
+    id: Date.now() + '_' + Math.random(),
+    name: '', shapeDesc: '', svgPattern: '', modelDesc: ''
+  });
+  render();
+}
+function removeVariant(groupIdx, variantIdx) {
+  if (state.variantGroups[groupIdx].variants.length <= 1) return;
+  state.variantGroups[groupIdx].variants.splice(variantIdx, 1);
+  render();
+}
+function updateVariant(groupIdx, variantIdx, field, val) {
+  state.variantGroups[groupIdx].variants[variantIdx][field] = val;
+  saveState();
+}
+
 // 시뮬레이션 템플릿
 function toggleTemplate(id) {
   state.openTemplates[id] = !state.openTemplates[id];
@@ -616,18 +2720,19 @@ function selectTemplate(id) {
   render();
 }
 
-// 복사
-function copyMd(which) {
+// 복사 (뼈대 채우기 지시서)
+function copyMd() {
   var result = generateMarkdown();
-  var text = which === 1 ? result.md1 : result.md2;
+  var text = result.md3;
+  var origLabel = '📋 뼈대 지시서 복사';
   navigator.clipboard.writeText(text).then(function() {
-    var btn = document.getElementById('copy' + which + '-btn');
+    var btn = document.getElementById('copy-btn');
     if (btn) {
       btn.textContent = '✅ 복사됨!';
       btn.style.background = '#55efc4';
       btn.style.color = '#1a5276';
       setTimeout(function() {
-        btn.textContent = which === 1 ? '📋 지시서 1/2 복사' : '📋 지시서 2/2 복사';
+        btn.textContent = origLabel;
         btn.style.background = '';
         btn.style.color = '';
       }, 2000);
@@ -635,11 +2740,11 @@ function copyMd(which) {
   });
 }
 
-// 다운로드
-function downloadMd(which) {
+// 다운로드 (뼈대 채우기 지시서)
+function downloadMd() {
   var result = generateMarkdown();
-  var text = which === 1 ? result.md1 : result.md2;
-  var filename = which === 1 ? '가상실험실_제작_지시서_1of2.md' : '가상실험실_제작_지시서_2of2.md';
+  var text = result.md3;
+  var filename = '가상실험실_뼈대_채우기_지시서.md';
   var blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
@@ -655,5 +2760,6 @@ function downloadMd(which) {
 /* ── 초기 렌더링 ── */
 render();
 </script>
-</body>
-</html>
+
+
+</body></html>

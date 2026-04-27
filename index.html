@@ -15,8 +15,8 @@
     --blue-bright: #60b8ff;
     --blue-dim: rgba(59,158,255,0.15);
     --blue-border: rgba(59,158,255,0.35);
-    --gray: #4a5568;
-    --gray-light: #8899aa;
+    --gray: #6b7a8d;
+    --gray-light: #aab8c8;
     --accent: #1a3a5c;
   }
 
@@ -253,16 +253,16 @@
     letter-spacing: -0.02em;
   }
   h2 {
-    font-size: clamp(1rem, 1.9vw, 1.5rem);
+    font-size: clamp(1.15rem, 2.1vw, 1.7rem);
     font-weight: 700;
     letter-spacing: -0.01em;
   }
   h3 {
-    font-size: clamp(1.05rem, 2.1vw, 1.5rem);
+    font-size: clamp(1.1rem, 2.2vw, 1.6rem);
     font-weight: 600;
   }
   p, li {
-    font-size: clamp(0.92rem, 1.5vw, 1.15rem);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
     line-height: 1.8;
     color: var(--gray-light);
   }
@@ -473,7 +473,7 @@
   }
   .section-label {
     font-family: 'Space Mono', monospace;
-    font-size: 0.58rem;
+    font-size: 0.68rem;
     color: var(--blue);
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -1151,35 +1151,52 @@ SB 확정</div><div style="background:rgba(190,35,35,0.88);color:#fff;font-size:
   </div>
 
   <!-- SLIDE 7: VIRTUAL LAB 제작 지시서 -->
-  <div class="slide" style="padding: 18px 34px 24px 34px; justify-content: flex-start;">
+  <div class="slide" style="padding: 18px 34px 24px 34px; justify-content: flex-start; align-items: flex-start;">
     <div class="glow glow-1"></div>
     <div class="slide-tag">07 / 14</div>
         <div class="section-head" style="margin-top:4px; margin-bottom:4px;">
-      <div class="section-label">Virtual Lab · Instruction</div>
-      <h2>🔬 가상 실험실 <span class="blue">제작 지시서</span></h2>
+      <div class="section-label">Virtual Lab · Process</div>
+      <h2>🔬 가상 실험실 <span class="blue">제작 프로세스</span></h2>
       <div class="divider"></div>
     </div>
 
-    <!-- iframe embed -->
-    <div style="flex:1;width:100%;max-width:1060px;min-height:0;position:relative;
-                border-radius:14px;overflow:hidden;
-                border:2px solid var(--blue);
-                box-shadow:0 0 0 1px rgba(59,158,255,0.2), 0 8px 40px rgba(59,158,255,0.12);
-                background:#fff;">
-      <div style="position:absolute;top:0;left:0;right:0;height:28px;
-                  background:linear-gradient(90deg,#0d1520,#0a1525);
-                  border-bottom:1px solid var(--blue-border);
-                  display:flex;align-items:center;padding:0 14px;gap:8px;z-index:10;">
-        <span style="width:8px;height:8px;border-radius:50%;background:#ff6060;display:inline-block;"></span>
-        <span style="width:8px;height:8px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span>
-        <span style="width:8px;height:8px;border-radius:50%;background:#27c93f;display:inline-block;"></span>
-        <span style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.15em;margin-left:8px;">lab_instruction_builder.html</span>
+    <!-- 2열: 왼쪽 뼈대 + 오른쪽 지시서 작성기 -->
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:14px;flex:1;width:100%;max-width:100%;min-height:0;">
+
+      <!-- LEFT: 가상실험실 뼈대 -->
+      <div style="display:flex;flex-direction:column;gap:0;min-height:0;flex:1;">
+        <div style="background:linear-gradient(90deg,#0d1520,#0a1525);padding:7px 14px;border-bottom:1px solid var(--blue-border);border-radius:10px 10px 0 0;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#ff6060;display:inline-block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#27c93f;display:inline-block;"></span>
+          <span style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.12em;margin-left:6px;">lab_skeleton.html</span>
+        </div>
+        <div style="flex:1;border-radius:0 0 10px 10px;overflow:hidden;border:2px solid var(--blue);border-top:none;background:#fff;min-height:0;">
+          <iframe
+            src="lab_skeleton.html"
+            style="width:100%;height:100%;border:none;display:block;"
+            scrolling="auto"
+          ></iframe>
+        </div>
       </div>
-      <iframe
-        src="lab_instruction_builder.html"
-        style="width:100%;height:100%;border:none;display:block;padding-top:28px;"
-        scrolling="auto"
-      ></iframe>
+
+      <!-- RIGHT: 지시서 작성기 -->
+      <div style="display:flex;flex-direction:column;gap:0;min-height:0;flex:1;">
+        <div style="background:linear-gradient(90deg,#0d1520,#0a1525);padding:7px 14px;border-bottom:1px solid var(--blue-border);border-radius:10px 10px 0 0;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#ff6060;display:inline-block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#27c93f;display:inline-block;"></span>
+          <span style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.12em;margin-left:6px;">lab_instruction_builder.html</span>
+        </div>
+        <div style="flex:1;border-radius:0 0 10px 10px;overflow:hidden;border:2px solid var(--blue);border-top:none;background:#fff;min-height:0;">
+          <iframe
+            src="lab_instruction_builder.html"
+            style="width:100%;height:100%;border:none;display:block;"
+            scrolling="auto"
+          ></iframe>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1200,689 +1217,634 @@ SB 확정</div><div style="background:rgba(190,35,35,0.88);color:#fff;font-size:
 
         <!-- 지시서 1/2 -->
         <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-height:0;">
-          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.15em;flex-shrink:0;">📄 지시서 1 / 2</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.15em;flex-shrink:0;">📄 가상실험실_뼈대_채우기_지시서.md</div>
           <div style="flex:1;border-radius:10px;border:1.5px solid var(--blue);background:#1e2022;overflow:hidden;display:flex;flex-direction:column;min-height:0;box-shadow:0 0 16px rgba(59,158,255,0.08);">
             <div style="background:#2a2d2f;padding:5px 12px;border-bottom:1px solid #3a3d3f;font-family:'Space Mono',monospace;font-size:0.55rem;color:#aaa;flex-shrink:0;display:flex;align-items:center;gap:5px;">
               <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#ff6060;"></span>
               <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#ffbd2e;"></span>
               <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#27c93f;"></span>
-              <span style="margin-left:5px;">지시서_1of2.md</span>
             </div>
             <div style="flex:1;overflow-y:auto;padding:10px 14px;min-height:0;">
-              <pre style="margin:0;font-family:'Noto Sans KR',monospace;font-size:0.78rem;line-height:1.75;color:#c8d0d8;white-space:pre-wrap;word-break:break-word;"># 가상실험실 제작 지시서 [1/2] — 구조 + 3D 씬 + UI
+              <pre style="margin:0;font-family:'Noto Sans KR',monospace;font-size:0.78rem;line-height:1.75;color:#c8d0d8;white-space:pre-wrap;word-break:break-word;"># 가상실험실 뼈대 채우기 지시서
+
+&gt; **이 지시서는 "처음부터 HTML을 다 만들어라"가 아닙니다.**
+&gt; 첨부한 `가상실험실_뼈대_v1.html`(공통 코드만 들어있는 뼈대 HTML)의
+&gt; **★① ~ ★⑧ 마커 영역만 채워주세요.** 마커 밖의 코드는 절대 수정하지 마세요.
 
 &gt; **사용법:**
-&gt; 1. 이 파일 + 교과서 PDF를 첨부
-&gt; 2. **"이 지시서대로 가상실험 HTML v1을 만들어 주세요."** 라고 요청
-&gt; 3. 결과물 확인 후, **지시서 [2/2]**를 첨부하여 기능 추가
+&gt; 1. 첨부된 `가상실험실_뼈대_v1.html` 파일을 엽니다.
+&gt; 2. 아래 ★① ~ ★⑧ 지시에 따라 각 마커 영역만 수정합니다.
+&gt; 3. 마커 밖의 코드(공통 구조, 변수명, 함수명, CSS 클래스명, 이벤트 시스템 등)는 **절대 변경하지 마세요.**
+&gt; 4. 결과 파일명: `가상실험실_고체에서 열의 이동 관찰하기.html`
 
 ---
 
-## 당신이 할 일
+## 실험 기본 정보
 
-첨부된 교과서 PDF를 분석하고, Three.js 기반 가상실험 HTML 파일의 **뼈대(구조 + 3D 씬 + UI)**를 만들어 주세요.
-이 단계에서는 드래그, 시뮬레이션, 오디오는 구현하지 않습니다. 구조만 잡습니다.
-
----
-
-## STEP 1: 교과서 분석
-
-### 1-1. 실험 정보 추출
-
-교과서 PDF에서 아래 항목을 찾아 추출하세요.
-
-| 항목 | 교과서에서 찾을 위치 |
-|------|-----------------|
-| 교과서 단원 | 페이지 상단/하단 단원 번호 |
-| 탐구 제목 | "탐구활동" 옆 제목 |
-| 탐구 목표 | 페이지 상단, 또는 "가상 실험실" QR 근처 |
-| 핵심 개념 | 실험 결과 정리 박스 (보통 2쪽 하단에 굵은 글씨) |
-| 준비물 | "준비물" 항목 |
-
-### 1-2. 실험 단계 설계
-
-교과서의 "탐구 과정" 번호를 보고, 가상실험 Step으로 변환하세요.
-각 Step마다 정의할 것:
-
-- **학생 행동**: 화면에서 무엇을 드래그/클릭하는지
-- **UI 전환**: 어떤 패널이 나타나고 사라지는지
-- **가이드 메시지**: 학생에게 보여줄 한글 안내 문구
-- **완료 조건**: 다음 Step으로 넘어가는 트리거
-
-마지막 Step은 항상 "결과 요약 팝업 표시"입니다.
-
-### 1-3. 3D 오브젝트 파악
-
-교과서 사진에 보이는 실험 장비를 모두 나열하고, **아래 "실험 장비 3D 레퍼런스 시트"에 해당 장비가 있으면 그 코드를 그대로 사용**하세요. 레퍼런스에 없는 장비만 교과서 사진을 보고 새로 모델링합니다.
-
----
-
-## 실험 장비 3D 레퍼런스 시트 (실물 사진 기반)
-
-&gt; 이 레퍼런스는 실제 실험실 장비의 실물 사진을 분석하여 작성되었습니다.
-&gt; 교과서 준비물에 해당 장비가 있으면, 아래 코드를 **그대로 사용**하세요.
-
-### 공통 유틸리티
-
-#### 메시 생성 헬퍼
-```javascript
-function M(geo, mat, x, y, z) {
-  var m = new THREE.Mesh(geo, mat);
-  m.position.set(x || 0, y || 0, z || 0);
-  m.castShadow = true;
-  return m;
-}
-```
-
-#### 크롬 텍스처 (모든 금속 봉에 공통 사용)
-
-실물의 크롬 도금 봉은 강한 환경 반사가 특징입니다. 가로 방향 9-stop 그라데이션으로 원기둥의 입체감을 표현하고, 세로 방향 하이라이트 오버레이로 길이감을 더합니다.
-
-```javascript
-function createChromeTexture() {
-  var c = document.createElement('canvas');
-  c.width = 64; c.height = 256;
-  var ctx = c.getContext('2d');
-  var g = ctx.createLinearGradient(0, 0, 64, 0);
-  g.addColorStop(0, '#444');
-  g.addColorStop(0.08, '#888');
-  g.addColorStop(0.2, '#bbb');
-  g.addColorStop(0.35, '#dedede');
-  g.addColorStop(0.5, '#ffffff');
-  g.addColorStop(0.65, '#dedede');
-  g.addColorStop(0.8, '#bbb');
-  g.addColorStop(0.92, '#888');
-  g.addColorStop(1, '#444');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, 64, 256);
-  var g2 = ctx.createLinearGradient(0, 0, 0, 256);
-  g2.addColorStop(0, 'rgba(255,255,255,0)');
-  g2.addColorStop(0.25, 'rgba(255,255,255,0.12)');
-  g2.addColorStop(0.5, 'rgba(255,255,255,0.25)');
-  g2.addColorStop(0.75, 'rgba(255,255,255,0.12)');
-  g2.addColorStop(1, 'rgba(255,255,255,0)');
-  ctx.fillStyle = g2;
-  ctx.fillRect(0, 0, 64, 256);
-  var t = new THREE.CanvasTexture(c);
-  t.wrapS = THREE.RepeatWrapping;
-  t.wrapT = THREE.RepeatWrapping;
-  return t;
-}
-```
-
-#### 공통 재질 정의
-```javascript
-var chromeTex = createChromeTexture();
-var chrome = new THREE.MeshPhongMaterial({
-  map: chromeTex, color: 0xaaaaaa, specular: 0xffffff, shininess: 300, reflectivity: 1.0
-});
-var dark = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.35 });
-var silverMetal = new THREE.MeshStandardMaterial({ color: 0xbbbbbb, roughness: 0.25, metalness: 0.85 });
-```
-
----
-
-### 레퍼런스 1: 스탠드 (스탠드 + 클램프 + 고정 집게)
-
-**실물 구조:**
-- **받침판**: 검정 직사각형 금속판, 모서리 4곳에 미끄럼 방지 발
-- **수직 봉**: 크롬 원기둥, 받침판 뒤쪽에서 위로 올라감
-- **클램프**: 은색 직육면체 몸체, 양쪽에 **검정 별모양 손잡이(star knob)** 2개
-- **수평 봉**: 크롬 원기둥, 수직 봉보다 가늘음
-- **고정 집게**: 크롬 프레임 + 피벗 리벳 + 코일 스프링 + **빨간색 집게 턱** 2개 + 하단 나비 나사
-
-```javascript
-var STAND_POS = new THREE.Vector3(-1.5, 0, 0);
-var CLAMP_TIP_X = 0.95;
-var CLAMP_Y = 1.35;
-
-function getClampWorldPos() {
-  return new THREE.Vector3(STAND_POS.x + CLAMP_TIP_X, CLAMP_Y, 0);
-}
-
-function buildStand() {
-  var standGroup = new THREE.Group();
-  var ct = createChromeTexture();
-  var chrome = new THREE.MeshPhongMaterial({
-    map: ct, color: 0xaaaaaa, specular: 0xffffff, shininess: 300, reflectivity: 1.0
-  });
-  var dark = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.35 });
-  var silverMetal = new THREE.MeshStandardMaterial({ color: 0xbbbbbb, roughness: 0.25, metalness: 0.85 });
-  var red = new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.35, metalness: 0.2 });
-
-  // 받침판
-  standGroup.add(M(new THREE.BoxGeometry(2.0, 0.13, 1.4), dark, -0.6, 0.1, 0));
-  var fx = [-1.4, 0.2], fz = [-0.55, 0.55];
-  for (var i = 0; i &lt; 2; i++) for (var j = 0; j &lt; 2; j++)
-    standGroup.add(M(new THREE.BoxGeometry(0.15, 0.06, 0.15), dark, fx[i], 0.02, fz[j]));
-
-  // 수직 봉
-  standGroup.add(M(new THREE.CylinderGeometry(0.05, 0.05, 3.2, 24), chrome, -0.2, 1.77, 0));
-
-  // 클램프 몸체 (은색)
-  standGroup.add(M(new THREE.BoxGeometry(0.44, 0.20, 0.18), silverMetal, -0.20, CLAMP_Y, -0.035));
-  // 별모양 손잡이 (검정) 2개
-  var kb1 = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.12, 12), dark);
-  kb1.position.set(-0.50, CLAMP_Y, 0.05); kb1.rotation.z = Math.PI / 2; standGroup.add(kb1);
-  var kb2 = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.08, 12), dark);
-  kb2.position.set(0.00, CLAMP_Y, -0.15); kb2.rotation.x = Math.PI / 2; standGroup.add(kb2);
-
-  // 수평 봉
-  var hb = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 1.375, 16), chrome);
-  hb.position.set(0.0325, CLAMP_Y, -0.07); hb.rotation.z = Math.PI / 2; hb.castShadow = true;
-  standGroup.add(hb);
-
-  // 고정 집게 — 피벗
-  var px = 0.72;
-  var pv = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.26, 8), chrome);
-  pv.position.set(px, CLAMP_Y, 0); pv.rotation.x = Math.PI / 2; standGroup.add(pv);
-  var r1 = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.025, 6), silverMetal);
-  r1.position.set(px, CLAMP_Y, 0.14); r1.rotation.x = Math.PI / 2; standGroup.add(r1);
-  var r2 = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.025, 6), silverMetal);
-  r2.position.set(px, CLAMP_Y, -0.14); r2.rotation.x = Math.PI / 2; standGroup.add(r2);
-
-  // 빨간 집게 턱 (위/아래)
-  var ju = M(new THREE.BoxGeometry(0.28, 0.045, 0.18), red, CLAMP_TIP_X - 0.1, CLAMP_Y + 0.05, 0);
-  ju.rotation.z = 0.05; standGroup.add(ju);
-  var jd = M(new THREE.BoxGeometry(0.28, 0.045, 0.18), red, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.05, 0);
-  jd.rotation.z = -0.05; standGroup.add(jd);
-  var tg = new THREE.SphereGeometry(0.035, 8, 8);
-  var tu = M(tg, red, CLAMP_TIP_X + 0.04, CLAMP_Y + 0.06, 0); tu.scale.set(1, 0.6, 1.4); standGroup.add(tu);
-  var td = M(tg, red, CLAMP_TIP_X + 0.04, CLAMP_Y - 0.06, 0); td.scale.set(1, 0.6, 1.4); standGroup.add(td);
-
-  // 나비 나사
-  standGroup.add(M(new THREE.CylinderGeometry(0.014, 0.014, 0.08, 6), chrome, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.12, 0));
-  standGroup.add(M(new THREE.SphereGeometry(0.024, 6, 6), silverMetal, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.16, 0));
-
-  standGroup.position.copy(STAND_POS);
-  scene.add(standGroup);
-  return standGroup;
-}
-```
-
-**치수 비율:** 받침판 가로:수직봉 높이 ≈ 1:2.5 / 수직봉:수평봉 굵기 ≈ 1.4:1
-
----
-
-### 레퍼런스 2: 삼발이
-
-**실물 구조:**
-- **상단 링**: 크롬 원형 고리 (TorusGeometry)
-- **다리 3개**: 120° 간격, 링에서 바닥으로 벌어지며 내려감
-- **재질**: 크롬 도금 은색
-
-```javascript
-function buildTripod(wx, wy, wz) {
-  var tripodGroup = new THREE.Group();
-  var lm = new THREE.MeshStandardMaterial({ color: 0xc8c8c8, roughness: 0.2, metalness: 0.9 });
-  var ringR = 0.19, ringY = 0.63;
-  var topRing = new THREE.Mesh(new THREE.TorusGeometry(ringR, 0.010, 8, 36), lm);
-  topRing.position.y = ringY; topRing.rotation.x = Math.PI / 2; tripodGroup.add(topRing);
-
-  for (var li = 0; li &lt; 3; li++) {
-    var ang = li * 2 * Math.PI / 3, sa = Math.sin(ang), ca = Math.cos(ang);
-    var tx = ringR * sa, tz = ringR * ca, bx = 0.28 * sa, bz = 0.28 * ca;
-    var dx = bx - tx, dy = -ringY, dz = bz - tz;
-    var legLen = Math.sqrt(dx * dx + dy * dy + dz * dz);
-    var leg = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.013, legLen, 8), lm);
-    leg.position.set((tx + bx) / 2, ringY / 2, (tz + bz) / 2);
-    var q = new THREE.Quaternion();
-    q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dx, dy, dz).normalize());
-    leg.setRotationFromQuaternion(q); leg.castShadow = true; tripodGroup.add(leg);
-    tripodGroup.add(M(new THREE.CylinderGeometry(0.014, 0.014, 0.02, 8), lm, bx, 0.012, bz));
-  }
-  tripodGroup.position.set(wx, wy, wz);
-  return tripodGroup;
-}
-```
-
-**치수 비율:** 링 반지름:다리 벌림 ≈ 0.68:1 / 링 높이:다리 벌림 ≈ 2.25:1
-
----
-
-### 레퍼런스 3: 쇠그물 (석면 대용 철망)
-
-**실물 구조:**
-- **정사각형** 철망 (한 변 ≈ 삼발이 링 지름 × 1.18), 삼발이 링 위에 올려놓음
-- **외곽 프레임**: 두꺼운 금속 테두리 4변 (각 변이 하나의 BoxGeometry)
-- **철망 격자**: 촘촘한 와이어 20×20 이상, 프레임 안쪽에 가로·세로 교차
-- 가운데에 **원형 세라믹 패드** (연한 베이지/아이보리, 반지름 ≈ 그물 크기의 35%)
-- 세라믹 패드 위에 미세한 그을음 표현 (작은 반투명 원)
-
-```javascript
-function buildWireGauze(parentGroup, gauzeY) {
-  var gauzeSize = 0.225;  // 정사각형 한 변의 절반 (전체 변 길이 0.45)
-
-  // — 외곽 프레임 (두꺼운 금속 테두리) —
-  var frameMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 });
-  var frameT = 0.018;  // 프레임 두께
-  var frameH = 0.008;  // 프레임 높이
-  // 상변
-  parentGroup.add(M(new THREE.BoxGeometry(gauzeSize * 2, frameH, frameT), frameMat,
-    0, gauzeY + frameH / 2, -gauzeSize + frameT / 2));
-  // 하변
-  parentGroup.add(M(new THREE.BoxGeometry(gauzeSize * 2, frameH, frameT), frameMat,
-    0, gauzeY + frameH / 2, gauzeSize - frameT / 2));
-  // 좌변
-  parentGroup.add(M(new THREE.BoxGeometry(frameT, frameH, gauzeSize * 2), frameMat,
-    -gauzeSize + frameT / 2, gauzeY + frameH / 2, 0));
-  // 우변
-  parentGroup.add(M(new THREE.BoxGeometry(frameT, frameH, gauzeSize * 2), frameMat,
-    gauzeSize - frameT / 2, gauzeY + frameH / 2, 0));
-
-  // — 철망 격자 (촘촘하게) —
-  var wireMat = new THREE.MeshBasicMaterial({ color: 0x666666 });
-  var wireCount = 20;  // 가로·세로 각 20가닥
-  var innerSize = gauzeSize - frameT;
-  var wireSpacing = (innerSize * 2) / (wireCount + 1);
-  var wireThick = 0.0025;
-
-  for (var wi = 1; wi &lt;= wireCount; wi++) {
-    var offset = -innerSize + wi * wireSpacing;
-    // 가로선
-    var hw = new THREE.Mesh(
-      new THREE.BoxGeometry(innerSize * 2, 0.002, wireThick), wireMat);
-    hw.position.set(0, gauzeY + 0.003, offset);
-    parentGroup.add(hw);
-    // 세로선
-    var vw = new THREE.Mesh(
-      new THREE.BoxGeometry(wireThick, 0.002, innerSize * 2), wireMat);
-    vw.position.set(offset, gauzeY + 0.003, 0);
-    parentGroup.add(vw);
-  }
-
-  // — 세라믹 패드 (가운데 원형, 연한 베이지) —
-  var ceramicR = gauzeSize * 0.58;
-  var ceramicMat = new THREE.MeshStandardMaterial({
-    color: 0xe8e0d4, roughness: 0.85, metalness: 0.0
-  });
-  var ceramic = new THREE.Mesh(new THREE.CircleGeometry(ceramicR, 32), ceramicMat);
-  ceramic.rotation.x = -Math.PI / 2;
-  ceramic.position.y = gauzeY + 0.005;
-  parentGroup.add(ceramic);
-
-  // 세라믹 위 그을음 자국 (반투명 어두운 원)
-  var sootMat = new THREE.MeshBasicMaterial({
-    color: 0x888877, transparent: true, opacity: 0.18
-  });
-  var soot = new THREE.Mesh(new THREE.CircleGeometry(ceramicR * 0.55, 20), sootMat);
-  soot.rotation.x = -Math.PI / 2;
-  soot.position.y = gauzeY + 0.006;
-  parentGroup.add(soot);
-}
-```
-
-**치수 비율:** 프레임 한 변 : 삼발이 링 지름 ≈ 1.18:1 / 세라믹 반지름 : 프레임 반 ≈ 0.58:1 / 철망 간격 ≈ 0.020
-
----
-
-### 레퍼런스 4: 삼발이 + 쇠그물 + 초 (통합 배치)
-
-가열 실험에서 삼발이, 쇠그물, 초는 **하나의 Group으로 묶어** 사용자가 드롭한 위치에 동적 생성합니다.
-
-```javascript
-function buildCandleAssembly(wx, wz) {
-  var group = new THREE.Group();
-  var lm = new THREE.MeshStandardMaterial({ color: 0xc8c8c8, roughness: 0.2, metalness: 0.9 });
-  var ringR = 0.19, ringY = 0.63;
-  group.add(function(){ var r = new THREE.Mesh(new THREE.TorusGeometry(ringR, 0.010, 8, 36), lm);
-    r.position.y = ringY; r.rotation.x = Math.PI / 2; return r; }());
-  for (var li = 0; li &lt; 3; li++) {
-    var ang = li * 2 * Math.PI / 3, sa = Math.sin(ang), ca = Math.cos(ang);
-    var tx = ringR * sa, tz = ringR * ca, bx = 0.28 * sa, bz = 0.28 * ca;
-    var dx = bx - tx, dy = -ringY, dz = bz - tz;
-    var al = Math.sqrt(dx * dx + dy * dy + dz * dz);
-    var arm = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.013, al, 8), lm);
-    arm.position.set((tx + bx) / 2, ringY / 2, (tz + bz) / 2);
-    var aq = new THREE.Quaternion();
-    aq.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dx, dy, dz).normalize());
-    arm.setRotationFromQuaternion(aq); arm.castShadow = true; group.add(arm);
-    group.add(M(new THREE.CylinderGeometry(0.014, 0.014, 0.02, 8), lm, bx, 0.012, bz));
-  }
-  buildWireGauze(group, ringY + 0.016);
-
-  // 초 (티라이트 — 납작하고 넓은 형태)
-  var waxMat = new THREE.MeshStandardMaterial({ color: 0xf0ece0, roughness: 0.65, transparent: true, opacity: 0.88 });
-  var wax = new THREE.Mesh(new THREE.CylinderGeometry(0.090, 0.090, 0.036, 18), waxMat);
-  wax.position.y = ringY + 0.036; wax.castShadow = true; group.add(wax);
-  group.add(M(new THREE.CylinderGeometry(0.003, 0.003, 0.022, 4),
-    new THREE.MeshBasicMaterial({ color: 0x444444 }), 0, ringY + 0.066, 0));
-  group.add(M(new THREE.CylinderGeometry(0.003, 0.002, 0.008, 4),
-    new THREE.MeshBasicMaterial({ color: 0x333333 }), 0, ringY + 0.081, 0));
-
-  // 불꽃 (외부 + 내부 + PointLight)
-  var fg = new THREE.SphereGeometry(0.035, 10, 14); fg.scale(1, 2.4, 1);
-  var fm = new THREE.Mesh(fg, new THREE.MeshBasicMaterial({ color: 0xfdcb6e, transparent: true, opacity: 0.9 }));
-  fm.position.y = ringY + 0.112; fm.name = 'flame'; group.add(fm);
-  var ig = new THREE.SphereGeometry(0.018, 8, 10); ig.scale(1, 2.0, 1);
-  var im = new THREE.Mesh(ig, new THREE.MeshBasicMaterial({ color: 0xfff8ee, transparent: true, opacity: 0.95 }));
-  im.position.y = ringY + 0.122; im.name = 'flameInner'; group.add(im);
-  var fl = new THREE.PointLight(0xff9500, 1.6, 4); fl.position.y = ringY + 0.112; fl.name = 'flameLight'; group.add(fl);
-
-  group.scale.set(1.4156, 1.4156, 1.4156);
-  group.position.set(wx, 0.02, wz);
-  return group;
-}
-```
-
-**불꽃 흔들림 (animate()에서 호출):**
-```javascript
-if (flameMesh) {
-  var tt = Date.now();
-  flameMesh.scale.x = 1 + Math.sin(tt * 0.013) * 0.1;
-  flameMesh.scale.y = 1 + Math.sin(tt * 0.016) * 0.15;
-  if (innerFlameMesh) { innerFlameMesh.scale.x = 1 + Math.sin(tt * 0.017) * 0.08; innerFlameMesh.scale.y = 1 + Math.cos(tt * 0.011) * 0.12; }
-  if (flameLight) flameLight.intensity = 1.6 + Math.sin(tt * 0.01) * 0.3;
-}
-```
-
----
-
-### 장비별 핵심 포인트 요약
-
-| 장비 | 반드시 포함할 디테일 | 흔한 실수 |
-|------|-------------------|----------|
-| **스탠드** | 검정 별모양 손잡이 2개, **빨간** 집게 턱, 나비 나사 | 집게를 파란색으로 만듦 |
-| **클램프** | 은색 직육면체 + 양쪽 관통 구멍 구조 | 단순 Box 하나로 대체 |
-| **삼발이** | 다리 3개, 120° 간격, 바닥으로 벌어짐 | 직선 다리로 만듦 |
-| **쇠그물** | 정사각형 철망 + 중앙 원형 **세라믹 패드 (흰색)** | 세라믹 패드 누락 |
-| **초** | 납작한 티라이트 형태, 불꽃 + **PointLight** | 길쭉한 초, PointLight 누락 |
-
----
-
-## STEP 2: HTML 파일 생성
-
-### 기술 스택
-- **Three.js r128** CDN: `https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js`
-- **단일 HTML 파일**
-- **var 사용** (ES5 호환, let/const 금지)
-- 한글 UI, 한글 주석
-- 폰트: `@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&amp;display=swap')`
-
----
-
-## UI 디자인 스펙
-
-### 색상 시스템
-
-| 용도 | 색상 |
+| 항목 | 내용 |
 |------|------|
-| 기본 악센트 | #00b894 |
-| 보조 악센트 | #00cec9 |
-| 밝은 악센트 | #55efc4 |
-| 기본 텍스트 | #2d3436 |
-| 보조 텍스트 | #636e72 |
-| 진한 배경 | #1a5276 |
-| 그라데이션 | linear-gradient(135deg, #00b894, #00cec9) |
+| 단원 | 5학년 2학기, 2단원 열과 우리 생활 |
+| 제목 | 고체에서 열의 이동 관찰하기 |
+| 탐구 목표 | 고체에서 열의 이동을 관찰하고 열이 어떻게 이동하는지 설명할 수 있다. |
+| 핵심 개념 | 전도 - 온도가 높은 곳에서 낮은 곳으로 물체를 따라 열이 이동 |
+| 준비물 | 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판, 열 변색 붙임딱지, 삼발이, 쇠그물, 스탠드, 고정 집게, 초, 점화기 |
 
-### 헤더 (#header)
-```css
-position: absolute; top: 0; left: 0; right: 0;
-height: 52px;
-background: linear-gradient(135deg, #00b894, #00cec9);
-display: flex; align-items: center; padding: 0 20px;
-z-index: 100;
-box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-```
-내부 구성:
-- 마스코트 아이콘: 36px 원형, 배경 #55efc4, 이모지 🔬
-- 타이틀 뱃지: "가상 실험실", rgba(255,255,255,0.25) 배경, border-radius 20px, 흰색 14px bold
-- 서브타이틀: [탐구 제목], 흰색, 13px, font-weight 500
-- 음악 버튼: margin-left:auto, 36px 원형, rgba(0,0,0,0.35) 배경, 2px solid rgba(255,255,255,0.7)
+---
 
-### 스텝 인디케이터 (#step-indicator)
-```css
-position: absolute; top: 64px; left: 20px;
-display: flex; gap: 6px; z-index: 100;
-```
-각 점: 32px 원형, 13px bold
-- 기본: background rgba(255,255,255,0.2), color rgba(255,255,255,0.5)
-- active: background #00b894, color #fff, box-shadow 0 3px 10px rgba(0,184,148,0.4)
-- completed: background #55efc4, color #fff
+## ★① 색상 테마 (CSS 변수 3개)
 
-### 가이드 버블 (#guide-area)
-```css
-position: absolute; bottom: 140px; left: 14px;
-flex-direction: column; align-items: flex-start;
-z-index: 100; pointer-events: none;
-```
-버블:
-```css
-background: #fff; border-radius: 18px; padding: 12px 20px;
-font-size: 13.5px; font-weight: 500; color: #2d3436;
-box-shadow: 0 5px 20px rgba(0,0,0,0.18); max-width: 380px;
-line-height: 1.6; white-space: pre-line;
-```
-말풍선 삼각형 (::after): bottom -10px, left 36px, border-top 10px solid #fff
+뼈대 HTML 상단의 ★① 마커 영역(`&lt;style&gt;` 안의 `:root` 블록)에 있는 CSS 변수 **3개**를 아래 값으로 교체하세요.
 
-### 마스코트 SVG — 아래 코드 그대로 사용
-```html
-&lt;svg id="character-svg" viewBox="0 0 100 110" width="60" height="60"&gt;
-  &lt;ellipse cx="50" cy="62" rx="30" ry="26" fill="#6BCB77"/&gt;
-  &lt;ellipse cx="37" cy="52" rx="9" ry="10" fill="#fff"/&gt;
-  &lt;ellipse cx="63" cy="52" rx="9" ry="10" fill="#fff"/&gt;
-  &lt;circle cx="39" cy="53" r="5" fill="#2d3436"/&gt;
-  &lt;circle cx="65" cy="53" r="5" fill="#2d3436"/&gt;
-  &lt;circle cx="41" cy="51" r="2" fill="#fff"/&gt;
-  &lt;circle cx="67" cy="51" r="2" fill="#fff"/&gt;
-  &lt;path d="M43,68 Q50,76 57,68" stroke="#2d3436" stroke-width="2" fill="none" stroke-linecap="round"/&gt;
-  &lt;ellipse cx="22" cy="65" rx="7" ry="4.5" fill="#6BCB77"/&gt;
-  &lt;ellipse cx="78" cy="60" rx="7" ry="4.5" fill="#6BCB77" transform="rotate(-15 78 60)"/&gt;
-  &lt;rect x="37" y="86" width="9" height="7" rx="3" fill="#FF8C00"/&gt;
-  &lt;rect x="54" y="86" width="9" height="7" rx="3" fill="#FF8C00"/&gt;
-  &lt;circle cx="50" cy="34" r="4.5" fill="#FFD93D"/&gt;
-&lt;/svg&gt;
+**추천 테마: 열전도/고체 (따뜻한 톤)**
+
+```css
+:root {
+  --accent: #ff6b9d;        /* 메인 강조 색상 — 버튼, 활성 dot, 그라데이션 시작점 */
+  --accent2: #feca57;       /* 그라데이션 페어 색상 — 그라데이션 끝점 */
+  --accent-light: #ffd9e6;  /* 완료 상태 표시용 — 완료된 dot 배경, 약한 강조 */
+}
 ```
 
-### 사이드 선택 패널 (#side-panel)
-```css
-position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
-flex-direction: column; gap: 12px; z-index: 100;
+&gt; 이 3개 변수만 바꾸면 헤더 그라데이션, dot, 버튼, 가이드 박스 강조선 등 전체 톤이 일관되게 변경됩니다. 다른 CSS는 건드리지 마세요.
+
+---
+
+## ★② HTML 요소 수정
+
+뼈대 HTML 본문의 ★② 마커가 붙은 HTML 영역들을 아래 내용으로 채우세요.
+
+### ★②-1 페이지 제목 / 헤더 타이틀
+
+- `&lt;title&gt;` 태그: `고체에서 열의 이동 관찰하기`
+- 헤더 서브타이틀(h1 옆 부제): `고체에서 열의 이동 관찰하기`
+
+### ★②-2 탐구 목표 팝업 (`#objective-popup`)
+
+- 팝업 제목: **`탐구 목표`** (이모지 ❌ — 텍스트만)
+- 팝업 본문: `고체에서 열의 이동을 관찰하고 열이 어떻게 이동하는지 설명할 수 있다.`
+
+### ★②-3 스텝 인디케이터 dot 개수
+
+- 사용자가 설계한 단계 수: **3단계**
+- 뼈대 HTML의 `#step-dots` 컨테이너 안에 `&lt;div class="dot"&gt;&lt;/div&gt;`를 **3개** 배치하세요.
+- 첫 번째 dot에 `active` 클래스를 붙여 시작 시 강조되게 하세요.
+
+### ★②-4 사이드 카드 패널 (단계별 선택지/장비 카드)
+
+학생이 드래그 앤 드롭하는 장비 카드들을 사이드 패널에 배치하세요.
+체크된 장비 목록 (탭 3에서 선택한 항목 + 커스텀 장비):
+
+- 스탠드 (스탠드+클램프+고정집게)
+- 삼발이+쇠그물+초 (통합)
+
+각 단계마다 어떤 카드가 표시되어야 하는지는 아래 `★⑥` 영역의 단계별 흐름을 참고하세요.
+
+### ★②-5 결과 요약 팝업 (`#summary-overlay`)
+
+- 팝업 제목: **`실험 결과 정리`** (이모지 ❌ — 텍스트만)
+- 본문: `고체에서 열이 이동하는 모습을 관찰했어요!`
+- 핵심 개념 박스: 
 ```
-각 카드:
-```css
-width: 118px; background: rgba(255,255,255,0.96); border-radius: 14px;
-padding: 10px; text-align: center; cursor: grab;
-box-shadow: 0 3px 14px rgba(0,0,0,0.14); user-select: none;
+고체에서는 온도가 높은 곳에서 온도가 낮은 곳으로 물체를 따라 열이 이동합니다.
+이러한 열의 이동 방식을 전도라고 합니다.
 ```
-hover: `transform: scale(1.05); box-shadow: 0 6px 24px rgba(0,0,0,0.22);`
-라벨: 11px, bold, #2d3436
-각 카드 안에 해당 장비의 간단한 SVG 미리보기 이미지 포함
+  *(핵심 개념 박스 앞에 💡, 📌, ✨ 등 이모지를 절대 붙이지 마세요)*
 
-### 속도 조절 바 (#speed-bar)
-```css
-position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-display: none; /* 시뮬레이션 시작 전까지 숨김 */
-background: rgba(255,255,255,0.96); border-radius: 14px; padding: 8px 14px;
-box-shadow: 0 3px 14px rgba(0,0,0,0.14);
+---
+
+## ★③ 오디오 매핑
+
+뼈대 HTML의 `★③ 오디오 시스템` 영역 안에 있는 `audioFiles`와 `audioTexts` 두 객체를 아래 내용으로 채우세요.
+
+&gt; **중요 (v15)**: 한 단계 안에서 여러 mp3가 순차 재생되어야 하는 경우, 각 세그먼트에 별도의 키를 부여합니다. 키 형식은 `takeN_M` (N=Step 인덱스+2, M=세그먼트 번호)이며, 단일 세그먼트인 단계는 기존처럼 `takeN`으로 둡니다.
+
+### audioFiles (실제 mp3 파일명 매핑)
+
+```javascript
+var audioFiles = {
+  take1: 'tts_take1.mp3',  // 탐구 목표 팝업 나레이션
+  take2: 'tts_take2.mp3',  // Step 1 나레이션
+  take3: 'tts_take3.mp3',  // Step 2 나레이션
+  take4_1: 'tts_take4.mp3',  // Step 3 (세그먼트 1) 나레이션
+  take4_2: 'tts_take5.mp3',  // Step 3 (세그먼트 2) 나레이션
+  summary_1: 'tts_take6.mp3',  // 결과 요약 (세그먼트 1) 나레이션
+  summary_2: 'tts_take7.mp3',  // 결과 요약 (세그먼트 2) 나레이션
+};
 ```
-"속도" 라벨 (12px bold #636e72) + 버튼 4개 (x0.5, x1, x1.5, x2)
-버튼: `border: 2px solid #ddd; border-radius: 8px; font-size: 13px; font-weight: 700;`
-active: `background: #00b894; border-color: #00b894; color: #fff;`
 
-### 완료 버튼 (#next-btn)
-```css
-position: absolute; bottom: 20px; right: 20px;
-padding: 12px 28px; border-radius: 14px; display: none;
-background: linear-gradient(135deg, #00b894, #00cec9);
-color: #fff; font-size: 15px; font-weight: 700;
-box-shadow: 0 4px 18px rgba(0,184,148,0.4);
+### audioTexts (mp3가 없을 때의 TTS 폴백 텍스트)
+
+```javascript
+var audioTexts = {
+  take1: '고체에서 열의 이동을 관찰하고 열이 어떻게 이동하는지 설명할 수 있다.',
+  take2: '구리판 한 개를 골라 고정 집게 쪽으로 옮겨 보세요.',
+  take3: '초를 구리판 아래 초록색 표시 부분으로 옮겨 보세요.',
+  take4_1: '열 변색 붙임딱지의 색깔 변화를 관찰해 보세요.',
+  take4_2: '초에서 가까운 곳부터 구리판을 따라 색이 변해요.',
+  summary_1: '[결과 요약 세그먼트 1 나레이션]',
+  summary_2: '[결과 요약 세그먼트 2 나레이션]',
+};
 ```
-hover: `transform: translateY(-2px);`
 
-### 리셋 버튼 (#reset-btn)
-```css
-position: absolute; bottom: 20px; left: 18px;
-width: 44px; height: 44px; background: #222; border-radius: 50%;
-color: #fff; font-size: 20px;
-box-shadow: 0 3px 12px rgba(0,0,0,0.4);
+&gt; **BGM 파일**: `bgm.mp3` (뼈대 HTML의 `startBgMusic()` 함수 안 `new Audio(...)` 부분에서 이미 처리됨 — 파일명만 일치시키세요)
+
+---
+
+## ★④ 가이드 메시지 + 세그먼트 체이닝
+
+뼈대 HTML의 `★④` 마커 영역에 아래 두 가지를 모두 채우세요:
+
+1. `guideMessages` 배열 — Step별 **첫 세그먼트** 가이드 메시지 (하위 호환용)
+2. `stepSegments` 객체 — **세그먼트가 2개 이상인 Step**의 순차 재생 정보
+
+### guideMessages (Step별 첫 세그먼트 가이드)
+
+```javascript
+var guideMessages = [
+  '구리판 한 개를 골라 고정 집게 쪽으로 옮겨 보세요.',  // Step 1
+  '초를 구리판 아래 초록색 표시 부분으로 옮겨 보세요.',  // Step 2
+  '열 변색 붙임딱지의 색깔 변화를 관찰해 보세요.',  // Step 3
+];
 ```
-내용: ↺  /  hover: `background: #000; transform: rotate(-180deg);`
 
-### 드롭 존 (#drop-zone-indicator)
-```css
-position: absolute; pointer-events: none; z-index: 50;
-border: 3px dashed rgba(150,150,150,0.55); border-radius: 16px;
+### stepSegments (다중 세그먼트 — 한 단계 안에서 가이드/mp3가 순차 변경되는 경우)
+
+&gt; 키는 Step 인덱스(0부터). 값은 `{ guide, audioKey, delayMs }` 객체의 배열. **앞 세그먼트의 mp3가 끝나면 `delayMs`만큼 기다린 뒤 다음 세그먼트의 가이드를 갱신하고 mp3를 재생합니다.**
+
+```javascript
+var stepSegments = {
+  2: [
+    { guide: '열 변색 붙임딱지의 색깔 변화를 관찰해 보세요.', audioKey: 'take4_1', delayMs: 0 },
+    { guide: '초에서 가까운 곳부터 구리판을 따라 색이 변해요.', audioKey: 'take4_2', delayMs: 3000 },
+  ],
+};
 ```
-highlight 클래스: `border-color: #00b894; box-shadow: 0 0 18px rgba(0,184,148,0.35);`
 
-### 탐구 목표 팝업 (#objective-popup)
-오버레이: `background: rgba(0,0,0,0.45); backdrop-filter: blur(3px);`
-카드: `background: #fff; border-radius: 20px; padding: 36px 40px; max-width: 440px;`
-`animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1);`
-제목 "탐구 목표": 17px, #1a5276, bold  /  본문: 15.5px, #2d3436, line-height 1.75
-**이 단계에서는 클릭 시 닫히기만 구현** (오디오는 지시서 2에서 추가)
+### summarySegments (결과 요약 다중 mp3 순차 재생)
 
-### 결과 요약 오버레이 (#summary-overlay)
-오버레이: `background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: none;`
-카드: `background: #fff; border-radius: 22px; padding: 42px; max-width: 520px;`
-`animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1);`
-제목: 22px, #1a5276  /  본문: 16px, #2d3436, line-height 1.8
-핵심 개념 박스: `background: #f0f0f0; border-radius: 14px; border: 1px solid #ddd; font-weight: 700;`
-버튼 "처음부터 다시하기": `background: #1a5276; border-radius: 11px;`
+```javascript
+var summarySegments = [
+  { audioKey: 'summary_1', delayMs: 0 },
+  { audioKey: 'summary_2', delayMs: 1000 },
+];
+```
 
-### 로딩 화면 (#loading)
-`background: #c8d6dc; z-index: 300;`
-spinner: 44px, `border: 4px solid rgba(0,184,148,0.2); border-top-color: #00b894;`
-텍스트: "가상 실험실을 준비하고 있어요..."
+### 호출 패턴
 
-### 공통 애니메이션
-```css
-@keyframes popIn { 0%{transform:scale(.8);opacity:0} 100%{transform:scale(1);opacity:1} }
-@keyframes spin { 100%{transform:rotate(360deg)} }
+- 각 Step 진입 시 `playStepSegments(stepIndex)`를 호출하세요. 이 함수가 `stepSegments[stepIndex]`가 있으면 세그먼트 체인을 실행하고, 없으면 기존 방식(`updateGuideByStep` + `playAudio('take' + (n+2))`)으로 폴백합니다.
+- 결과 요약 팝업 표시 직후 `playSummarySegments()`를 호출하세요. `summarySegments` 배열을 순차 재생합니다.
+
+&gt; **중요**: 뼈대 v2에는 `playStepSegments`, `playSummarySegments` 함수가 이미 구현되어 있습니다. 이 함수들이 mp3 종료 시점을 정확히 감지해 다음 세그먼트로 넘어가므로, **수동으로 `setTimeout`으로 mp3 길이를 추측하지 마세요.**
+
+---
+
+## ★⑤ 3D 장비 build 함수들
+
+뼈대 HTML의 `★⑤` 마커 영역에 아래 장비들의 `buildXxx()` 함수를 추가하세요. 각 함수는 Three.js Group을 만들어 `scene.add(...)` 합니다.
+
+### 필요한 장비 목록 (3개)
+
+&gt; ※ 통합 장비가 내부적으로 호출하는 빌더 함수의 정의도 함께 포함했습니다 (자동 보강).
+
+#### 1. 스탠드 (스탠드+클램프+고정집게)
+
+- 함수명: `buildStand()` (또는 적절한 이름)
+- 상세 스펙:
+
+  **실물 구조**:
+  - **받침판**: 검정 직사각형 금속판, 모서리 4곳에 미끄럼 방지 발
+  - **수직 봉**: 크롬 원기둥, 받침판 뒤쪽에서 위로 올라감
+  - **클램프**: 은색 직육면체 몸체, 양쪽에 **검정 별모양 손잡이(star knob)** 2개
+  - **수평 봉**: 크롬 원기둥, 수직 봉보다 가늘음
+  - **고정 집게**: 크롬 프레임 + 피벗 리벳 + 코일 스프링 + **빨간색 집게 턱** 2개 + 하단 나비 나사
+
+  **핵심 좌표 / 상수**:
+  - 스탠드 그룹 위치 `STAND_POS = (-1.5, 0, 0)`
+  - 집게 끝 X (스탠드 로컬) `CLAMP_TIP_X = 0.95`, 클램프 높이 `CLAMP_Y = 1.35`
+  - 따라서 집게 끝 월드 좌표 = `(-0.55, 1.35, 0)` — 구리판이 고정될 위치
+  - `getClampWorldPos()`: 집게 끝 월드 좌표를 반환하는 헬퍼
+
+  **재질 (Material)**:
+  - `chrome` (수직봉/수평봉/피벗): `MeshPhongMaterial({ map: createChromeTexture(), color: 0xaaaaaa, specular: 0xffffff, shininess: 300, reflectivity: 1.0 })`
+  - `dark` (받침판/발/별모양 손잡이): `MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.35 })`
+  - `silverMetal` (클램프 몸체/리벳/나비너트): `MeshStandardMaterial({ color: 0xbbbbbb, roughness: 0.25, metalness: 0.85 })`
+  - `red` (집게 턱): `MeshStandardMaterial({ color: 0xcc2222, roughness: 0.35, metalness: 0.2 })`
+
+  **주요 구성요소 / 치수**:
+  - **받침판**: `BoxGeometry(2.0, 0.13, 1.4)` 검정. 발 4개 `BoxGeometry(0.15, 0.06, 0.15)` 모서리에 배치
+  - **수직 봉**: `CylinderGeometry(0.05, 0.05, 3.2, 24)` 크롬. 받침판 한쪽 끝(x=-0.2)에서 위로
+  - **클램프 몸체**: `BoxGeometry(0.44, 0.20, 0.18)` 은색. 별모양 손잡이 2개 `CylinderGeometry(0.055, 0.055, 0.12 또는 0.08, 12)`
+  - **수평 봉**: `CylinderGeometry(0.035, 0.035, 1.375, 16)` 크롬, z축으로 약간 뒤쪽(-0.07)에 위치
+  - **고정 집게**: 피벗(`CylinderGeometry(0.02, 0.02, 0.26, 8)`) + 양쪽 리벳(`CylinderGeometry(0.032, 0.032, 0.025, 6)`) + 빨간 집게 턱 2개(`BoxGeometry(0.28, 0.045, 0.18)`, 살짝 기울임 ±0.05 rad) + 끝 부분 빨간 구체(`SphereGeometry(0.035, 8, 8)`, scale `(1, 0.6, 1.4)`) + 나비 나사(`CylinderGeometry(0.014, 0.014, 0.08, 6)` + `SphereGeometry(0.024, 6, 6)`)
+
+  **치수 비율**: 받침판 가로:수직봉 높이 ≈ 1:2.5 / 수직봉:수평봉 굵기 ≈ 1.4:1
+
+  **실행 가능한 구현 코드** (그대로 사용 권장):
+
+  ```javascript
+  var STAND_POS = new THREE.Vector3(-1.5, 0, 0);
+  var CLAMP_TIP_X = 0.95;
+  var CLAMP_Y = 1.35;
+
+  function getClampWorldPos() {
+    return new THREE.Vector3(STAND_POS.x + CLAMP_TIP_X, CLAMP_Y, 0);
+  }
+
+  function buildStand() {
+    var standGroup = new THREE.Group();
+    var ct = createChromeTexture();
+    var chrome = new THREE.MeshPhongMaterial({
+      map: ct, color: 0xaaaaaa, specular: 0xffffff, shininess: 300, reflectivity: 1.0
+    });
+    var dark = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.35 });
+    var silverMetal = new THREE.MeshStandardMaterial({ color: 0xbbbbbb, roughness: 0.25, metalness: 0.85 });
+    var red = new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.35, metalness: 0.2 });
+
+    // 받침판
+    standGroup.add(M(new THREE.BoxGeometry(2.0, 0.13, 1.4), dark, -0.6, 0.1, 0));
+    var fx = [-1.4, 0.2], fz = [-0.55, 0.55];
+    for (var i = 0; i &lt; 2; i++) for (var j = 0; j &lt; 2; j++)
+      standGroup.add(M(new THREE.BoxGeometry(0.15, 0.06, 0.15), dark, fx[i], 0.02, fz[j]));
+
+    // 수직 봉
+    standGroup.add(M(new THREE.CylinderGeometry(0.05, 0.05, 3.2, 24), chrome, -0.2, 1.77, 0));
+
+    // 클램프 몸체 (은색)
+    standGroup.add(M(new THREE.BoxGeometry(0.44, 0.20, 0.18), silverMetal, -0.20, CLAMP_Y, -0.035));
+    // 별모양 손잡이 (검정) 2개
+    var kb1 = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.12, 12), dark);
+    kb1.position.set(-0.50, CLAMP_Y, 0.05); kb1.rotation.z = Math.PI / 2; standGroup.add(kb1);
+    var kb2 = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.08, 12), dark);
+    kb2.position.set(0.00, CLAMP_Y, -0.15); kb2.rotation.x = Math.PI / 2; standGroup.add(kb2);
+
+    // 수평 봉
+    var hb = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 1.375, 16), chrome);
+    hb.position.set(0.0325, CLAMP_Y, -0.07); hb.rotation.z = Math.PI / 2; hb.castShadow = true;
+    standGroup.add(hb);
+
+    // 고정 집게 — 피벗
+    var px = 0.72;
+    var pv = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.26, 8), chrome);
+    pv.position.set(px, CLAMP_Y, 0); pv.rotation.x = Math.PI / 2; standGroup.add(pv);
+    var r1 = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.025, 6), silverMetal);
+    r1.position.set(px, CLAMP_Y, 0.14); r1.rotation.x = Math.PI / 2; standGroup.add(r1);
+    var r2 = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.025, 6), silverMetal);
+    r2.position.set(px, CLAMP_Y, -0.14); r2.rotation.x = Math.PI / 2; standGroup.add(r2);
+
+    // 빨간 집게 턱 (위/아래)
+    var ju = M(new THREE.BoxGeometry(0.28, 0.045, 0.18), red, CLAMP_TIP_X - 0.1, CLAMP_Y + 0.05, 0);
+    ju.rotation.z = 0.05; standGroup.add(ju);
+    var jd = M(new THREE.BoxGeometry(0.28, 0.045, 0.18), red, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.05, 0);
+    jd.rotation.z = -0.05; standGroup.add(jd);
+    var tg = new THREE.SphereGeometry(0.035, 8, 8);
+    var tu = M(tg, red, CLAMP_TIP_X + 0.04, CLAMP_Y + 0.06, 0); tu.scale.set(1, 0.6, 1.4); standGroup.add(tu);
+    var td = M(tg, red, CLAMP_TIP_X + 0.04, CLAMP_Y - 0.06, 0); td.scale.set(1, 0.6, 1.4); standGroup.add(td);
+
+    // 나비 나사
+    standGroup.add(M(new THREE.CylinderGeometry(0.014, 0.014, 0.08, 6), chrome, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.12, 0));
+    standGroup.add(M(new THREE.SphereGeometry(0.024, 6, 6), silverMetal, CLAMP_TIP_X - 0.1, CLAMP_Y - 0.16, 0));
+
+    standGroup.position.copy(STAND_POS);
+    scene.add(standGroup);
+    return standGroup;
+  }
+  ```
+
+#### 2. 쇠그물 (석면 대용 철망) _(자동 포함 — `삼발이+쇠그물+초 (통합)`의 내부 호출에 필요)_
+
+- 함수명: `buildWireGauze()` (또는 적절한 이름)
+- 상세 스펙:
+
+  **실물 구조**:
+  - **정사각형 철망**: 한 변 ≈ 삼발이 링 지름 × 1.18, 삼발이 링 위에 올려놓음
+  - **외곽 프레임**: 두꺼운 금속 테두리 4변
+  - **철망 격자**: 촘촘한 와이어 20×20 이상, 프레임 안쪽에 가로·세로로 교차
+  - **세라믹 패드**: 가운데 원형, 연한 베이지색 (열원이 직접 닿지 않는 절연부)
+  - 세라믹 위에는 미세한 그을음 표현 (작은 반투명 원)
+
+  **핵심 치수**:
+  - 정사각형 한 변의 절반 `gauzeSize = 0.225` (전체 변 길이 0.45)
+  - 프레임 두께 `frameT = 0.018`, 프레임 높이 `frameH = 0.008`
+  - 철망 가닥 수 `wireCount = 20` (가로/세로 각 20개)
+  - 철망 굵기 `wireThick = 0.0025`
+  - 세라믹 반경 `ceramicR = gauzeSize * 0.58`
+  - 그을음 반경 `ceramicR * 0.55`
+
+  **재질**:
+  - `frameMat` (외곽 프레임): `MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 })`
+  - `wireMat` (철망 가닥): `MeshBasicMaterial({ color: 0x666666 })`
+  - `ceramicMat` (세라믹 패드): `MeshStandardMaterial({ color: 0xe8e0d4, roughness: 0.85, metalness: 0.0 })`
+  - `sootMat` (그을음): `MeshBasicMaterial({ color: 0x888877, transparent: true, opacity: 0.18 })`
+
+  **적층 순서** (y 좌표):
+  - 프레임/철망: `gauzeY` 부근
+  - 세라믹: `gauzeY + 0.005`
+  - 그을음: `gauzeY + 0.006`
+
+  **치수 비율**: 프레임 한 변 : 삼발이 링 지름 ≈ 1.18:1 / 세라믹 반지름 : 프레임 반 ≈ 0.58:1 / 철망 간격 ≈ 0.020
+
+  **실행 가능한 구현 코드** (그대로 사용 권장):
+
+  ```javascript
+  function buildWireGauze(parentGroup, gauzeY) {
+    var gauzeSize = 0.225;  // 정사각형 한 변의 절반 (전체 변 길이 0.45)
+
+    // — 외곽 프레임 (두꺼운 금속 테두리) —
+    var frameMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 });
+    var frameT = 0.018;  // 프레임 두께
+    var frameH = 0.008;  // 프레임 높이
+    // 상변
+    parentGroup.add(M(new THREE.BoxGeometry(gauzeSize * 2, frameH, frameT), frameMat,
+      0, gauzeY + frameH / 2, -gauzeSize + frameT / 2));
+    // 하변
+    parentGroup.add(M(new THREE.BoxGeometry(gauzeSize * 2, frameH, frameT), frameMat,
+      0, gauzeY + frameH / 2, gauzeSize - frameT / 2));
+    // 좌변
+    parentGroup.add(M(new THREE.BoxGeometry(frameT, frameH, gauzeSize * 2), frameMat,
+      -gauzeSize + frameT / 2, gauzeY + frameH / 2, 0));
+    // 우변
+    parentGroup.add(M(new THREE.BoxGeometry(frameT, frameH, gauzeSize * 2), frameMat,
+      gauzeSize - frameT / 2, gauzeY + frameH / 2, 0));
+
+    // — 철망 격자 (촘촘하게) —
+    var wireMat = new THREE.MeshBasicMaterial({ color: 0x666666 });
+    var wireCount = 20;
+    var innerSize = gauzeSize - frameT;
+    var wireSpacing = (innerSize * 2) / (wireCount + 1);
+    var wireThick = 0.0025;
+
+    for (var wi = 1; wi &lt;= wireCount; wi++) {
+      var offset = -innerSize + wi * wireSpacing;
+      // 가로선
+      var hw = new THREE.Mesh(
+        new THREE.BoxGeometry(innerSize * 2, 0.002, wireThick), wireMat);
+      hw.position.set(0, gauzeY + 0.003, offset);
+      parentGroup.add(hw);
+      // 세로선
+      var vw = new THREE.Mesh(
+        new THREE.BoxGeometry(wireThick, 0.002, innerSize * 2), wireMat);
+      vw.position.set(offset, gauzeY + 0.003, 0);
+      parentGroup.add(vw);
+    }
+
+    // — 세라믹 패드 (가운데 원형, 연한 베이지) —
+    var ceramicR = gauzeSize * 0.58;
+    var ceramicMat = new THREE.MeshStandardMaterial({
+      color: 0xe8e0d4, roughness: 0.85, metalness: 0.0
+    });
+    var ceramic = new THREE.Mesh(new THREE.CircleGeometry(ceramicR, 32), ceramicMat);
+    ceramic.rotation.x = -Math.PI / 2;
+    ceramic.position.y = gauzeY + 0.005;
+    parentGroup.add(ceramic);
+
+    // 세라믹 위 그을음 자국 (반투명 어두운 원)
+    var sootMat = new THREE.MeshBasicMaterial({
+      color: 0x888877, transparent: true, opacity: 0.18
+    });
+    var soot = new THREE.Mesh(new THREE.CircleGeometry(ceramicR * 0.55, 20), sootMat);
+    soot.rotation.x = -Math.PI / 2;
+    soot.position.y = gauzeY + 0.006;
+    parentGroup.add(soot);
+  }
+  ```
+
+#### 3. 삼발이+쇠그물+초 (통합)
+
+- 함수명: `buildCandleAssembly()` (또는 적절한 이름)
+- 상세 스펙:
+
+  **※ 구성**: 가열 실험에서 삼발이, 쇠그물, 초는 **하나의 Group으로 묶어서** 사용자가 드롭한 위치에 동적 생성합니다.
+
+  **전체 구조**:
+  - 삼발이 (링 + 다리 3개) — `buildTripod`와 동일 형상
+  - 쇠그물 (외곽 프레임 + 철망 격자 + 세라믹 패드 + 그을음) — `buildWireGauze`와 동일 형상
+  - 초 (납작한 티라이트 모양 + 심지)
+  - 불꽃 (외부 콘 + 내부 코어 + PointLight)
+
+  **핵심 치수**:
+  - 삼발이 링 반경 `ringR = 0.19`, 링 높이 `ringY = 0.63`
+  - 쇠그물 위치: `ringY + 0.016` (링보다 살짝 위)
+  - 초 (티라이트): `CylinderGeometry(0.090, 0.090, 0.036, 18)` — 납작하고 넓은 형태
+  - 초 위치: `y = ringY + 0.036` (쇠그물 바로 위)
+  - 심지: `y = ringY + 0.066` 부근
+  - 불꽃: `y = ringY + 0.112`
+  - **전체 그룹 스케일**: `1.4156` (전체적으로 약 41% 확대)
+  - **그룹 위치**: `(wx, 0.02, wz)` — 사용자가 드롭한 좌표 + 바닥에서 살짝 띄움
+
+  **재질**:
+  - `lm` (삼발이 링/다리/발받침): `MeshStandardMaterial({ color: 0xc8c8c8, roughness: 0.2, metalness: 0.9 })`
+  - `waxMat` (초 본체): `MeshStandardMaterial({ color: 0xf0ece0, roughness: 0.65, transparent: true, opacity: 0.88 })`
+  - 심지 위/아래: `MeshBasicMaterial({ color: 0x444444 })` / `MeshBasicMaterial({ color: 0x333333 })`
+  - 외부 불꽃: `MeshBasicMaterial({ color: 0xfdcb6e, transparent: true, opacity: 0.9 })`
+  - 내부 불꽃: `MeshBasicMaterial({ color: 0xfff8ee, transparent: true, opacity: 0.95 })`
+  - 불꽃 빛: `PointLight(0xff9500, 1.6, 4)`
+
+  **중요한 이름(name) 속성** — `animate()` 루프에서 흔들림 애니메이션을 위해 참조:
+  - 외부 불꽃: `name = "flame"`
+  - 내부 불꽃: `name = "flameInner"`
+  - 불꽃 빛: `name = "flameLight"`
+
+  **불꽃 흔들림** (animate() 루프에서 호출):
+  ```javascript
+  if (flameMesh) {
+    var tt = Date.now();
+    flameMesh.scale.x = 1 + Math.sin(tt * 0.013) * 0.1;
+    flameMesh.scale.y = 1 + Math.sin(tt * 0.016) * 0.15;
+    if (innerFlameMesh) {
+      innerFlameMesh.scale.x = 1 + Math.sin(tt * 0.017) * 0.08;
+      innerFlameMesh.scale.y = 1 + Math.cos(tt * 0.011) * 0.12;
+    }
+    if (flameLight) flameLight.intensity = 1.6 + Math.sin(tt * 0.01) * 0.3;
+  }
+  ```
+
+  **실행 가능한 구현 코드** (그대로 사용 권장):
+
+  ```javascript
+  function buildCandleAssembly(wx, wz) {
+    var group = new THREE.Group();
+    var lm = new THREE.MeshStandardMaterial({ color: 0xc8c8c8, roughness: 0.2, metalness: 0.9 });
+    var ringR = 0.19, ringY = 0.63;
+    group.add(function(){ var r = new THREE.Mesh(new THREE.TorusGeometry(ringR, 0.010, 8, 36), lm);
+      r.position.y = ringY; r.rotation.x = Math.PI / 2; return r; }());
+    for (var li = 0; li &lt; 3; li++) {
+      var ang = li * 2 * Math.PI / 3, sa = Math.sin(ang), ca = Math.cos(ang);
+      var tx = ringR * sa, tz = ringR * ca, bx = 0.28 * sa, bz = 0.28 * ca;
+      var dx = bx - tx, dy = -ringY, dz = bz - tz;
+      var al = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      var arm = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.013, al, 8), lm);
+      arm.position.set((tx + bx) / 2, ringY / 2, (tz + bz) / 2);
+      var aq = new THREE.Quaternion();
+      aq.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dx, dy, dz).normalize());
+      arm.setRotationFromQuaternion(aq); arm.castShadow = true; group.add(arm);
+      group.add(M(new THREE.CylinderGeometry(0.014, 0.014, 0.02, 8), lm, bx, 0.012, bz));
+    }
+    buildWireGauze(group, ringY + 0.016);
+
+    // 초 (티라이트 — 납작하고 넓은 형태)
+    var waxMat = new THREE.MeshStandardMaterial({ color: 0xf0ece0, roughness: 0.65, transparent: true, opacity: 0.88 });
+    var wax = new THREE.Mesh(new THREE.CylinderGeometry(0.090, 0.090, 0.036, 18), waxMat);
+    wax.position.y = ringY + 0.036; wax.castShadow = true; group.add(wax);
+    group.add(M(new THREE.CylinderGeometry(0.003, 0.003, 0.022, 4),
+      new THREE.MeshBasicMaterial({ color: 0x444444 }), 0, ringY + 0.066, 0));
+    group.add(M(new THREE.CylinderGeometry(0.003, 0.002, 0.008, 4),
+      new THREE.MeshBasicMaterial({ color: 0x333333 }), 0, ringY + 0.081, 0));
+
+    // 불꽃 (외부 + 내부 + PointLight)
+    var fg = new THREE.SphereGeometry(0.035, 10, 14); fg.scale(1, 2.4, 1);
+    var fm = new THREE.Mesh(fg, new THREE.MeshBasicMaterial({ color: 0xfdcb6e, transparent: true, opacity: 0.9 }));
+    fm.position.y = ringY + 0.112; fm.name = "flame"; group.add(fm);
+    var ig = new THREE.SphereGeometry(0.018, 8, 10); ig.scale(1, 2.0, 1);
+    var im = new THREE.Mesh(ig, new THREE.MeshBasicMaterial({ color: 0xfff8ee, transparent: true, opacity: 0.95 }));
+    im.position.y = ringY + 0.122; im.name = "flameInner"; group.add(im);
+    var fl = new THREE.PointLight(0xff9500, 1.6, 4); fl.position.y = ringY + 0.112; fl.name = "flameLight"; group.add(fl);
+
+    group.scale.set(1.4156, 1.4156, 1.4156);
+    group.position.set(wx, 0.02, wz);
+    return group;
+  }
+  ```
+
+&gt; 장비를 만들고 `scene.add(group)` 한 뒤, 적절한 위치에 배치하세요. 뼈대 HTML의 `init3DScene()` 함수 끝부분(★⑤ 마커가 있는 곳)에서 호출합니다.
+
+---
+
+## ★⑥ 드래그 인터랙션 (단계별 바인딩)
+
+뼈대 HTML의 `★⑥` 마커 영역에 단계별 드래그 이벤트와 단계 전환 로직을 작성하세요.
+공통 드래그 시스템(마우스+터치, 고스트 엘리먼트, screenToWorld)은 뼈대에 이미 구현되어 있으니, **단계별 바인딩**만 추가하면 됩니다.
+
+### 단계별 흐름 (3단계)
+
+**Step 1** — 학생 행동: 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판 중 하나를 3D 씬의 고정 집게 쪽 드롭 존으로 드래그
+
+  - UI 전환: 사이드 패널 숨김 -&gt; '초' 패널 표시
+  - 완료 조건: 3D 드롭 존에 구리판 드롭 성공
+  - 가이드: "구리판 한 개를 골라 고정 집게 쪽으로 옮겨 보세요."
+  - mp3: `tts_take2.mp3`
+
+**Step 2** — 학생 행동: 초를 구리판 아래 초록색 표시 부분 드롭 존으로 드래그
+  - UI 전환: 사이드 패널에 '다시 하기' 버튼 및 텍스트 표시
+  - 완료 조건: 3D 드롭 존에 초 드롭 성공
+  - 가이드: "초를 구리판 아래 초록색 표시 부분으로 옮겨 보세요."
+  - mp3: `tts_take3.mp3`
+
+**Step 3**
+  - UI 전환: 열 변색 붙임딱지의 색깔이 모두 변하면 우측 하단에 '실험 정리하기' 버튼 나타남.
+  - 가이드 + 나레이션 (2개 세그먼트, **순차 재생**):
+    1) 가이드 "열 변색 붙임딱지의 색깔 변화를 관찰해 보세요." / mp3 `tts_take4.mp3` / 단계 시작 즉시 재생
+    2) 가이드 "초에서 가까운 곳부터 구리판을 따라 색이 변해요." / mp3 `tts_take5.mp3` / 이전 세그먼트 종료 후 3초 지연
+
+### 구현 방식
+
+- 각 카드 요소(`.card[data-step="N"]`)에 `mousedown` + `touchstart` 이벤트 바인딩
+- 드래그 시 고스트 엘리먼트 생성 → 따라다니기
+- `mouseup`/`touchend` 시 3D 드롭 존(`#drop-zone-indicator` 또는 raycaster) 안인지 검사
+- 성공 시 `currentStep++`, `updateDots()`, `updateGuide(...)`, 다음 패널 표시, 다음 take 오디오 재생
+- **드래그 영역(드롭 존)은 화면 확대/축소/회전과 무관하게 3D 좌표에 고정** — 매 프레임 raycaster로 화면 좌표 갱신
+
+---
+
+## ★⑦ 시뮬레이션 코어 (실험의 본체)
+
+뼈대 HTML의 `★⑦` 마커 영역에 시뮬레이션 코어 코드를 작성하세요.
+
+### 사용 패턴: (자유 구현 — 사용자 기술 기반)
+
+### 핵심 현상 (사용자 기술)
+
+- 열 변색 붙임딱지의 색깔이 분홍색에서 흰색으로 변할 때 초를 중심으로 원 모양으로 초에서 멀어질수록 색깔이 변함. 초에서 가까운 곳부터 변해야 되고, 초를 드래그하자마자 변하기 시작해야 돼.
+- 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판에서 열 변색 붙임딱지의 색깔이 변하는 빠르기는 모두 똑같게 만들어 줘.
+
+### 시각화 방법
+
+- 초를 구리판 아래로 드래그하면 열 변색 붙임딱지의 색깔이 바로 변하기 시작하도록 만들어 줘.
+- 구리판 아래 책상 바닥에 구리판과 똑같은 모양으로 초록색으로 표시해 줘. 초록색 영역 내에서 초를 원하는 곳에 드래그할 수 있도록 만들어 줘.
+- 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판 모두 두께를 1mm로 표현해 줘.
+
+### 추가 참고
+
+- 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판 모두 구리판을 고정집게로 드래그했을 때 구리판이 고정집게의 끝부분에 고정되도록 구현해 줘.
+- 3D 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판 모두 구리판 윗면에 분홍색 열 변색 붙임딱지가 붙어 있는 모습으로 만들어 줘.
+- 우측 패널에 있는 길게 자른 구리판, 정사각형 구리판, ㄷ모양 구리판도 모두 구리판 윗면에 분홍색 열 변색 붙임딱지가 붙어 있는 모습으로 만들어 줘.
+- ㄷ모양 구리판의 모양은 ㄷ모양으로 잘 표현해 줘.
+
+### 구현 가이드
+
+- 시뮬레이션 시작 트리거: 마지막 학생 행동 단계 완료 시 `isSimulating = true`
+- `animate()` 루프에서 `isSimulating`이 true이면 매 프레임 시뮬레이션 업데이트
+- 속도 조절(`simSpeed`)을 시뮬 코어에서 참조하여 가속/감속 지원 — 뼈대의 `★⑦` 영역에는 `simSpeed` 변수와 속도 조절 UI가 이미 들어있습니다
+- 시뮬레이션 시작 약 10~15초 후 `summaryBtn` 또는 `next-btn`을 표시 (뼈대 코드에 패턴 있음)
+- **추가/제거 시 뼈대의 공통 함수(`updateSimulation()`, `simSpeed` 변수, `next-btn` 표시 로직)는 그대로 활용** — 새로 만들지 마세요
+
+---
+
+## ★⑧ 리셋 처리 (실험별 상태 초기화)
+
+뼈대 HTML의 `★⑧` 마커 영역(`resetExperiment()` 함수 안의 실험별 정리 블록 + `restartExperiment()` 안)에 아래 코드를 추가하세요.
+
+```javascript
+// ★⑧ 실험별 상태/3D 오브젝트 정리 코드
+function resetExperimentSpecific() {
+  // 1) 동적으로 생성된 3D 오브젝트 제거
+  //    예: scene.remove(inkParticles); inkParticles = null;
+  //         scene.remove(flameMesh);   flameMesh   = null;
+
+  // 2) 시뮬레이션 상태 변수 초기화
+  //    예: convTime = 0; particleData = []; heatGrid = [];
+
+  // 3) 사이드 패널 초기화 (모든 카드 다시 표시 또는 첫 단계 카드만 표시)
+  //    공통 함수가 처리하는 부분(currentStep, updateDots, updateGuide)은 뼈대이 자동 처리
+}
+```
+
+### 결과 요약 나레이션 트리거 (있는 경우)
+
+`★⑧` 영역의 `goToSummary()` 함수 안에서 결과 요약 팝업을 띄운 직후 다음을 호출하세요:
+
+```javascript
+playSummarySegments();  // 결과 요약 다중 세그먼트 순차 재생 (뼈대 v2 함수)
 ```
 
 ---
 
-## 3D 씬 스펙
+## 최종 체크리스트
 
-### 배경
-```javascript
-// CanvasTexture 그라데이션 (512x512)
-gr.addColorStop(0, '#e8f0f2');
-gr.addColorStop(0.45, '#d5e2e8');
-gr.addColorStop(1, '#c0d0d8');
-scene.background = new THREE.CanvasTexture(bgCanvas);
-```
+뼈대 HTML 수정 후 다음을 확인하세요:
 
-### 카메라
-```javascript
-new THREE.PerspectiveCamera(42, window.innerWidth/window.innerHeight, 0.1, 100)
-// 초기 궤도 회전: targetRot = {x: 0.3, y: -0.4}
-// 초기 줌: targetZoom = 5.5
-// camera.lookAt(0, 1.0, 0)
-```
+- [ ] ★① CSS 변수 3개만 변경됐는가? (다른 CSS는 그대로)
+- [ ] ★② `&lt;title&gt;`, 헤더, 탐구 목표 팝업, dot 개수(3개), 사이드 카드, 결과 요약이 모두 채워졌는가?
+- [ ] ★③ `audioFiles`와 `audioTexts`의 키가 일치하는가? (`take1`, `take2`, `take3`, `take4_1`, `take4_2`, `summary_1`, `summary_2`)
+- [ ] ★④ `guideMessages` 배열 길이가 3인가?
+- [ ] ★④ `stepSegments` / `summarySegments` 객체가 정확히 정의되어 있고, 각 audioKey가 audioFiles의 키와 일치하는가?
+- [ ] ★④ Step 진입 시 `playStepSegments(stepIndex)`가 호출되는가? (다중 세그먼트 단계에서 가이드가 자동 갱신되어야 함)
+- [ ] ★⑤ 모든 장비 build 함수가 `init3DScene` 끝에서 호출되는가?
+- [ ] ★⑥ 단계별 드래그 → 단계 전환 → 다음 take 오디오 재생이 끊김 없이 작동하는가?
+- [ ] ★⑦ 시뮬레이션이 마지막 학생 행동 후 자동 시작하는가? `isSimulating` 플래그가 토글되는가?
+- [ ] ★⑧ 리셋 시 모든 동적 오브젝트가 정리되고, 새로 시작 시 잔재가 남지 않는가?
+- [ ] **마커 밖 코드(공통 구조, 변수명, 함수명, 클래스명)를 변경하지 않았는가?**
 
-### 렌더러
-```javascript
-new THREE.WebGLRenderer({antialias: true})
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-```
+## 팝업창 UI 규칙 (필수)
 
-### 조명 (5개 + 1개)
-```javascript
-new THREE.AmbientLight(0xffffff, 0.5);
+**탐구 목표 팝업창(`#objective-popup`)과 실험 결과 정리 팝업창(`#summary-overlay`)의 제목·본문·핵심 개념 박스에 이모지를 절대 사용하지 마세요.**
 
-var dl = new THREE.DirectionalLight(0xffffff, 0.85);
-dl.position.set(4, 8, 5); dl.castShadow = true;
-dl.shadow.mapSize.set(2048, 2048);
-dl.shadow.camera.near=0.5; dl.shadow.camera.far=25;
-dl.shadow.camera.left=-6; dl.shadow.camera.right=6;
-dl.shadow.camera.top=6; dl.shadow.camera.bottom=-6;
+- 제목 예시: `🎯 탐구 목표` ❌ → `탐구 목표` ✅
+- 제목 예시: `🌊 실험 결과 정리` ❌ → `실험 결과 정리` ✅
+- 핵심 개념 박스 앞의 `💡`, `📌`, `✨` 등도 모두 제거
+- 사용자가 이모지를 포함해 입력했더라도, 팝업 렌더링 시에는 이모지를 제외하고 텍스트만 표시
 
-new THREE.DirectionalLight(0x99bbdd, 0.3).position.set(-3, 3, -2);   // 좌측
-new THREE.DirectionalLight(0xffffff, 0.45).position.set(0, 5, -4);   // 후방
-new THREE.DirectionalLight(0xeef4ff, 0.35).position.set(2, 2, 6);    // 전방
-new THREE.PointLight(0xffffff, 0.6, 10).position.set(0, 4, 2);       // 상단
-```
+헤더·마스코트·버튼 등 팝업 외 UI 요소에는 기존 이모지를 유지해도 됩니다. 이 규칙은 **팝업창 내부 텍스트에만** 적용됩니다.
 
-### 바닥
-```javascript
-var floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(20, 20),
-  new THREE.MeshStandardMaterial({color: 0xb8ccd6, roughness: 0.7, metalness: 0.05})
-);
-floor.rotation.x = -Math.PI/2; floor.position.y = -0.01;
-floor.receiveShadow = true;
-```
+## 주의사항 (꼭 지켜주세요)
 
-### 투명 groundPlane (raycaster용)
-```javascript
-var groundPlane = new THREE.Mesh(
-  new THREE.PlaneGeometry(40, 40),
-  new THREE.MeshBasicMaterial({visible: false, side: THREE.DoubleSide})
-);
-groundPlane.rotation.x = -Math.PI/2; groundPlane.position.y = 0.02;
-```
-
-### 3D 오브젝트 구현
-- **레퍼런스 시트에 있는 장비는 해당 코드를 그대로 사용**
-- 레퍼런스에 없는 장비만 교과서 사진을 보고 Three.js 기본 도형 조합으로 제작
-- THREE.Group으로 관련 파트 묶기
-- castShadow = true 적용
-
-### 카메라 컨트롤
-```javascript
-// 마우스 드래그: 궤도 회전
-targetRot.y -= (e.clientX - prevMouse.x) * 0.005;
-targetRot.x = Math.max(-0.2, Math.min(0.9, targetRot.x + (e.clientY - prevMouse.y) * 0.005));
-
-// 마우스 휠: 줌
-targetZoom = Math.max(2.5, Math.min(10, targetZoom + e.deltaY * 0.004));
-
-// 터치: 1손가락 회전, 2손가락 핀치 줌 (위와 동일 로직)
-
-// animate()에서 부드러운 이징
-curRot.x += (targetRot.x - curRot.x) * 0.05;
-curRot.y += (targetRot.y - curRot.y) * 0.05;
-curZoom += (targetZoom - curZoom) * 0.05;
-
-// 카메라 위치 계산
-camera.position.x = Math.sin(curRot.y) * Math.cos(curRot.x) * curZoom;
-camera.position.y = Math.sin(curRot.x) * curZoom + 1.0;
-camera.position.z = Math.cos(curRot.y) * Math.cos(curRot.x) * curZoom;
-camera.lookAt(0, 1.0, 0);
-```
-
----
-
-## 이 단계에서 구현할 것
-
-1. ✅ HTML 구조 (모든 UI 요소의 HTML 마크업)
-2. ✅ CSS 스타일 (위 스펙 그대로)
-3. ✅ 3D 씬 (배경, 카메라, 조명, 바닥, 실험 장비 오브젝트)
-4. ✅ 카메라 컨트롤 (마우스 + 터치, 회전 + 줌)
-5. ✅ 로딩 화면 → 탐구 목표 팝업 (클릭으로 닫기)
-6. ✅ currentStep 변수, updateGuide/updateDots 함수 (빈 구현)
-7. ✅ 사이드 패널에 실험 재료 카드 표시 (SVG 미리보기 포함)
-8. ✅ animate() 루프
-
-## 이 단계에서 구현하지 않을 것
-
-1. ❌ 드래그 앤 드롭 (지시서 2에서)
-2. ❌ 시뮬레이션 로직 (지시서 2에서)
-3. ❌ 오디오/TTS (지시서 2에서)
-4. ❌ 리셋 기능 (지시서 2에서)
-
----
-
-## 출력
-
-- 단일 HTML 파일
-- 파일명: `가상실험실_[실험주제]_v1.html`
-- 한글 주석으로 섹션 구분
-
-## 주의사항
-
-1. **var만 사용** (let/const 금지)
-2. **mouse + touch 이벤트 모두 구현** (카메라 컨트롤)
-3. **위 디자인 스펙을 그대로 사용** — 색상, CSS 수치, SVG 코드를 임의로 변경하지 마세요
-4. **레퍼런스 시트에 있는 장비는 해당 코드를 그대로 사용** — 재질, 색상, 치수를 임의로 변경하지 마세요
-5. **교과서 사진의 장비 비율을 최대한 반영**
+1. **마커 밖 코드는 절대 수정 금지** — CSS 클래스명, 변수명, 함수명, 이벤트 시스템, 공통 구조는 그대로 유지하세요.
+2. **var만 사용** (let/const 금지) — 뼈대 전체가 ES5 호환으로 작성되어 있습니다.
+3. **mouse + touch 이벤트 모두 바인딩** — 둘 중 하나만 하면 모바일 또는 데스크톱 중 하나에서 작동하지 않습니다.
+4. **오디오는 외부 mp3 파일** (base64 내장 금지) — 같은 폴더에 mp3 파일들을 함께 두세요.
+5. **드래그 고스트 offset 계산** — `ox = clientX - rect.left`로 카드 좌상단 기준 오프셋을 정확히 잡으세요.
+6. **각 Step별 UI 표시/숨김 정확히 구현** — 한 단계의 카드는 다음 단계로 넘어갈 때 사라져야 합니다.
+7. **나레이션은 교과서 전체 문장 그대로 사용** — 학생이 들을 텍스트는 입력값을 그대로 쓰고, 임의로 줄이거나 늘리지 마세요.
+8. **결과 파일은 단일 HTML** — 외부 CSS/JS 파일로 분리하지 마세요. (mp3는 별개)
 </pre>
             </div>
           </div>
@@ -1890,407 +1852,64 @@ camera.lookAt(0, 1.0, 0);
 
         <!-- 지시서 2/2 -->
         <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-height:0;">
-          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.15em;flex-shrink:0;">📄 지시서 2 / 2</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.15em;flex-shrink:0;">📄 가상실험실_제작_프롬프트.txt</div>
           <div style="flex:1;border-radius:10px;border:1.5px solid var(--blue);background:#1e2022;overflow:hidden;display:flex;flex-direction:column;min-height:0;box-shadow:0 0 16px rgba(59,158,255,0.08);">
             <div style="background:#2a2d2f;padding:5px 12px;border-bottom:1px solid #3a3d3f;font-family:'Space Mono',monospace;font-size:0.55rem;color:#aaa;flex-shrink:0;display:flex;align-items:center;gap:5px;">
               <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#ff6060;"></span>
               <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#ffbd2e;"></span>
               <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#27c93f;"></span>
-              <span style="margin-left:5px;">지시서_2of2.md</span>
             </div>
             <div style="flex:1;overflow-y:auto;padding:10px 14px;min-height:0;">
-              <pre style="margin:0;font-family:'Noto Sans KR',monospace;font-size:0.78rem;line-height:1.75;color:#c8d0d8;white-space:pre-wrap;word-break:break-word;"># 가상실험실 제작 지시서 [2/2] — 인터랙션 + 시뮬레이션 + 오디오
-
-&gt; **사용법:**
-&gt; 1. **지시서 [1/2]로 만든 v1 HTML 파일**을 첨부
-&gt; 2. 이 파일도 함께 첨부
-&gt; 3. **"이 지시서대로 v1 HTML에 기능을 추가해 주세요."** 라고 요청
-
----
-
-## 당신이 할 일
-
-첨부된 v1 HTML 파일에 아래 기능을 추가하세요.
-**기존 코드의 구조, 변수명, 함수명, CSS를 최대한 유지**하면서 필요한 함수만 추가합니다.
-
----
-
-## 1. 드래그 앤 드롭
-
-v1에서 설계한 각 Step의 "학생 행동"이 드래그인 경우, 아래 규칙대로 구현하세요.
-
-### 공통 드래그 규칙
-
-```javascript
-// 마우스 + 터치 모두 구현
-el.addEventListener('mousedown', function(e) { ... });
-el.addEventListener('touchstart', function(e) { ... }, {passive: false});
-
-// 드래그 고스트 생성
-var rect = el.getBoundingClientRect();
-var ox = e.clientX - rect.left;
-var oy = e.clientY - rect.top;
-var ghost = el.cloneNode(true);
-ghost.style.cssText = 'position:fixed; pointer-events:none; z-index:9999; opacity:0.85; width:' + rect.width + 'px;';
-document.body.appendChild(ghost);
-
-// 고스트 이동
-ghost.style.left = (clientX - ox) + 'px';
-ghost.style.top = (clientY - oy) + 'px';
-```
-
-### 2D UI → 3D 씬 드롭 (장비를 3D 공간에 놓을 때)
-
-```javascript
-// raycaster로 마우스 → 월드 좌표 변환
-function screenToWorld(sx, sy) {
-  var rect = renderer.domElement.getBoundingClientRect();
-  var nx = ((sx - rect.left) / rect.width) * 2 - 1;
-  var ny = -((sy - rect.top) / rect.height) * 2 + 1;
-  raycaster.setFromCamera(new THREE.Vector2(nx, ny), camera);
-  var hits = raycaster.intersectObject(groundPlane);
-  if (hits.length &gt; 0) return {x: hits[0].point.x, z: hits[0].point.z};
-  return null;
-}
-```
-
-### 2D UI → 2D 드롭 (카드를 특정 위치로 놓을 때)
-```javascript
-// 드롭 판정: 화면상 목표 위치와의 거리
-var dist = Math.hypot(clientX - targetScreenX, clientY - targetScreenY);
-if (dist &lt; 120) { /* 드롭 성공 */ }
-```
-
-### 드롭 존 표시
-
-**2D 드롭 존** (#drop-zone-indicator):
-- Step에 따라 표시/숨김
-- 드래그 중 근접 시 highlight 클래스 추가
-
-**3D 드롭 존** (구리판 아래 초록 영역 등):
-```javascript
-var fillMat = new THREE.MeshBasicMaterial({
-  color: 0x00b894, transparent: true, opacity: 0.20,
-  side: THREE.DoubleSide, depthWrite: false
-});
-var lineMat = new THREE.LineBasicMaterial({color: 0x00cc88, linewidth: 2});
-
-// 영역 표시
-var geo = new THREE.PlaneGeometry(w * 0.97, h * 0.97);
-var mesh = new THREE.Mesh(geo, fillMat);
-mesh.rotation.x = -Math.PI / 2;
-mesh.position.set(x, 0.022, z);
-
-// 테두리
-var edgeGeo = new THREE.EdgesGeometry(geo);
-var border = new THREE.LineSegments(edgeGeo, lineMat);
-```
-
-### 드롭 성공 시 처리
-1. Step 전환 (currentStep 증가)
-2. updateDots() 호출
-3. 이전 패널 숨기고 다음 패널 표시
-4. 가이드 메시지 업데이트
-5. 필요 시 3D 오브젝트 생성
-
----
-
-## 2. 시뮬레이션 로직
-
-교과서의 핵심 실험 현상에 맞는 방식을 선택하여 구현하세요.
-
-### 선택지 A: 열전도 — 색 변화 확산
-
-그리드 기반 열전도:
-```javascript
-var GS = 80;  // 그리드 크기
-var heatGrid = [];  // GS x GS 배열
-
-// 열원으로부터의 거리 계산
-// 단순 형태 (직사각/정사각): 유클리드 거리 → 동심원 확산
-// 복잡한 형태 (ㄷ자 등): BFS 경로 거리 → 판 모양 따라 확산
-```
-
-색상 변화 (열 변색 스티커):
-```javascript
-// vertexColors 사용
-var geo = new THREE.PlaneGeometry(w, h, segX, segZ);
-geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-var mat = new THREE.MeshStandardMaterial({vertexColors: true, roughness: 0.55});
-
-// 색상 전환 함수: sigmoid S-curve
-function heatToColor(heat) {
-  heat = Math.min(1, Math.max(0, heat));
-  var sig = 1 / (1 + Math.exp(-10 * (heat - 0.5)));
-  // 핑크(차가움) → 흰색(뜨거움) — 실험에 맞게 색상 조정
-  return [초기R + sig * 변화량R, 초기G + sig * 변화량G, 초기B + sig * 변화량B];
-}
-
-// 매 프레임 색상 업데이트
-function updateColors() {
-  var elapsed = Math.min(1.0, (Date.now() - heatStartTime) / 17000 * heatSpeed);
-  // 각 vertex의 거리에 따라 heat 계산 → heatToColor로 색상 결정
-}
-```
-
-### 선택지 B: 대류 — 파티클 흐름
-```javascript
-// 파티클 시스템
-var particles = [];
-// 열원 근처에서 생성, 위로 이동, 벽면 따라 순환
-// animate()에서 매 프레임 위치 업데이트
-```
-
-### 선택지 C: 기타
-실험 현상에 맞게 자유롭게 결정
-
-### 공통 사항
-```javascript
-var heatSpeed = 1;  // 속도 배수
-var heatStartTime = null;
-var isSimulating = false;
-
-// 속도 조절
-function setSpeed(s) {
-  heatSpeed = s;
-  // 속도 버튼 active 상태 업데이트
-}
-
-// animate() 루프에서 호출
-function animate() {
-  requestAnimationFrame(animate);
-  // ... 카메라 이징 ...
-  if (isSimulating) { updateColors(); /* 또는 updateParticles() */ }
-  renderer.render(scene, camera);
-}
-
-// 시뮬레이션 시작 약 10~15초 후 "실험 정리하기" 버튼 표시
-setTimeout(function() {
-  document.getElementById('next-btn').style.display = 'block';
-}, 10500);
-```
-
----
-
-## 3. 오디오 시스템
-
-### 외부 mp3 파일 방식 (base64 내장 금지!)
-
-```javascript
-// 오디오 파일 매핑 — 교과서 내용에 맞게 작성
-var audioFiles = {
-  take1: 'tts_take1.mp3',  // 탐구 목표 나레이션
-  take2: 'tts_take2.mp3',  // Step 0 안내
-  take3: 'tts_take3.mp3',  // Step 1 안내
-  // ... 필요한 만큼 추가
-};
-
-// TTS 폴백용 텍스트 — 교과서에서 추출한 전체 문장
-var audioTexts = {
-  take1: '탐구 목표입니다. [교과서에서 추출한 목표 전문]',
-  take2: '[Step 0 가이드 메시지 전문]',
-  take3: '[Step 1 가이드 메시지 전문]',
-  // ...
-};
-```
-
-### TTS 초기화
-```javascript
-var ttsVoice = null;
-function initTTS() {
-  if (!window.speechSynthesis) return;
-  function loadVoice() {
-    var voices = window.speechSynthesis.getVoices();
-    for (var i = 0; i &lt; voices.length; i++) {
-      if (voices[i].lang.indexOf('ko') &gt;= 0) { ttsVoice = voices[i]; break; }
-    }
-  }
-  loadVoice();
-  window.speechSynthesis.onvoiceschanged = loadVoice;
-}
-
-function speak(text) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  var u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ko-KR'; u.rate = 0.88; u.pitch = 1.08; u.volume = 1.0;
-  if (ttsVoice) u.voice = ttsVoice;
-  window.speechSynthesis.speak(u);
-  return u;
-}
-```
-
-### playAudio 함수
-```javascript
-var currentAudio = null;
-var audioCache = {};
-
-function playAudio(key, onEnd) {
-  stopAudio();
-  var src = audioFiles[key];
-  if (!src) { fallbackSpeak(key, onEnd); return; }
-
-  var a = audioCache[key] || new Audio(src);
-  audioCache[key] = a;
-  currentAudio = a;
-
-  a.onended = function() { currentAudio = null; if (onEnd) onEnd(); };
-  a.onerror = function() { currentAudio = null; fallbackSpeak(key, onEnd); };
-
-  try { a.currentTime = 0; } catch(e) {}
-  var p = a.play();
-  if (p &amp;&amp; typeof p.catch === 'function') {
-    p.catch(function() { currentAudio = null; fallbackSpeak(key, onEnd); });
-  }
-}
-
-function stopAudio() {
-  if (currentAudio) { currentAudio.pause(); try{currentAudio.currentTime=0;}catch(e){} currentAudio=null; }
-  window.speechSynthesis &amp;&amp; window.speechSynthesis.cancel();
-}
-
-function fallbackSpeak(key, onEnd) {
-  var text = audioTexts[key];
-  if (text) {
-    var u = speak(text);
-    if (u &amp;&amp; onEnd) { u.onend = onEnd; return; }
-  }
-  if (onEnd) onEnd();
-}
-```
-
-### 배경음악
-```javascript
-var bgAudio = null, bgOn = false;
-
-function startBgMusic() {
-  if (!bgAudio) {
-    bgAudio = new Audio('bgm.mp3');
-    bgAudio.loop = true; bgAudio.volume = 0.06;
-  }
-  bgAudio.play().then(function() { bgOn = true; updateMusicIcon(); })
-    .catch(function() { console.warn('배경음악 재생 실패'); });
-}
-
-function toggleBgMusic() {
-  if (!bgAudio) { startBgMusic(); return; }
-  if (bgOn) { bgAudio.pause(); bgOn = false; }
-  else { bgAudio.play().then(function(){ bgOn = true; }); }
-  updateMusicIcon();
-}
-```
-
-### 탐구 목표 팝업 동작 수정
-v1에서 만든 팝업의 클릭 핸들러를 아래로 교체:
-```javascript
-var popupClickCount = 0;
-popup.addEventListener('click', function handlePopupClick() {
-  startBgMusic();
-  popupClickCount++;
-  if (popupClickCount === 1) {
-    playAudio('take1');  // 목표 나레이션
-  } else if (popupClickCount &gt;= 2) {
-    popup.style.display = 'none';
-    popup.removeEventListener('click', handlePopupClick);
-    stopAudio();
-    // Step 0 안내 시작
-    setTimeout(function() {
-      updateGuide('[Step 0 가이드 메시지]');
-      playAudio('take2');
-    }, 300);
-  }
-});
-```
-
-### 각 Step 전환 시 오디오 재생
-```javascript
-// Step 전환 함수 안에서:
-playAudio('take[N]', function() {
-  // 필요 시 연속 재생
-  playAudio('take[N+1]');
-});
-```
-
----
-
-## 4. 리셋 기능
-
-```javascript
-function resetExperiment() {
-  stopAudio();
-
-  // 동적 생성된 3D 오브젝트 제거
-  if (동적그룹) { scene.remove(동적그룹); 동적그룹 = null; }
-  // ... 모든 동적 오브젝트에 대해 반복
-
-  // 상태 초기화
-  currentStep = 0;
-  isSimulating = false;
-  heatSpeed = 1;
-
-  // UI 초기화
-  document.getElementById('side-panel').style.display = 'flex';
-  document.getElementById('next-btn').style.display = 'none';
-  document.getElementById('summary-overlay').style.display = 'none';
-  document.getElementById('speed-bar').style.display = 'none';
-  // ... 기타 패널 초기화
-
-  updateDots();
-  updateGuide('[Step 0 가이드 메시지]');
-
-  // 카메라 초기 위치로
-  targetRot = {x: 0.3, y: -0.4};
-  targetZoom = 5.5;
-}
-```
-
----
-
-## 5. 결과 요약 연결
-
-```javascript
-function goToSummary() {
-  document.getElementById('next-btn').style.display = 'none';
-  document.getElementById('summary-overlay').style.display = 'flex';
-  isSimulating = false;
-
-  // 정리 나레이션 재생
-  playAudio('take[정리1]', function() {
-    playAudio('take[정리2]');  // 핵심 개념 읽기
-  });
-}
-```
-
----
-
-## 출력
-
-- v1 HTML에 기능을 추가한 **완성된 단일 HTML 파일**
-- 파일명: `가상실험실_[실험주제].html` (v1 제거)
-- 한글 주석으로 추가된 섹션 구분
-
-## 주의사항
-
-1. **기존 v1 코드를 최대한 유지** — CSS, HTML 구조, 변수명 변경 금지
-2. **var만 사용** (let/const 금지)
-3. **mouse + touch 이벤트 모두 구현**
-4. **오디오는 외부 mp3** (base64 내장 금지)
-5. **드래그 고스트 offset 계산 필수** (ox = clientX - rect.left)
-6. **각 Step별 UI 표시/숨김 조건 정확히 구현**
-7. **나레이션 텍스트는 교과서에서 추출한 전체 문장 사용**
-</pre>
+              <pre style="margin:0;font-family:'Noto Sans KR',monospace;font-size:0.78rem;line-height:1.75;color:#c8d0d8;white-space:pre-wrap;word-break:break-word;">첨부한 두 파일을 사용해서 가상실험 HTML을 만들어 줘.
+
+[첨부 파일]
+1. 가상실험실_뼈대_채우기_지시서.md — 작업 지시서
+2. 가상실험실_뼈대_v2.html — 베이스 HTML 파일
+
+[작업 방법]
+1. 가상실험실_뼈대_v2.html을 베이스로 사용해 줘. 처음부터 새로 작성하지 마.
+2. 지시서의 ★① ~ ★⑧ 항목에 따라 뼈대 HTML의 해당 마커 영역만 채워 넣어 줘.
+3. 마커 밖의 코드(공통 구조, 변수명, 함수명, CSS 클래스명, 드래그 시스템, screenToWorld, BGM/TTS 채널, updateSimulation, resetExperiment 등)는 절대 수정하지 마.
+4. var만 사용 (let/const 금지).
+5. 결과는 단일 HTML 파일 하나로, 코드 스니펫이 아니라 바로 실행 가능한 완성된 형태로 줘.
+6. 결과 파일명: 지시서에 명시된 형식 그대로 따라 줘.
+
+[작업 시 유의사항]
+- 지시서에 명시된 부분만 작업하고 나머지는 건드리지 마. 임의로 "더 좋게" 바꾸지 마.
+- 음성 파일(mp3)은 지시서의 audioFiles 매핑대로 파일명만 정확히 넣어 줘. 실제 mp3가 없으면 뼈대 코드의 TTS fallback이 자동으로 처리해.
+- ★⑦ 시뮬레이션 코어는 가장 중요한 부분이야. 지시서의 시뮬레이션 설명을 정확히 반영해서 작성해 줘.
+- 작업 완료 후, 다음을 한 번 더 확인해 줘:
+  · 모든 ★ 마커 영역이 빠짐없이 채워졌는지
+  · 마커 밖 코드를 수정한 부분이 없는지
+  · let/const를 사용한 곳이 없는지
+  · 단계 수와 dot 개수, audioFiles 항목 수가 일치하는지
+  · 사용자 표시용 Step 번호는 1부터 시작하고, JS 코드 키(step0, take2 등)는 0-base를 그대로 따름 — 둘이 어긋나 보이는 건 의도된 것이니 수정하지 마
+
+[제공 형태]
+완성된 HTML 파일을 다운로드 가능한 형태로 제공해 줘.</pre>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- COL 2: 빈 영역 -->
+      <!-- COL 2: 가상실험실 지시서 HTML -->
       <div style="display:flex;flex-direction:column;gap:5px;min-height:0;">
-        <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--gray);letter-spacing:0.15em;flex-shrink:0;">⬜ 추가 예정</div>
-        <div style="flex:1;border-radius:10px;border:1px dashed var(--blue-border);background:rgba(13,21,32,0.3);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;opacity:0.35;">
-          <span style="font-size:2rem;">✏️</span>
-          <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--gray-light);letter-spacing:0.12em;">COMING SOON</span>
+        <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--blue);letter-spacing:0.15em;flex-shrink:0;">📄 lab_instruction_heat_conduction.html</div>
+        <div style="flex:1;border-radius:10px;border:1.5px solid var(--blue);background:#fff;overflow:hidden;display:flex;flex-direction:column;min-height:0;box-shadow:0 0 16px rgba(59,158,255,0.08);">
+          <div style="background:#2a2d2f;padding:5px 12px;border-bottom:1px solid #3a3d3f;font-family:'Space Mono',monospace;font-size:0.55rem;color:#aaa;flex-shrink:0;display:flex;align-items:center;gap:5px;">
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#ff6060;"></span>
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#ffbd2e;"></span>
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#27c93f;"></span>
+            <span style="margin-left:5px;">lab_instruction_heat_conduction.html</span>
+          </div>
+          <div style="flex:1;min-height:0;">
+            <iframe
+              src="lab_instruction_heat_conduction.html"
+              style="width:100%;height:100%;border:none;display:block;"
+              scrolling="auto"
+            ></iframe>
+          </div>
         </div>
       </div>
 
@@ -2655,18 +2274,127 @@ function goToSummary() {
   </div>
 
   <!-- SLIDE 13: 사용자 조사 -->
-  <div class="slide">
+  <div class="slide" style="padding: 18px 24px 24px 24px; justify-content: flex-start; align-items: flex-start;">
     <div class="glow glow-1"></div>
     <div class="slide-tag">13 / 14</div>
-        <div class="section-head">
+    <div class="section-head" style="margin-top:4px; margin-bottom:6px; max-width:100%;">
       <div class="section-label">User Research</div>
       <h2>초등 과학 디지털 콘텐츠 <span class="blue">사용자 조사</span></h2>
       <div class="divider"></div>
     </div>
-    <div style="flex:1;display:flex;align-items:center;justify-content:center;width:100%;max-width:960px;">
-      <div style="border:1px dashed var(--blue-border);border-radius:16px;width:100%;height:100%;max-height:420px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;opacity:0.4;">
-        <span style="font-size:2.5rem;">✏️</span>
-        <span style="font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--gray-light);letter-spacing:0.15em;">CONTENT COMING SOON</span>
+
+    <div style="display:flex;gap:14px;width:100%;flex:1;min-height:0;align-items:flex-start;">
+
+      <!-- 응답자 정보 -->
+      <div style="background:linear-gradient(160deg,#1a2a4a,#0d1520);border:1.5px solid var(--blue-border);border-radius:12px;padding:18px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:118px;flex-shrink:0;">
+        <span style="font-size:1.6rem;">👥</span>
+        <div style="font-family:'Space Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--blue-bright);line-height:1;">128명</div>
+        <div style="font-size:0.68rem;color:var(--gray-light);text-align:center;line-height:1.5;">초등 교사<br>총 응답자 수</div>
+        <div style="border-top:1px solid var(--blue-border);padding-top:8px;width:100%;font-size:0.62rem;color:var(--gray-light);line-height:1.8;text-align:center;">
+          <span style="color:var(--blue-bright);">20년 이상</span> 28.1%<br>
+          <span style="color:var(--blue-bright);">15~20년</span> 21.9%<br>
+          <span style="color:var(--blue-bright);">10~15년</span> 28.1%<br>
+          5~10년 12.5%<br>
+          5년 이하 9.4%
+        </div>
+      </div>
+
+      <!-- 테이블 -->
+      <div style="flex:1;min-height:0;overflow:hidden;display:flex;justify-content:center;">
+        <table style="width:92%;border-collapse:collapse;font-size:0.82rem;table-layout:fixed;">
+          <colgroup>
+            <col style="width:64px;">
+            <col style="width:52px;">
+            <col>
+            <col>
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th colspan="2" style="background:rgba(13,21,32,0.8);border:1px solid rgba(59,158,255,0.2);padding:8px 4px;"></th>
+              <th style="background:rgba(59,158,255,0.25);border:1px solid rgba(59,158,255,0.3);padding:7px 2px;color:var(--white);font-weight:700;text-align:center;font-size:0.88rem;">가상 실험실</th>
+              <th style="background:rgba(59,158,255,0.25);border:1px solid rgba(59,158,255,0.3);padding:7px 2px;color:var(--white);font-weight:700;text-align:center;font-size:0.88rem;">개념 익히기 게임</th>
+              <th style="background:rgba(59,158,255,0.25);border:1px solid rgba(59,158,255,0.3);padding:7px 2px;color:var(--white);font-weight:700;text-align:center;font-size:0.88rem;">개념 음원 영상</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 만족도 -->
+            <tr>
+              <td colspan="2" style="background:rgba(13,21,32,0.6);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);text-align:center;font-weight:600;">만족도</td>
+              <!-- 4.1: 별4 + 10%채워진별 -->
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:7px 2px;text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:1px;font-size:1.15rem;line-height:1;">
+                  <span style="color:#ffd700;">★</span>
+                  <span style="color:#ffd700;">★</span>
+                  <span style="color:#ffd700;">★</span>
+                  <span style="color:#ffd700;">★</span>
+                  <span style="position:relative;display:inline-block;color:#444;">★<span style="position:absolute;left:0;top:0;overflow:hidden;width:10%;color:#ffd700;">★</span></span>
+                </div>
+              </td>
+              <!-- 3.9: 별3 + 90%채워진별 -->
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:7px 2px;text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:1px;font-size:1.15rem;line-height:1;">
+                  <span style="color:#ffd700;">★</span>
+                  <span style="color:#ffd700;">★</span>
+                  <span style="color:#ffd700;">★</span>
+                  <span style="position:relative;display:inline-block;color:#444;">★<span style="position:absolute;left:0;top:0;overflow:hidden;width:90%;color:#ffd700;">★</span></span>
+                  <span style="color:#444;">★</span>
+                </div>
+              </td>
+              <!-- 3.8: 별3 + 80%채워진별 -->
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:7px 2px;text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:1px;font-size:1.15rem;line-height:1;">
+                  <span style="color:#ffd700;">★</span>
+                  <span style="color:#ffd700;">★</span>
+                  <span style="color:#ffd700;">★</span>
+                  <span style="position:relative;display:inline-block;color:#444;">★<span style="position:absolute;left:0;top:0;overflow:hidden;width:80%;color:#ffd700;">★</span></span>
+                  <span style="color:#444;">★</span>
+                </div>
+              </td>
+            </tr>
+            <!-- 좋은 점 -->
+            <tr>
+              <td colspan="2" style="background:rgba(13,21,32,0.6);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);text-align:center;font-weight:600;vertical-align:middle;">좋은 점</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);line-height:1.6;text-align:center;vertical-align:top;">실험 결과까지 잘 구현됨<br>실험이 불가한 경우 유용함<br>결과 확인이 쉬움<br>안전하게 실험 가능<br>복습용으로 활용 가능</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);line-height:1.6;text-align:center;vertical-align:top;">개념 정리용으로 유용함<br>과학을 재미있게 접근할 수 있음</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);line-height:1.6;text-align:center;vertical-align:top;">배운 내용 정리용으로 유용함<br>쉽게 따라 부를 수 있을 것 같음</td>
+            </tr>
+            <!-- 미흡한 점 -->
+            <tr>
+              <td colspan="2" style="background:rgba(13,21,32,0.6);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);text-align:center;font-weight:600;vertical-align:middle;">미흡한 점</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);line-height:1.6;text-align:center;vertical-align:top;">조작 및 TTS 완성도<br>단계별 텍스트 설명 추가<br>TTS 완성도</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);line-height:1.6;text-align:center;vertical-align:top;">사실성 등이 추가되면 좋을 것 같음<br>개념 설명하는 TTS 등이 추가 필요<br>학습 목표가 더 명확하면 좋을 것 같음</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);line-height:1.6;text-align:center;vertical-align:top;">고학년은 음원의 흥미도 낮음<br>중독성 있는 가사면 좋을 것 같음</td>
+            </tr>
+            <!-- 단원당 필요 수 -->
+            <tr>
+              <td rowspan="3" style="background:rgba(13,21,32,0.6);border:1px solid rgba(59,158,255,0.15);padding:6px 2px;color:var(--gray-light);text-align:center;font-weight:600;vertical-align:middle;">단원당<br>필요 수</td>
+              <td style="background:rgba(13,21,32,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--gray-light);text-align:center;">4개 이상</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--blue-bright);font-weight:700;text-align:center;">62.5%</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--blue-bright);font-weight:700;text-align:center;">34.3%</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--gray-light);text-align:center;">15.6%</td>
+            </tr>
+            <tr>
+              <td style="background:rgba(13,21,32,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--gray-light);text-align:center;">2~3개</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--gray-light);text-align:center;">25%</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--gray-light);text-align:center;">18.8%</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--gray-light);text-align:center;">18.8%</td>
+            </tr>
+            <tr>
+              <td style="background:rgba(13,21,32,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--gray-light);text-align:center;">1개</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--gray-light);text-align:center;">12.5%</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--blue-bright);font-weight:700;text-align:center;">46.9%</td>
+              <td style="background:rgba(8,12,16,0.5);border:1px solid rgba(59,158,255,0.15);padding:5px 2px;color:var(--blue-bright);font-weight:700;text-align:center;">65.6%</td>
+            </tr>
+            <!-- 시사점 -->
+            <tr>
+              <td colspan="2" style="background:rgba(59,158,255,0.1);border:1px solid rgba(59,158,255,0.25);padding:6px 2px;color:var(--blue-bright);text-align:center;font-weight:600;vertical-align:middle;">시사점</td>
+              <td style="background:rgba(59,158,255,0.06);border:1px solid rgba(59,158,255,0.25);padding:6px 2px;color:var(--white);line-height:1.6;text-align:center;vertical-align:top;">실험별 1개에 개발 니즈<br><span style="color:var(--gray-light);">실험별 일정 퀄리티 이상 나오기 위한 노력 필요</span></td>
+              <td style="background:rgba(59,158,255,0.06);border:1px solid rgba(59,158,255,0.25);padding:6px 2px;color:var(--white);line-height:1.6;text-align:center;vertical-align:top;">단원별 중요 개념에 대한 개발 니즈<br><span style="color:var(--gray-light);">어려운 원리를 친숙하게 전달함<br>(오개념에 대한 주의 필요)</span></td>
+              <td style="background:rgba(59,158,255,0.06);border:1px solid rgba(59,158,255,0.25);padding:6px 2px;color:var(--white);line-height:1.6;text-align:center;vertical-align:top;">단원 정리용으로 활용 예상</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
