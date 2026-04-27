@@ -576,59 +576,9 @@ function buildCandle(wx,wz){
     arm.setRotationFromQuaternion(aq);arm.castShadow=true;candleGroup.add(arm);
     var bc=new THREE.Mesh(new THREE.CylinderGeometry(0.014,0.014,0.02,8),lm);
     bc.position.set(bx,0.012,bz);candleGroup.add(bc);}
-  // ── 쇠그물 (레퍼런스 적용: 외곽 프레임 + 철망 격자 20×20 + 세라믹 패드 + 그을음) ──
-  var gauzeY = 0.646;
-  var gauzeSize = 0.225; // 정사각형 한 변의 절반 (전체 변 길이 0.45)
-
-  // — 외곽 프레임 (두꺼운 금속 테두리) —
-  var frameMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 });
-  var frameT = 0.018; // 프레임 두께
-  var frameH = 0.008; // 프레임 높이
-  // 상변
-  candleGroup.add(M(new THREE.BoxGeometry(gauzeSize * 2, frameH, frameT), frameMat,
-    0, gauzeY + frameH / 2, -gauzeSize + frameT / 2));
-  // 하변
-  candleGroup.add(M(new THREE.BoxGeometry(gauzeSize * 2, frameH, frameT), frameMat,
-    0, gauzeY + frameH / 2, gauzeSize - frameT / 2));
-  // 좌변
-  candleGroup.add(M(new THREE.BoxGeometry(frameT, frameH, gauzeSize * 2), frameMat,
-    -gauzeSize + frameT / 2, gauzeY + frameH / 2, 0));
-  // 우변
-  candleGroup.add(M(new THREE.BoxGeometry(frameT, frameH, gauzeSize * 2), frameMat,
-    gauzeSize - frameT / 2, gauzeY + frameH / 2, 0));
-
-  // — 철망 격자 (촘촘하게 20×20) —
-  var wireMat = new THREE.MeshBasicMaterial({ color: 0x666666 });
-  var wireCount = 20;
-  var innerSize = gauzeSize - frameT;
-  var wireSpacing = (innerSize * 2) / (wireCount + 1);
-  var wireThick = 0.0025;
-  for (var wi = 1; wi <= wireCount; wi++) {
-    var offset = -innerSize + wi * wireSpacing;
-    // 가로선
-    var hw = new THREE.Mesh(new THREE.BoxGeometry(innerSize * 2, 0.002, wireThick), wireMat);
-    hw.position.set(0, gauzeY + 0.003, offset);
-    candleGroup.add(hw);
-    // 세로선
-    var vw = new THREE.Mesh(new THREE.BoxGeometry(wireThick, 0.002, innerSize * 2), wireMat);
-    vw.position.set(offset, gauzeY + 0.003, 0);
-    candleGroup.add(vw);
-  }
-
-  // — 세라믹 패드 (가운데 원형, 연한 베이지) —
-  var ceramicR = gauzeSize * 0.58;
-  var ceramicMat = new THREE.MeshStandardMaterial({ color: 0xe8e0d4, roughness: 0.85, metalness: 0.0 });
-  var ceramic = new THREE.Mesh(new THREE.CircleGeometry(ceramicR, 32), ceramicMat);
-  ceramic.rotation.x = -Math.PI / 2;
-  ceramic.position.y = gauzeY + 0.005;
-  candleGroup.add(ceramic);
-
-  // — 세라믹 위 그을음 자국 (반투명 어두운 원) —
-  var sootMat = new THREE.MeshBasicMaterial({ color: 0x888877, transparent: true, opacity: 0.18 });
-  var soot = new THREE.Mesh(new THREE.CircleGeometry(ceramicR * 0.55, 20), sootMat);
-  soot.rotation.x = -Math.PI / 2;
-  soot.position.y = gauzeY + 0.006;
-  candleGroup.add(soot);
+  // 쇠그물: square wire mesh sitting on top of the ring (grid wires only)
+  var wm=new THREE.MeshBasicMaterial({color:0x555555});
+  for(var wi=-4;wi<=4;wi++){var wh2=new THREE.Mesh(new THREE.BoxGeometry(0.40,0.003,0.004),wm);wh2.position.set(0,0.646,wi*0.045);candleGroup.add(wh2);var wv2=new THREE.Mesh(new THREE.BoxGeometry(0.004,0.003,0.40),wm);wv2.position.set(wi*0.045,0.646,0);candleGroup.add(wv2);}
   // Flat wax body (tea-light style - short and wide)
   var cb=new THREE.Mesh(new THREE.CylinderGeometry(0.090,0.090,0.036,18),new THREE.MeshStandardMaterial({color:0xf0ece0,roughness:0.65,transparent:true,opacity:0.88}));
   cb.position.y=0.666;cb.castShadow=true;candleGroup.add(cb);
