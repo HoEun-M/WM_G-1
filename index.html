@@ -38,6 +38,8 @@
     width: 100%;
     height: 100vh;
     transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   .slide {
@@ -1141,7 +1143,7 @@ SB 확정</div><div style="background:rgba(190,35,35,0.88);color:#fff;font-size:
             src="lab_heat_conduction.html"
             style="width:200%;height:200%;transform:scale(0.5);transform-origin:top left;pointer-events:none;border:none;display:block;"
             scrolling="no"
-          ></iframe>
+           loading="lazy"></iframe>
           <!-- Click overlay with launch hint -->
           <div style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-end;padding:12px;background:linear-gradient(to top, rgba(8,12,16,0.6) 0%, transparent 50%);">
             <div style="background:rgba(59,158,255,0.9);color:#000;font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;padding:6px 14px;border-radius:20px;letter-spacing:0.08em;">
@@ -1191,7 +1193,7 @@ SB 확정</div><div style="background:rgba(190,35,35,0.88);color:#fff;font-size:
             src="lab_skeleton.html"
             style="width:100%;height:100%;border:none;display:block;pointer-events:none;"
             scrolling="no"
-          ></iframe>
+           loading="lazy"></iframe>
           <div class="s7-hover" style="position:absolute;inset:0;background:rgba(8,12,16,0.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;">
             <div style="background:rgba(59,158,255,0.9);color:#000;font-family:'Space Mono',monospace;font-size:0.7rem;font-weight:700;padding:8px 18px;border-radius:20px;letter-spacing:0.08em;">↗ 새창에서 열기</div>
           </div>
@@ -1928,7 +1930,7 @@ playSummarySegments();  // 결과 요약 다중 세그먼트 순차 재생 (뼈�
               src="lab_instruction_heat_conduction.html"
               style="width:200%;height:200%;transform:scale(0.5);transform-origin:top left;border:none;display:block;pointer-events:none;"
               scrolling="no"
-            ></iframe>
+             loading="lazy"></iframe>
             <!-- hover 오버레이 -->
             <div class="iframe-hover" style="position:absolute;inset:0;background:rgba(8,12,16,0.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;">
               <div style="background:rgba(59,158,255,0.9);color:#000;font-family:'Space Mono',monospace;font-size:0.7rem;font-weight:700;padding:8px 18px;border-radius:20px;letter-spacing:0.08em;">↗ 새창에서 열기</div>
@@ -2034,7 +2036,7 @@ playSummarySegments();  // 결과 요약 다중 세그먼트 순차 재생 (뼈�
             src="https://hoeun-m.github.io/science_game/"
             style="width:200%;height:200%;transform:scale(0.5);transform-origin:top left;pointer-events:none;border:none;display:block;"
             scrolling="no"
-          ></iframe>
+           loading="lazy"></iframe>
           <!-- Click overlay with launch hint -->
           <div style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-end;padding:12px;background:linear-gradient(to top, rgba(8,12,16,0.6) 0%, transparent 50%);">
             <div style="background:rgba(59,158,255,0.9);color:#000;font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;padding:6px 14px;border-radius:20px;letter-spacing:0.08em;">
